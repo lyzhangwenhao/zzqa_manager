@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="shipping_list">
+	<typeAlias alias="shipping_list"
+		type="com.zzqa.pojo.shipping_list.Shipping_list" />
+	<!-- 添加一条 -->
+	<insert id="insertShipping_list" parameterClass="shipping_list">
+		insert into shipping_list(shipping_id,product_id,m_id,unit,quality_no,contract_num,last_num,
+		unit_price,num,remark,logistics_demand)
+		values(#shipping_id#,#product_id#,#m_id#,#unit#,#quality_no#,#contract_num#,#last_num#,
+		#unit_price#,#num#,#remark#,#logistics_demand#)
+		<selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateShipping_list" parameterClass="shipping_list">
+        update shipping_list set 
+        shipping_id=#shipping_id#,
+        product_id=#product_id#,
+        m_id=#m_id#,
+        unit=#unit#,
+        quality_no=#quality_no#,
+        contract_num=#contract_num#,
+        last_num=#last_num#,
+        unit_price=#unit_price#,
+        num=#num#,
+        remark=#remark#,
+        logistics_demand=#logistics_demand#
+        where id = #id#
+    </update>
+    
+
+	<!-- 通过id删除 -->
+    <delete id="delShipping_listByID" parameterClass="int" >
+        delete from shipping_list where id=#id#
+    </delete>
+    
+    <delete id="delShipping_listByShipping_id" parameterClass="int" >
+        delete from shipping_list where shipping_id=#shipping_id#
+    </delete>
+    
+    <!-- 通过id -->
+    <select id="getShipping_listById" parameterClass="int" resultClass="shipping_list">
+        select * from shipping_list where id=#id#
+    </select>
+	
+	<!-- 查询总条数 -->
+	<select id="getShipping_listByShipId" parameterClass="int" resultClass="shipping_list">
+		select * from shipping_list where shipping_id=#shipping_id#
+	</select>
+	<select id="getShippingNumByProduct" parameterClass="int" resultClass="int">
+		select sum(shipping_list.num) from shipping_list  right join (select shipping.id,f.operation from shipping left join (select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=18 order by id desc limit 10000000)as t
+			GROUP BY foreign_id order by id desc) as f 
+			on shipping.id=f.foreign_id where  f.operation=6) as ship on ship.id=shipping_list.shipping_id
+			where shipping_list.product_id=#product_id#
+	</select>
+
+</sqlMap>

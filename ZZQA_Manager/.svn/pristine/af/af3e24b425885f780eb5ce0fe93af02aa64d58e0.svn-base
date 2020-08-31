@@ -1,0 +1,789 @@
+/*****头部流程图样式开始*****/
+.bgcolor_did {
+	background-color: #42C752;
+}
+
+.bgcolor_nodid {
+	background-color: #E1EAEF;
+}
+
+.bgcolor_error {
+	background-color: #FF4401;
+}
+
+.color_did {
+	color: #42c652;
+}
+
+.color_nodid {
+	color: #5C5C5C;
+}
+
+.color_error {
+	color: #FF4401;
+}
+/*****头部流程图样式结束*****/
+/**已撤销样式开始**/
+.title1_flow0 {
+	width: 100%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	margin: 0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.title1_flow0>div {
+	display: none;
+}
+.title1_flow0 div:nth-of-type(1) {
+	display:block;
+	float: left;
+	margin-left: 2px;
+}
+.title1_flow0 div:nth-of-type(5) {
+	display:block;
+	float: right;
+	margin-right: 23px;
+}
+.title2_flow0 {
+	width: 94%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+}
+.title2_flow0 img {
+	display:none;
+}
+.title2_flow0 img:nth-of-type(1) {
+	display:block;
+	float: left;
+	width: 28px;
+}
+.title2_flow0 img:nth-of-type(5) {
+	display:block;
+	float: left;
+	width: 28px;
+}
+.title2_flow0 div {
+	float: left;
+	width: 92%;
+	height: 5px;
+	margin-top: 10px;
+}
+.title2_flow0 div {
+	display: none;
+}
+.title2_flow0 div:nth-of-type(4) {
+	display:block;
+}
+.title3_flow0 {
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	color: #000;
+	font: 12px/15px 'SimSun';
+}
+.title3_flow0 div {
+	display: none;
+}
+.title3_flow0 div:nth-of-type(1) {
+	display:block;
+	float: left;
+	margin-left: 6px;
+}
+.title3_flow0 div:nth-of-type(5) {
+	display:block;
+	float: right;
+	margin-right: 8px;
+}
+/**已撤销样式结束**/
+/**样式开始,非提前启动**/
+.title1_flow1 {
+	width: 100%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	margin: 0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.title1_flow1 div:nth-of-type(1) {
+	float: left;
+	margin-left: 15px;
+}
+
+.title1_flow1 div:nth-of-type(2) {
+	float: left;
+	margin-left: 85px;
+}
+
+.title1_flow1 div:nth-of-type(3) {
+	float: left;
+	margin-left: 76px;
+}
+.title1_flow1 div:nth-of-type(4) {
+	float: left;
+	margin-left: 89px;
+}
+.title1_flow1 div:nth-of-type(5) {
+	float: right;
+	margin-right: 30px;
+}
+.title1_flow1 div:nth-of-type(6) {
+	display:none;
+}
+.title1_flow1 div:nth-of-type(7) {
+	display:none;
+}
+.title2_flow1 {
+	width: 90%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+}
+.title2_flow1 img {
+	float: left;
+	width: 28px;
+}
+.title2_flow1 img:nth-of-type(6) {
+	display:none;
+}
+.title2_flow1 img:nth-of-type(7) {
+	display:none;
+}
+.title2_flow1 div {
+	float: left;
+	width: 20%;
+	height: 5px;
+	margin-top: 10px;
+}
+.title2_flow1 div:nth-of-type(5) {
+	display:none;
+}
+.title2_flow1 div:nth-of-type(6) {
+	display:none;
+}
+.title3_flow1 {
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	color: #000;
+	font: 12px/15px 'SimSun';
+}
+
+.title3_flow1 div:nth-of-type(1) {
+	float: left;
+	margin-left: 20px;
+}
+
+.title3_flow1 div:nth-of-type(2) {
+	margin-left: 110px;
+	float: left;
+}
+
+.title3_flow1 div:nth-of-type(3) {
+	margin-left: 110px;
+	float: left;
+}
+
+.title3_flow1 div:nth-of-type(4) {
+	margin-left: 110px;
+	float: left;
+}
+
+.title3_flow1 div:nth-of-type(5) {
+	float: right;
+	margin-right: 20px;
+}
+.title3_flow1 div:nth-of-type(6) {
+	display:none;
+}
+.title3_flow1 div:nth-of-type(7) {
+	display:none;
+}
+/**样式结束**/
+/**样式开始,提前启动**/
+.title1_flow2 {
+	width: 100%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	margin: 0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.title1_flow2 div:nth-of-type(1) {
+	float: left;
+	margin-left: 15px;
+}
+.title1_flow2 div:nth-of-type(2) {
+	float: left;
+	margin-left: 28px;
+}
+.title1_flow2 div:nth-of-type(3) {
+	float: left;
+	margin-left: 20px;
+}
+.title1_flow2 div:nth-of-type(4) {
+	float: left;
+	margin-left: 33px;
+}
+.title1_flow2 div:nth-of-type(5) {
+	float: left;
+	margin-left: 48px;
+}
+.title1_flow2 div:nth-of-type(6) {
+	float: left;
+	margin-left: 55px;
+}
+.title1_flow2 div:nth-of-type(7) {
+	float: right;
+	margin-right: 30px;
+}
+.title2_flow2 {
+	width: 90%;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+}
+.title2_flow2 img {
+	float: left;
+	width: 28px;
+}
+.title2_flow2 div {
+	float: left;
+	width: 12%;
+	height: 5px;
+	margin-top: 10px;
+}
+.title3_flow2 {
+	overflow: hidden;
+	zoom: 1;
+	margin: 0 auto;
+	color: #000;
+	font: 12px/15px 'SimSun';
+}
+
+.title3_flow2 div:nth-of-type(1) {
+	float: left;
+	margin-left: 20px;
+}
+
+.title3_flow2 div:nth-of-type(2) {
+	margin-left: 55px;
+	float: left;
+}
+
+.title3_flow2 div:nth-of-type(3) {
+	margin-left: 53px;
+	float: left;
+}
+
+.title3_flow2 div:nth-of-type(4) {
+	margin-left: 53px;
+	float: left;
+}
+.title3_flow2 div:nth-of-type(5) {
+	margin-left: 53px;
+	float: left;
+}
+.title3_flow2 div:nth-of-type(6) {
+	margin-left: 53px;
+	float: left;
+}
+.title3_flow2 div:nth-of-type(7) {
+	float: right;
+	margin-right: 20px;
+}
+/**样式结束**/
+.td2_div1{
+	width: 100%;
+    height: 120px;
+}
+.td2_div2 {
+	text-align: center;
+	margin-top: 20px;
+	width: 100%;
+	border: 1px solid #878787;
+	background: #fff;
+}
+
+.td2_div3 {
+	text-align: center;
+	margin: 30px auto;
+	color: #000;
+	font: 20px/30px 'SimSun';
+	font-weight: 700;
+}
+
+.td2_table1 {
+	margin: 20px auto;
+	border: 0px;
+	border-collapse: collapse;
+	width: 93%;
+}
+
+.td2_table1 tr {
+	height: 40px;
+}
+
+.td2_table1 td {
+	
+}
+
+.td2_table1 span {
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr1_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr1_td2 {
+	text-align: left;
+	padding: 0px 10px 0px 10px;
+	width: 99%;
+}
+
+.table1_tr1_td2 div {
+	font: 14px/30px 'SimSun';
+	word-break: break-all;
+}
+
+.table1_tr2_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr2_td2 {
+	text-align: left;
+	padding: 0px 10px 0px 10px;
+	width: 99%;
+}
+
+.table1_tr3_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr3_td2 {
+	text-align: left;
+	padding: 0px 10px 0px 10px;
+	width: 99%;
+}
+
+.table1_tr4_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr4_td2 {
+	text-align: left;
+	padding: 0px 10px 0px 10px;
+	width: 99%;
+}
+
+.table1_tr5_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	font: 14px/30px 'SimSun';
+}
+
+.table1_tr5_td2 {
+	text-align: left;
+	padding: 0px 10px 0px 10px;
+	width: 99%;
+}
+
+/**表格**/
+.td2_table2 {
+	margin: 0px auto;
+	width: 93%;
+	color: #000;
+	font: 14px/30px 'SimSun';
+	border-collapse: collapse;
+	border-left: 1px solid #878787;
+	border-top: 1px solid #878787;
+}
+
+.td2_table2 tr>td:nth-of-type(1) {
+	line-height: 20px;
+}
+
+.td2_table2 label {
+	font: 13px px 'SimSun';
+}
+
+.td2_table2 td {
+	border-right: 1px solid #878787;
+	border-bottom: 1px solid #878787;
+	word-break: break-all;
+}
+
+.table2_tr1 {
+	height: 40px;
+}
+
+.table2_tr1_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+	margin-left: 20px;
+}
+
+.table2_tr1_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr1_td2 input {
+	height: 25px;
+	width: 200px;
+	padding: 2px 5px;
+}
+
+.table2_tr2 {
+	
+}
+
+.table2_tr2_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr2_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr2_td2 span {
+	display: inline-block;
+	height: 25px;
+	min-width: 130px;
+	font: 13px/20px 'SimSun';
+}
+
+.table2_tr3 {
+	
+}
+
+.table2_tr3_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr3_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr3_td2 span {
+	display: inline-block;
+	height: 25px;
+	min-width: 130px;
+	font: 13px/20px 'SimSun';
+}
+
+.table2_tr4 {
+	
+}
+
+.table2_tr4_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr4_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr4_td2 span {
+	display: inline-block;
+	height: 25px;
+	min-width: 130px;
+	font: 13px/20px 'SimSun';
+}
+
+.table2_tr5_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr5_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr5_td2 input {
+	width: 100px;
+	height: 25px;
+	color: #000;
+	padding: 2px 5px;
+}
+
+.table2_tr6_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr6_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+	word-wrap: break-word;
+}
+
+.table2_tr6_td2 span {
+	font: 13px/15px 'SimSun';
+}
+
+.table2_tr6_td2 div {
+	font: 13px/15px 'SimSun';
+	word-break: break-word;
+}
+
+.table2_tr6_td2 textarea {
+	display: block;
+	height: 100px;
+	width: 98%;
+	margin-top: 10px;
+	padding: 5px;
+	font: 13px/20px 'SimSun';
+}
+
+.table2_tr7_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr7_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+.table2_tr7_td2,.table2_tr8_td2 div{
+	line-height:20px;
+}
+.table2_tr7_td2 span {
+	font: 13px 'SimSun';
+	line-height: 15px
+}
+
+.table2_tr7_td2 span {
+	color: #000;
+	font: 13px/15px 'SimSun';
+}
+
+.table2_tr8_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	color: #000;
+}
+
+.table2_tr8_td2 {
+	width: 99%;
+	text-align: left;
+	padding: 10px;
+}
+
+.table2_tr8_td2 span {
+	color: #000;
+	font: 13px/15px 'SimSun';
+}
+
+.table2_tr9_td1 {
+	text-align: center;
+	width: 1%;
+	min-width: 100px;
+	font: 14px/15px 'SimSun';
+	padding: 10px 0px 10px 0px;
+	color: #000;
+}
+
+.table2_tr9_td2 {
+	width: 99%;
+	text-align: left;
+	font: 13px/15px 'SimSun';
+	padding: 5px;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.file_title_remark {
+	font-size: 13px;
+	line-height: 20px;
+	margin-top: 20px;
+}
+
+.table2_tr9_td2 div {
+	
+}
+
+.table2_tr9_td2 textarea {
+	float: left;
+	height: 100px;
+	width: 88%;
+	padding: 5px;
+	height: 100px;
+	border: 1px solid #878787;
+}
+
+.table2_tr9_td2>input {
+	float: left;
+	margin-top: 75px;
+	margin-left: 5px;
+	padding: 0px;
+	width: 50px;
+	height: 25px;
+	font: 13px/15px 'SimSun';
+}
+.files_ul {
+	
+}
+.files_ul >li{
+	display:block;
+	margin:2px 0;
+}
+.files_ul >li a{
+	
+}
+.section-white {
+    font-size: 15px;
+    line-height: 30px;
+    margin: 10px 0;
+}
+.td2_table3 {
+	width: 93%;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+
+.td2_table3_left {
+	width: 90%;
+	text-align: left;
+	font: 14px/20px 'SimSun';
+	padding: 5px 5px 40px 5px;
+	word-break: break-all;
+}
+
+.td2_table3_right {
+	width: 10%;
+	text-align: center;
+	vertical-align: bottom;
+	min-width: 127px;
+	padding: 20px 0px 10px 0px;
+}
+
+.td2_div5_bottom_right1 {
+	margin-left: 20px;
+	font: 14px/30px 'SimSun';
+}
+
+.td2_div5_bottom_right2 {
+	margin-left: 20px;
+	font: 13px/25px 'SimSun';
+}
+
+.td2_div5_bottom_noimg {
+	vertical-align: middle;
+	width: 127px;
+	height: 69px;
+}
+
+.td2_div5_bottom_agree {
+	vertical-align: middle;
+	width: 127px;
+	height: 69px;
+	background-image: url(../images/agree_bg.png);
+	filter:
+		"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+
+.td2_div5_bottom_disagree {
+	height: 69px;
+	width: 127px;
+	background-image: url(../images/disagree_bg.png);
+	filter:
+		"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+
+.div_testarea {
+	display: block;
+	height: 60px;
+	width: 99%;
+	margin: 20px auto;
+	padding: 5px;
+	font: 13px/20px 'SimSun';
+	border: 1px solid #878787;
+}
+
+.td2_table5 {
+	width: 100%;
+	margin: 20px auto;
+	border-collapse: collapse;
+	border-top: 1px solid #878787;
+	border-left: 1px solid #878787;
+}
+
+.td2_table5 td {
+	border-bottom: 1px solid #878787;
+	border-right: 1px solid #878787;
+}
+
+.table5_td1 {
+	width: 10%;
+	text-align: center;
+	min-width: 120px;
+	font: 14px/20px 'SimSun';
+}
+
+.table5_td2 {
+	width: 90%;
+	text-align: left;
+	padding: 13px 5px 5px 5px;
+}
+
+.div_file_right_div {
+	font: 14px/30px 'SimSun';
+	width: 400px;
+	background: #fff;
+	margin-bottom: 10px;
+}
+/**新建任务单流程样式结束**/

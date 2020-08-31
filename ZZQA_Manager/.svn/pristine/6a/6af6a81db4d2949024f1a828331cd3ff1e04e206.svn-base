@@ -1,0 +1,8 @@
+jdbc1.driver=com.mysql.jdbc.Driver
+jdbc1.url=jdbc\:mysql\://127.0.0.1/zzqa_manager
+jdbc1.username=root
+jdbc1.password=test
+#ture:群发邮件; false:只发送有新建考核权限的
+mass_email=false
+#指定群发的邮箱
+public_email=windit@windit.com.cn

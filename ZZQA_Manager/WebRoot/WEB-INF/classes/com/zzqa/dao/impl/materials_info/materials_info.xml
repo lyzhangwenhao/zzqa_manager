@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="materials_info">
+	<typeAlias alias="materials_info"
+		type="com.zzqa.pojo.materials_info.Materials_info"/>
+
+	<resultMap id="result_basc" class="materials_info">
+		<result property="id" column="id" />
+		<result property="model" column="model" />
+		<result property="unit" column="unit" />
+		<result property="materials_id" column="materials_id" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertMaterials_info" parameterClass="materials_info">
+		insert into materials_info(model,unit,materials_id,remark)
+		values(#model#,#unit#,#materials_id#,#remark#)
+	</insert>
+
+	<!-- 通过id删除 -->
+    <delete id="delMaterials_infoByID" parameterClass="int" >
+        delete from materials_info where id=#id#
+    </delete>
+	
+	<!-- 通过model查询 -->
+	<select id="getMaterials_infoByModel" resultClass="materials_info"
+		parameterClass="String">
+		select * from materials_info where model=#model# limit 1
+	</select>
+	
+	<select id="getMaterials_infoByID" resultClass="materials_info"
+		parameterClass="int">
+		select * from materials_info where id=#id#
+	</select>
+	
+	<select id="getMaterials_infos" resultMap="result_basc">
+		select * from materials_info order by model
+	</select>
+	
+	<select id="getMaterials_infosByCondition" resultMap="result_basc" parameterClass="java.util.Map">
+		select * from materials_info where 
+		model like '%$keywords$%' or unit like '%$keywords$%' or materials_id like '%$keywords$%' 
+		or remark like '%$keywords$%' order by model
+		limit #nowrow#,#pagerow#
+	</select>
+	
+	<select id="getNumByCondition" resultClass="int" parameterClass="java.util.Map">
+		select count(model) from materials_info where 
+		model like '%$keywords$%' or unit like '%$keywords$%' or materials_id like '%$keywords$%' 
+		or remark like '%$keywords$%'
+	</select>
+	
+	<update id="updateMaterials_info" parameterClass="materials_info">
+		update materials_info set 
+		materials_id=#materials_id#,
+		remark=#remark#,
+		model=#model#,
+		unit=#unit#
+		where id=#id#
+	</update>
+	<select id="checkUseMaterials" parameterClass="int" resultClass="int">
+		select 1 from  
+			(select count(id) as num1 from product_info where m_id=#m_id#) as a,
+			(select count(id) as num2  from purchase_note where m_id=#m_id#) as b,
+			(select count(id) as num3  from shipping_list where m_id=#m_id#) as c
+		where a.num1>0 or b.num2>0 or c.num3>0
+	</select>
+</sqlMap>

@@ -1,0 +1,194 @@
+/*新建流程样式开始**/
+.td1_device{
+	margin:20px auto;
+  	width:1092px;
+  	text-align:center;
+  	border:1px solid #E2E6E7;
+  	background:#fff;
+  	padding:30px 0px;
+}
+.td1_div {
+    width: 100%;
+    text-align: left;
+}
+.fieldset{
+	width: 583px;
+	min-height:120px;
+    margin: 75px auto;
+    padding:0px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #959595;
+}
+.fieldset legend{
+	font: 16px 'microsoft yahei';
+    margin-left: 0px;
+    padding: 0px 10px;
+    color: #000;
+    font-weight: bold;
+}
+.fieldset_div{
+	
+}
+.fieldset >div{
+	margin:35px  65px 35px 65px;
+	height:32px;
+}
+.fieldset>div:last-child{
+	margin:35px  65px 47px 65px;
+}
+.fieldset>div:first-child{
+	margin:47px  65px 35px 65px;
+}
+.fieldset>div div{
+	text-align: center;
+    width: 126px;
+    cursor:pointer;
+    color:#000;
+    background:#fff;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border:1px solid #313131;
+    font:15px/32px 'microsoft yahei';
+}
+.fieldset>div div:last-child{
+	 float:right;
+	 margin-right:0px;
+}
+.fieldset >div div:nth-child(2){
+	float:left;
+	margin-left:35px;
+}
+.fieldset >div div:first-child{
+	float:left;
+}
+.fieldset >div div:hover {
+	color:#41C651;
+	border:1px solid #41C651;
+}
+.fieldset >div div:active{
+	color:#fff;
+	border:1px solid #41C651;
+	background:#41C651;
+}
+/**
+ *第一个按钮 h:32px;w:126px；left:65px;top:47px；right:40px；bottom：35px；
+ **/
+.td2_div3{
+	position:absolute;
+	top:47;
+	left:65;
+	right:65;
+	height:32px;
+	font:15px/32px 'microsoft yahei';
+}
+.td2_div4{
+	position:absolute;
+	bottom:47;
+	left:65;
+	right:65;
+	height:32px;
+	font:15px/32px 'microsoft yahei';
+}
+/**新建流程样式结束**/
+.btn1{
+	float:left;
+}
+.btn2{
+	float:left;
+	margin-left:35px;
+}
+.btn3{
+	float:right;
+}
+
+.hand{
+	text-align: center;
+    width: 126px;
+    cursor:pointer;
+    color:#000;
+    background:#fff;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border:1px solid #313131;
+}
+.hand:hover {
+	color:#41C651;
+	border:1px solid #41C651;
+}
+.hand:active{
+	color:#fff;
+	border:1px solid #41C651;
+	background:#41C651;
+}
+.td1_div1 {
+    margin:20px auto;
+    text-align: center;
+    font: bold 36px/40px 'KaiTi';
+}
+.td1_div2{
+	text-align:right;
+	margin:10px auto;
+	width:95%;
+}
+.between-div{
+	width: 1px;
+    height: 20px;
+    background: #fff;
+    float: left;
+    border-top:3px solid #0872C7;
+    border-bottom:3px solid #0872C7;
+    
+}
+.btn-group1{
+	border:1px solid #2e6da4;
+	border-radius: 4px;
+}
+.btn-group1 button{
+	border-width:0px;
+	padding: 3px 6px;
+}
+.td1_div2_div{
+	position:relative;
+	float: right;
+	margin-left:5px;
+	margin-right:1px;
+	height:26px;
+	display:inline-block;
+	cursor: pointer;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #0872C7;
+   	border:1px solid #2e6da4;
+}
+.td1_div2_div:hover{
+	background-color: #286090;
+}
+.td1_div2_div img{
+	display:inline-block;
+	margin-top:-7px;
+	height:18px;
+	vertical-align:middle;
+	margin-left:8px;
+}
+.td1_div2_div div{
+	display:inline-block;
+	font:14px/26px 'microsoft yahei';
+	margin-right:8px;
+}
+/****翻译按钮***/
+.td2_div5{
+	margin:10px auto 0px auto;
+	width:90%;
+	text-align:right;
+}
+.td2_div5 span{
+	text-align:center;
+}
+/****翻译按钮***/
+.btn-group1>.btn{
+    border-radius: 0px;
+}

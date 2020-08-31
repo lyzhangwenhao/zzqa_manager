@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="performance">
+	<typeAlias alias="performance"
+		type="com.zzqa.pojo.performance.Performance" />
+
+	<!-- 添加 -->
+	<insert id="insertPerformance" parameterClass="performance">
+		insert into performance(create_id,performance_month,department_index,leader,feedback,
+		item1,item2,item3,item4,quotiety,score,create_time)
+		values(#create_id#,#performance_month#,#department_index#,#leader#,#feedback#,
+		#item1#,#item2#,#item3#,#item4#,#quotiety#,#score#,#create_time#)
+		<selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 修改 -->
+    <update id="updatePerformance" parameterClass="performance">
+        update performance set 
+        department_index=#department_index#,
+        leader=#leader#,
+        feedback=#feedback#,
+        item1=#item1#,
+        item2=#item2#,
+        item3=#item3#,
+        item4=#item4#,
+        quotiety=#quotiety#,
+        score=#score#
+        where id = #id#
+    </update>
+	
+	<select id="getPerformanceByID" parameterClass="int" resultClass="performance">
+		select performance.*,t.operation from performance left join 
+		( select * from (select operation,foreign_id from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id where performance.id=#id#
+	</select>
+	
+	<select id="getPerformanceByMonth" parameterClass="performance" resultClass="performance">
+		select performance.*,t.operation,u1.truename as create_name,u2.truename as leader_name,pu.position_name from performance left join 
+		( select * from (select operation,foreign_id from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id 
+		left join user as u1 on u1.id=performance.create_id
+		left join user as u2 on u2.id=performance.leader
+		left join position_user as pu on pu.id= u1.position_id
+		where performance.performance_month=#performance_month# and performance.create_id=#create_id#
+	</select>
+	
+	<select id="getPerformanceByCID" parameterClass="map" resultClass="performance">
+		select performance.*,t.operation,u1.truename as create_name,u2.truename as leader_name,pu.position_name from performance left join 
+		( select * from (select operation,foreign_id from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id 
+		left join user as u1 on u1.id=performance.create_id
+		left join user as u2 on u2.id=performance.leader
+		left join position_user as pu on pu.id= u1.position_id
+		where performance.create_id=#cid# order by id desc limit #startRow#,1
+	</select>
+	
+	<select id="getRunningPerformance" resultClass="performance">
+		select performance.*,t.operation,t.create_time as update_time,user.truename as create_name
+		 from performance left join 
+		( select * from (select operation,foreign_id,create_time from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id 
+		left join user on performance.create_id=user.id
+		where t.operation!=6 and user.position_id !=56
+	</select>
+	<select id="getAllList" resultClass="performance">
+		select performance.*,user.truename as create_name from performance 
+		left join user on performance.create_id=user.id
+	</select>
+	<!-- 自己或下级添加过工时 -->
+	<select id="checkNumByLeaderId" resultClass="int" parameterClass="int">
+		select count(`performance`.id) from performance 
+		left join user u1 on performance.create_id=u1.id
+		left join position_user pu on u1.position_id=pu.id
+		left join position_user pu2 on pu.parent=pu2.id
+		left join user u2 on pu2.id=u2.position_id 
+		where u2.id=#uid# or u1.id=#uid#
+	</select>
+	<select id="getPerformancesByCondition" resultClass="performance" parameterClass="map">
+		select per.id,per.create_id,per.performance_month,per.department_index,per.leader,
+		per.quotiety,per.score,user.truename as create_name,pu.position_name from performance per 
+		left join ( select * from (select operation,foreign_id,create_time from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=per.id 
+		left join user on user.id=per.create_id
+		left join position_user pu on user.position_id= pu.id
+		where t.operation=6 and (per.performance_month between #begin_month# and #end_month#)
+		<isNotEqual property="create_id" compareValue="0">
+			and create_id=#create_id#
+		</isNotEqual>
+		<isNotEqual property="department_index" compareValue="0">
+			and department_index=#department_index#
+		</isNotEqual>
+		order by create_name,per.create_id,per.performance_month,department_index
+	</select>
+	<resultMap id="performanceMap" class="User" >
+		<result property="id" column="id"/>
+        <result property="truename" column="truename"/>
+        <!-- 存入 上级服务器 集合 -->
+        <result property="performances" column="{create_id=id,start=start,end=end}"
+        select="performance.checkPerformance"/>
+    </resultMap>
+	<select id="getPerformancesUsers" resultMap="performanceMap" parameterClass="java.util.HashMap">
+		select user.id,user.truename,#start# as start,#end# as end from user
+		left join permissions on user.position_id=permissions.position_id
+		where permissions.permissions_id=145 
+		order by user.truename
+	</select>
+	
+	<select id="checkPerformance" resultClass="performance" parameterClass="java.util.HashMap">
+		select * from performance left join 
+		(select * from (select operation,foreign_id,create_time from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id 
+		where t.operation=6 and performance.create_id=#create_id# 
+		and (performance.performance_month between #start# and #end#)
+	</select>
+	
+	<select id="getLastMoncePerformance" parameterClass="int" resultClass="performance">
+		select performance.*,t.operation,u1.truename as create_name,u2.truename as leader_name,pu.position_name from performance left join 
+		( select * from (select operation,foreign_id from flow  where type=19 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=performance.id 
+		left join user as u1 on u1.id=performance.create_id
+		left join user as u2 on u2.id=performance.leader
+		left join position_user as pu on pu.id= u1.position_id
+		where performance.create_id=#performance_cid#
+		order by id desc limit 2
+	</select>
+</sqlMap>

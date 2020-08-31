@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="equipment">
+	<typeAlias alias="equipment"
+		type="com.zzqa.pojo.equipment.Equipment" />
+	<resultMap id="equipmentDetail" class="equipment" >
+		<result property="id" column="id"/>
+		<result property="idStr" column="idStr"/>
+        <result property="sn" column="sn"/>
+        <result property="ship_id" column="ship_id"/>
+        <result property="create_id" column="create_id"/>
+        <result property="update_time" column="update_time"/>
+        <result property="file_path" column="id" select="file_path.getNewFileByFID"/>
+	 	<result property="circuit_cards" column="id" select="circuit_card.getCircuit_cardListFromDevice"/>
+	 </resultMap>
+
+	<!-- 添加 -->
+	<insert id="insertEquipment" parameterClass="equipment">
+		insert into equipment(id,sn,ship_id,create_id,update_time)
+		values(#id#,#sn#,#ship_id#,#create_id#,#update_time#)
+	</insert>
+	
+	<update id="updateEquipment" parameterClass="equipment">
+		update equipment set
+		sn=#sn#,
+		ship_id=#ship_id#,
+		update_time=#update_time#
+		where id=#id#
+	</update>
+	
+	<update id="updateEquipmentShipID" parameterClass="java.util.Map">
+		update equipment set
+		ship_id=#ship_id#
+		where id=#id#
+	</update>
+	
+	<!-- 通过device_id删除 -->
+    <delete id="delEquipmentByID" parameterClass="int" >
+        delete from equipment where id=#id#
+    </delete>
+    
+	<!-- 通过id查询 -->
+	<select id="getEquipmentByID" resultClass="equipment"
+		parameterClass="int">
+		select *,right(concat('00000000',id),8) as idStr from equipment where id=#id#
+	</select>
+	
+	<!-- 通过id查询 -->
+	<select id="getAllEquipment" resultClass="equipment" >
+		select *,right(concat('00000000',id),8) as idStr from equipment order by update_time desc
+	</select>
+	
+	<select id="getEquipmentByCreateID" resultClass="equipment" parameterClass="int">
+		select *,right(concat('00000000',id),8) as idStr from equipment where create_id=#create_id# order by update_time desc
+	</select>
+	
+	<!-- 通过id查询 -->
+	<select id="getEquipmentByCondition" resultClass="equipment" parameterClass="java.util.Map">
+		select *,right(concat('00000000',id),8) as idStr from equipment 
+		<dynamic prepend="where">
+			<isEqual prepend="and" property="usetime" compareValue="1">
+				update_time between #starttime# and #endtime#
+			</isEqual>
+			<isGreaterThan prepend="and" property="isCreater" compareValue="0">
+				create_id=#create_id#
+			</isGreaterThan>
+			<isLessThan prepend="and" property="isCreater" compareValue="0">
+				create_id!=#create_id#
+			</isLessThan>
+		</dynamic>
+		 order by update_time desc
+	</select>
+	
+	<select id="getFreedomEquipmentList" resultClass="equipment">
+		select *,right(concat('00000000',id),8) as idStr from equipment where ship_id=0 order by idStr
+	</select>
+	
+	<select id="getEquipmentByShipID" resultClass="equipment" parameterClass="int">
+		select *,right(concat('00000000',id),8) as idStr from equipment where ship_id=#ship_id# order by update_time desc
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,177 @@
+.td2_div11{
+	margin:30px auto 0 auto;
+	width:90%;
+	height:30px;
+}
+.tree_title1_parent{
+	text-align:left;
+	float:left;
+	width:50%;
+}
+.tree_title1{
+	margin-left:18px;
+	font:bold 16px/30px 'STZhongsong' ;
+	color:#000;
+}
+.tree_title1_parent>input{
+	border:2px solid #8F8F8F;
+	margin-right:5px;
+	height:28px;
+	width:220px;
+	font:15px/20px 'Microsoft yahei' ;
+	padding:0 5px;
+	color:#000;
+}
+.tree_title2_parent{
+	text-align:left;
+	float:left;
+	width:50%;
+}
+.tree_title2{
+	margin-left:18px;
+	font:bold 16px/30px 'STZhongsong' ;
+	color:#000;
+}
+.tree_title1_parent .searchable-select{
+	
+}
+.searchable-select{
+	margin-right:22px;
+	bottom:3px;
+}
+.searchable-select-holder {
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.searchable-select-item {
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.searchable-select-dropdown{
+	z-index:1;
+}
+
+
+
+
+
+
+.tree_title{
+	font: bold 25px 'Simsun';
+    color: #0897f2;
+    margin: 35px auto 1px auto;
+    text-align: center;
+}
+.tree_div{
+	width:98%;
+	margin:20px auto;
+}
+.tree_row{
+	zoom:1;
+	overflow: hidden;
+}
+.tree_row>div{
+	width:50%;
+	float:left;
+}
+.tree_row fieldset>div{
+	margin:20px auto;
+	width:100%;
+}
+.tree_row legend {
+    font: 16px/16px 'microsoft yahei';
+    margin-left: 15px;
+    padding: 0px 10px;
+    color: #0897f2;
+}
+.div_row{
+	height:30px;
+	margin:10px auto;
+}
+.tree_row label{
+	width: 175px;
+    display: inline-block;
+    background: #f5f5f5;
+    margin: 3.5px 7px;
+    cursor: pointer;
+}
+/* .div_row label:first-of-type{
+	margin-left:0px;
+} */
+.tree_row label span{
+	font:17px/30px 'SimHei';
+	margin-left:12px;
+	display:inline-block;
+	width:145px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.tree_row input[type='checkbox']{
+	display: inline-block;
+    position: relative;
+    top: -7px;
+    width:16px;
+    height:16px;
+    left:6px;
+    padding: 0px;
+    margin: 0px;
+}
+.tree_row fieldset{
+	margin:20px auto;
+	width:90%;
+    border: 1px solid #0897f2;
+}
+.tree_task fieldset{
+	height:690px;
+}
+.tree_leave fieldset{
+	height:165px;
+}
+.tree_manufacture fieldset {
+    height: 235px;
+}
+.tree_contract fieldset{
+	height:235px;
+}
+.tree_materials fieldset:nth-of-type(1){
+	height:165px;
+}
+.tree_materials fieldset:nth-of-type(2){
+	height:115px;
+}
+.tree_ship fieldset:nth-of-type(1){
+	height:165px;
+}
+.tree_ship fieldset:nth-of-type(2){
+	height:115px;
+}
+.tree_seal fieldset{
+	height:580px;
+}
+.tree_vehicle fieldset:nth-of-type(1){
+	height:390px;
+}
+.tree_vehicle fieldset:nth-of-type(2){
+	height:155px;
+}
+.tree_vehicle fieldset:nth-of-type(3){
+	height:138px;
+}
+.tree_vehicle fieldset:nth-of-type(4){
+	height:128px;
+}
+.tree_shipping fieldset{
+	height:165px;
+}
+.tree_performance fieldset{
+	height:145px;
+}

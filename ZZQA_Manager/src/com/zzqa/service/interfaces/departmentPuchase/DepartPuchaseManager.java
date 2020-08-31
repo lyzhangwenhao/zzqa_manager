@@ -1,0 +1,46 @@
+package com.zzqa.service.interfaces.departmentPuchase;
+
+import java.util.List;
+
+import com.zzqa.pojo.departePuchase_content.DepartePuchase_content;
+import com.zzqa.pojo.departmentPuchase.DepartmentPuchase;
+import com.zzqa.pojo.user.User;
+
+public interface DepartPuchaseManager {
+
+	void insertDepartPuchase(DepartmentPuchase departmentPuchase);
+
+	void updateDepartPuchase(DepartmentPuchase departmentPuchase);
+
+	void delDepartPuchaseContent(int departPuchaseContent_id);
+
+	void updateDepartPuchaseContent(
+			DepartePuchase_content departePuchase_content);
+
+	void insertDepartPuchaseContent(
+			DepartePuchase_content departePuchase_content);
+
+	DepartmentPuchase getDepartPuchaseByID(int departPuchase_id);
+
+	/**
+	 * 通过user_id查询最后创建的其他项目采购单
+	 * @param uid
+	 * @return
+	 */
+	DepartmentPuchase getLastDepartPuchaseByUid(int uid);
+
+	List<DepartePuchase_content> getItemsByDid(int departPuchase_id);
+	
+	int getCountByTime(String cur_time);
+
+	/**
+	 * 查询需要审核的流程
+	 * @param user
+	 * @return
+	 */
+	List<DepartmentPuchase> getDepartPuchaseListByUID(User user);
+
+	void updateDepartPuchaseContentTime(
+			DepartePuchase_content departePuchase_content);
+
+}

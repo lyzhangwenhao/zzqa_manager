@@ -1,0 +1,148 @@
+/*新建流程样式开始**/
+.td2_div_center{
+	text-align:center;
+	height:400px;
+}
+.td2_div_center select{
+	display:block;
+	width:200px;
+	height:35px;
+	margin:2px auto;
+	color:#000;
+	padding:2px 3px;
+	font:13px/31px 'SimSun';
+}
+.td2_div_center input{
+	display:block;
+	width:55px;
+	height:28px;
+	margin:2px auto;
+	padding:0px;
+	color:#000;
+	font:13px 'SimSun';
+}
+
+
+.td2_div1{
+	position:relative;
+	margin:75px auto;
+	width:583px;
+	height:190px;
+	background:url(../images/center_border.gif) 0px 0px no-repeat;
+}
+
+.fieldset{
+	width: 583px;
+	min-height:120px;
+    margin: 75px auto;
+    padding:0px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #959595;
+}
+.fieldset legend{
+	font: 16px 'microsoft yahei';
+    margin-left: 0px;
+    padding: 0px 10px;
+    color: #000;
+    font-weight: bold;
+}
+.fieldset_div{
+	
+}
+.fieldset >div{
+	margin:35px  65px 35px 65px;
+	height:32px;
+}
+.fieldset>div:last-child{
+	margin:35px  65px 47px 65px;
+}
+.fieldset>div:first-child{
+	margin:47px  65px 35px 65px;
+}
+.fieldset>div div{
+	text-align: center;
+    width: 126px;
+    cursor:pointer;
+    color:#000;
+    background:#fff;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border:1px solid #313131;
+    font:15px/32px 'microsoft yahei';
+}
+.fieldset>div div:last-child{
+	 float:right;
+	 margin-right:0px;
+}
+.fieldset >div div:nth-child(2){
+	float:left;
+	margin-left:35px;
+}
+.fieldset >div div:first-child{
+	float:left;
+}
+.fieldset >div div:hover {
+	color:#41C651;
+	border:1px solid #41C651;
+}
+.fieldset >div div:active{
+	color:#fff;
+	border:1px solid #41C651;
+	background:#41C651;
+}
+/**
+ *第一个按钮 h:32px;w:126px；left:65px;top:47px；right:40px；bottom：35px；
+ **/
+.td2_div3{
+	position:absolute;
+	top:47;
+	left:65;
+	right:65;
+	height:32px;
+	font:15px/32px 'microsoft yahei';
+}
+.td2_div4{
+	position:absolute;
+	bottom:47;
+	left:65;
+	right:65;
+	height:32px;
+	font:15px/32px 'microsoft yahei';
+}
+/**新建流程样式结束**/
+.btn1{
+	float:left;
+}
+.btn2{
+	float:left;
+	margin-left:35px;
+}
+.btn3{
+	float:right;
+}
+
+.hand{
+	text-align: center;
+    width: 126px;
+    cursor:pointer;
+    color:#000;
+    background:#fff;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border:1px solid #313131;
+}
+.hand:hover {
+	color:#41C651;
+	border:1px solid #41C651;
+}
+.hand:active{
+	color:#fff;
+	border:1px solid #41C651;
+	background:#41C651;
+}
+
+

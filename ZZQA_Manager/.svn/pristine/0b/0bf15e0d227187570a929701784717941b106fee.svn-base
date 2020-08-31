@@ -1,0 +1,667 @@
+package com.zzqa.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.zzqa.pojo.linkman.Linkman;
+import com.zzqa.pojo.operation.Operation;
+import com.zzqa.pojo.permissions.Permissions;
+import com.zzqa.pojo.position_user.Position_user;
+import com.zzqa.pojo.user.User;
+import com.zzqa.service.interfaces.linkman.LinkmanManager;
+import com.zzqa.service.interfaces.operation.OperationManager;
+import com.zzqa.service.interfaces.performance.PerformanceManager;
+import com.zzqa.service.interfaces.permissions.PermissionsManager;
+import com.zzqa.service.interfaces.position_user.Position_userManager;
+import com.zzqa.service.interfaces.user.UserManager;
+import com.zzqa.service.interfaces.work.WorkManager;
+import com.zzqa.util.MD5Util;
+import com.zzqa.util.SendMessage;
+
+public class UserManagerServlet extends HttpServlet{
+	private static UserManager userManager;
+	private static Position_userManager position_userManager;
+	private OperationManager operationManager;
+	private static PermissionsManager permissionsManager;
+	private LinkmanManager linkmanManager;
+	private static WorkManager workManager;
+	private static PerformanceManager performanceManager;
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+		String type=req.getParameter("type");
+		if("add".equals(type)){
+			String name=req.getParameter("username");
+			String sendEmail=req.getParameter("sendEmail");
+			if(userManager.checkName(name)){
+				//用户名已存在
+				req.getRequestDispatcher("/login.jsp").forward(req,resp);
+				return;
+			}
+			User user=new User();
+			user.setName(name);
+			user.setSendEmail(sendEmail);
+			user.setEmail(req.getParameter("email"));
+			String password=req.getParameter("password");
+			user.setPassword(new MD5Util().getMd5(password));
+			user.setTruename(req.getParameter("truename"));
+			user.setPosition_id(Integer.parseInt(req.getParameter("position")));
+			long time=System.currentTimeMillis();
+			user.setUpdate_time(time);
+			user.setCreate_time(time);
+			userManager.insertUser(user);
+			
+			int uid=userManager.getUserByName(name).getId();
+			Operation operation=new Operation();
+			operation.setContent("创建用户,uid="+uid);
+			operation.setCreate_time(time);
+			operation.setUid((Integer)req.getSession().getAttribute("uid"));
+			operationManager.insertOperation(operation);
+			
+			if(user.getLevel()==0){
+				String title="OA办公系统邮件提醒";
+				String address="<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内网链接：http://10.100.0.2/ZZQA_Manager<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;外网链接：http://oa.windit.com.cn";
+				String msg=new StringBuilder().append(user.getTruename())
+						.append(" 您好：<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你的OA办公管理系统初始密码为").append(password).append(address).toString();
+				String tomail=user.getEmail();
+				SendMessage sendMessage=new SendMessage(title,msg,tomail);
+				new Thread(sendMessage).start();
+			}
+			resp.sendRedirect("usermanager/usermanager.jsp");
+		}else if("update".equals(type)){
+			int user_id=Integer.parseInt(req.getParameter("user_id"));
+			String name=req.getParameter("username");
+			String sendEmail=req.getParameter("sendEmail");
+			User user=userManager.getUserByID(user_id);
+			if(user==null||user_id!=user.getId()){
+				//用户不存在
+				req.getRequestDispatcher("/login.jsp").forward(req,resp);
+				return;
+			}
+			user.setName(name);
+			user.setSendEmail(sendEmail);
+			user.setEmail(req.getParameter("email"));
+			user.setTruename(req.getParameter("truename"));
+			long time=System.currentTimeMillis();
+			user.setUpdate_time(time);
+			user.setPosition_id(Integer.parseInt(req.getParameter("position")));
+			userManager.updateUser(user);
+			
+			Operation operation=new Operation();
+			operation.setContent("修改用户,uid="+user_id);
+			operation.setCreate_time(time);
+			operation.setUid((Integer)req.getSession().getAttribute("uid"));
+			operationManager.insertOperation(operation);
+			alterSession(null, user_id,null);
+			resp.sendRedirect("usermanager/usermanager.jsp");
+		}else if("login".equals(type)){
+			String name = req.getParameter("username");
+			String password = req.getParameter("password");
+			User user=new User();
+			user.setName(name);
+			user.setPassword(new MD5Util().getMd5(password));
+			user=userManager.log(user);
+			int flag=0;
+			if (user!=null) {
+				HttpSession session=req.getSession();
+				session.setAttribute("uid", user.getId());
+				userOnLine(session);
+			}else{
+				if(userManager.checkName(name)){
+					flag=1;//密码错误
+				}else{
+					flag=2;//用户名不存在
+				}
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("deluser".equals(type)){
+			int user_id = Integer.parseInt(req.getParameter("user_id"));
+			int flag=0;//0表示不存在
+			if(userManager.getUserByID(user_id)!=null){
+				userManager.delUserByID(user_id);
+				flag=1;//1表示存在，可以删除
+				userOutLine(user_id,null);
+			}
+			Operation operation=new Operation();
+			operation.setContent("删除用户,uid="+user_id);
+			operation.setCreate_time(System.currentTimeMillis());
+			operation.setUid((Integer)req.getSession().getAttribute("uid"));
+			operationManager.insertOperation(operation);
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("searchuser".equals(type)){
+			String keywords_user=req.getParameter("keywords_user").replace(" ", "");
+			req.getSession().setAttribute("keywords_user", keywords_user);
+			resp.sendRedirect("usermanager/usermanager.jsp");
+		}else if("CheckName".equals(type)){
+			String name=req.getParameter("username");
+			String user_id=req.getParameter("user_id");
+			String flag="0";//0表示不存在；1：已存在；其他：总经理已存在 position_idのuid
+			User user=userManager.getUserByName(name);
+			if(user!=null){
+				if(user_id==null||user.getId()!=Integer.parseInt(user_id)){
+					flag="1";//1表示已存在
+				}else{
+					User user_top=userManager.getTopUser();
+					if(user_top!=null&&(user_id==null||user_top.getId()!=Integer.parseInt(user_id))){
+						flag=user_top.getPosition_id()+"の"+user_top.getId();//总经理不是自己
+					}
+				}
+			}else{
+				User user_top=userManager.getTopUser();
+				if(user_top!=null&&(user_id==null||user_top.getId()!=Integer.parseInt(user_id))){//总经理已存在
+					flag=user_top.getPosition_id()+"の"+user_top.getId();//总经理不是自己
+				}
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("password".equals(type)){
+			String password=req.getParameter("password");
+			int flag=0;//0表示修改失败
+			if(req.getSession().getAttribute("uid")!=null){
+				int uid=(Integer)req.getSession().getAttribute("uid");
+				User user=userManager.getUserByID(uid);
+				if(user!=null){
+					user.setPassword(new MD5Util().getMd5(password));
+					user.setUpdate_time(System.currentTimeMillis());
+					userManager.updateUser(user);
+					flag=1;
+				}
+				Operation operation=new Operation();
+				operation.setContent("修改密码");
+				operation.setCreate_time(System.currentTimeMillis());
+				operation.setUid((Integer)req.getSession().getAttribute("uid"));
+				operationManager.insertOperation(operation);
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("otherpassword".equals(type)){
+			String password=req.getParameter("password");
+			int user_id=(Integer)req.getSession().getAttribute("user_id");
+			int flag=0;//0表示修改失败
+			User user=userManager.getUserByID(user_id);
+			if(user!=null){
+				user.setPassword(new MD5Util().getMd5(password));
+				user.setUpdate_time(System.currentTimeMillis());
+				userManager.updateUser(user);
+				flag=1;
+			}
+			Operation operation=new Operation();
+			operation.setContent(new StringBuilder().append("修改uid=").append(user_id).append("的密码").toString());
+			operation.setCreate_time(System.currentTimeMillis());
+			operation.setUid((Integer)req.getSession().getAttribute("uid"));
+			operationManager.insertOperation(operation);
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("checkPermissionName".equals(type)){
+			String position_name=req.getParameter("position_name");
+			String position_id=req.getParameter("position_id");
+			Position_user position_user=position_userManager.getPositionByPositionName(position_name);
+			int flag=1;//1表示不存在
+			if(position_id!=null&&position_id!=""){
+				//修改组织
+				if(position_user!=null&&Integer.parseInt(position_id)!=position_user.getId()){
+					flag=2;//2表示已存在该组织名称
+				}else{
+					List<Position_user> list=position_userManager.getPositionOrderByparent();
+					if(list!=null&&list.size()>0){
+						Position_user position_user2=list.get(0);
+						if(position_user2.getParent()==0&&Integer.parseInt(position_id)!=position_user2.getId()){
+							flag=3;
+						}
+					}
+				}
+			}else{
+				//添加组织
+				if(position_user!=null){
+					flag=2;//2表示已存在该组织名称
+				}else{
+					List<Position_user> list=position_userManager.getPositionOrderByparent();
+					if(list!=null&&list.size()>0){
+						Position_user position_user2=list.get(0);
+						if(position_user2.getParent()==0){
+							flag=3;//2表示已存在该组织名称
+						}
+					}
+				}
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("addPosition".equals(type)){
+			String position_name=req.getParameter("position_name");
+			int parent=Integer.parseInt(req.getParameter("parent"));
+			Position_user position_user=new Position_user();
+			position_user.setParent(parent);
+			position_user.setPosition_name(position_name);
+			int position_id=position_userManager.insertPosition(position_user);
+			Permissions permissions=new Permissions();
+			permissions.setPosition_id(position_id);
+			String permissionsIDS=req.getParameter("permissionsIDs");
+			if(permissionsIDS.length()>0){
+				String[] permissionsArray=permissionsIDS.split("の");
+				for (String permissions_id:permissionsArray) {
+					permissions.setPermissions_id(Integer.parseInt(permissions_id));
+					permissionsManager.insertPermissions(permissions);
+				}
+			}
+			Operation operation=new Operation();
+			operation.setContent("添加组织id："+position_id);
+			operation.setUid((Integer)req.getSession().getAttribute("uid"));
+			operation.setCreate_time(System.currentTimeMillis());
+			operationManager.insertOperation(operation);
+			resp.sendRedirect("usermanager/teamtree.jsp");
+		}else if("alterPosition".equals(type)){
+			String position_name=req.getParameter("position_name");
+			int parent=Integer.parseInt(req.getParameter("parent"));
+			int position_id=Integer.parseInt(req.getParameter("position_id"));
+			Position_user position_user=position_userManager.getPositionByID(position_id);
+			position_user.setParent(parent);
+			position_user.setPosition_name(position_name);
+			position_userManager.updatePosition(position_user);
+			permissionsManager.delPermissionsByPositionID(position_id);
+			Permissions permissions=new Permissions();
+			permissions.setPosition_id(position_id);
+			String permissionsIDS=req.getParameter("permissionsIDs");
+			if(permissionsIDS.length()>0){
+				String[] permissionsArray=permissionsIDS.split("の");
+				for (String permissions_id:permissionsArray) {
+					permissions.setPermissions_id(Integer.parseInt(permissions_id));
+					permissionsManager.insertPermissions(permissions);
+				}
+			}
+			Operation operation=new Operation();
+			operation.setContent("修改组织id："+position_id);
+			Object uid_obj=req.getSession().getAttribute("uid");
+			if(uid_obj==null){
+				req.getRequestDispatcher("/login.jsp").forward(req,resp);
+				return;
+			}
+			operation.setUid((Integer)uid_obj);
+			operation.setCreate_time(System.currentTimeMillis());
+			List<User> users=userManager.getUserListByPositionID(position_id);
+			for (int i = 0,len=users.size(); i < len; i++) {
+				alterSession(users.get(i), 0, null);
+			}
+			operationManager.insertOperation(operation);
+			resp.sendRedirect("usermanager/teamtree.jsp");
+		}else if("deletePosition".equals(type)){
+			int position_id=Integer.parseInt(req.getParameter("position_id"));
+			Position_user position_user=position_userManager.getPositionByID(position_id);
+			int flag=1;
+			if(position_user==null){
+				flag=4;
+			}else{
+				if(position_userManager.getChildrenNumByParent(position_user.getId())>0){
+					//存在子节点，无法删除
+					flag=2;
+				}else{
+					List<User> userList=userManager.getUserListByPositionID(position_id);
+					if(userList.size()>0){
+						flag=3;
+					}else{
+						position_userManager.delPositionByID(position_user.getId());
+						permissionsManager.delPermissionsByPositionID(position_user.getId());
+						Operation operation=new Operation();
+						operation.setContent("删除组织id："+position_user.getId());
+						operation.setUid((Integer)req.getSession().getAttribute("uid"));
+						operation.setCreate_time(System.currentTimeMillis());
+						operationManager.insertOperation(operation);
+						List<User> users=userManager.getUserListByPositionID(position_id);
+						for (int i = 0,len=users.size(); i < len; i++) {
+							alterSession(users.get(i), 0, null);
+						}
+					}
+				}
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("receiveEmail".equals(type)){
+			String sendEmail=req.getParameter("sendEmail");
+			User user=userManager.getUserByID((Integer)req.getSession().getAttribute("uid"));
+			int flag=0;//0:失败 1:成功
+			if(user!=null){
+				user.setSendEmail(sendEmail);
+				userManager.updateUser(user);
+				flag=1;
+			}
+			resp.setContentType("application/text;charset=utf-8");
+			resp.setHeader("pragma","no-cache");
+			resp.setHeader("cache-control","no-cache");
+			PrintWriter out = resp.getWriter();
+			out.println(flag);
+			out.flush();
+		}else if("resetpw".equals(type)){
+			HttpSession session=req.getSession();
+			String password=req.getParameter("pw");
+			int uid=Integer.parseInt(req.getParameter("uid"));
+			User user=userManager.getUserByID(uid);
+			if(user!=null){
+				user.setPassword(new MD5Util().getMd5(password));
+				user.setUpdate_time(System.currentTimeMillis());
+				userManager.updateUser(user);
+			}else{
+				resp.sendRedirect("login.jsp");
+				return;
+			}
+			linkmanManager.deleteLinkmanLimit(101, uid, 0, 0);//删除记录
+			Operation operation=new Operation();
+			operation.setContent("重置密码");
+			operation.setCreate_time(System.currentTimeMillis());
+			operation.setUid(uid);
+			operationManager.insertOperation(operation);
+			{
+				session.setAttribute("uid",uid);
+				userOnLine(req.getSession());//必须一起
+			}
+			resp.sendRedirect("home.jsp");
+		}
+	}
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		req.setCharacterEncoding("utf-8");
+		resp.setCharacterEncoding("utf-8");
+		String type=req.getParameter("type");
+		if("goToAlterPosition".equals(type)){
+			try {
+				int position_id=Integer.parseInt(req.getParameter("position_id"));
+				Position_user position_user=position_userManager.getPositionByID(position_id);
+				req.getSession().setAttribute("position_id",position_id);
+				resp.sendRedirect("usermanager/altertree.jsp");
+			} catch (Exception e) {
+				// TODO: handle exception
+				resp.sendRedirect("usermanager/teamtree.jsp");
+			}
+		} else if("gotoalteruser".equals(type)){
+			int user_id=Integer.parseInt(req.getParameter("user_id"));
+			req.getSession().setAttribute("user_id", user_id);
+			resp.sendRedirect("usermanager/update_user.jsp");
+		}  else if("home".equals(type)){
+			resp.sendRedirect("home.jsp");
+		}else if("checkpw".equals(type)){
+			/***
+			 * 忘记密码-通过邮箱链接跳转到密码重置页面
+			 */
+			long t=Long.parseLong(req.getParameter("t"));
+			int id=Integer.parseInt(req.getParameter("i"));
+			Linkman linkman=linkmanManager.getLinkmanByID(id);
+			if(linkman!=null&&linkman.getCreate_time()==t&&(t-System.currentTimeMillis())<(30*60*1000l)){
+				req.setAttribute("uid", linkman.getForeign_id());
+				userOnLine(req.getSession());
+				req.getRequestDispatcher("/setpassword.jsp").forward(req, resp);
+			}else{
+				req.getRequestDispatcher("/login.jsp").forward(req, resp);
+			}
+		}
+	}
+	/***
+	 * 绑定session
+	 * @param session
+	 */
+	public static void userOnLine(HttpSession session){
+		Object obj=session.getAttribute("uid");
+		if(obj==null){
+			return;
+		}
+		int uid=(Integer)obj;
+		try {
+			for(String key:OnLineSessionListener.sessMap.keySet()){
+				if((key.endsWith("_"+uid)&&key.indexOf(session.getId())==-1)||
+						(key.indexOf("_"+uid)==-1&&key.indexOf(session.getId())!=-1)){
+					HttpSession ses=OnLineSessionListener.sessMap.get(key);
+					try {
+						HttpSession se=OnLineSessionListener.sessMap.get(key);
+						if(se!=null){
+							se.invalidate();
+						}
+					} catch (IllegalStateException e) {
+						// if this method is called on an already invalidated session
+						e.printStackTrace();
+						try {
+							OnLineSessionListener.sessMap.remove(key);
+						} catch (Exception e1) {
+							// if this method is called on an already invalidated session
+							e1.printStackTrace();
+						}
+					}
+					break;
+				}
+			}
+			OnLineSessionListener.sessMap.put(session.getId()+"_"+(Integer)session.getAttribute("uid"), session);
+		} catch (IllegalStateException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		alterSession(null,uid,session);
+	}
+	/***
+	 * 删除用户是清空对应session
+	 * @param uid 大于0按uid删除 0按session删除
+	 * @param session
+	 */
+	public static void userOutLine(int uid,HttpSession session){
+		if(uid>0){
+			for(String key:OnLineSessionListener.sessMap.keySet()){
+				if(key.endsWith("_"+Integer.toString(uid))){
+					OnLineSessionListener.sessMap.remove(key);
+					break;
+				}
+			}
+		}else{
+			String sid=session.getId();
+			for(String key:OnLineSessionListener.sessMap.keySet()){
+				if(key.startsWith(sid)){
+					OnLineSessionListener.sessMap.remove(key);
+					break;
+				}
+			}
+		}
+	}
+	/***
+	 * 用户的导航栏查看权限
+	 * @param user
+	 * @param uid
+	 * @param session
+	 */
+	public static void alterSession(User user,int uid,HttpSession session){
+		int position_id=0;
+		if(user!=null){
+			position_id=user.getPosition_id();
+			uid=user.getId();
+		}else{
+			user=userManager.getUserByID(uid);
+			if(user==null){
+				return;
+			}
+			position_id=user.getPosition_id();
+		}
+		if(uid>0){
+			for(String key:OnLineSessionListener.sessMap.keySet()){
+				if(key.endsWith("_"+Integer.toString(uid))){
+					session=OnLineSessionListener.sessMap.get(key);
+					break;
+				}
+			}
+		}
+		if(session!=null){
+			boolean admin="admin".equals(user.getName());
+			boolean isTop=position_id==0;
+			if(!isTop){
+				Position_user position_user=position_userManager.getPositionByID(position_id);
+				if(position_user!=null){
+					isTop=position_user.getParent()==0;
+				}
+			}
+			boolean newflow_task=permissionsManager.checkPermission(position_id, 1);
+			boolean newflow_product=permissionsManager.checkPermission(position_id, 2);
+			boolean newflow_project=permissionsManager.checkPermission(position_id, 3)||permissionsManager.checkPermission(position_id, 107);
+			boolean newflow_out=permissionsManager.checkPermission(position_id, 4);
+			//boolean newflow_manufacture=permissionsManager.checkPermission(position_id, 5);
+			boolean newflow_shipments=permissionsManager.checkPermission(position_id, 6);
+			boolean newflow_travel=position_id!=0&&!isTop&&permissionsManager.checkPermission(position_id, 7);
+			boolean newflow_leave=position_id!=0&&!isTop&&permissionsManager.checkPermission(position_id, 8);
+			boolean newflow_resumption=position_id!=0&&!isTop&&permissionsManager.checkPermission(position_id,39);
+			boolean newflow_track=permissionsManager.checkPermission(position_id, 52);
+			boolean newflow_sale=permissionsManager.checkPermission(position_id, 57);
+			boolean newflow_purchase=permissionsManager.checkPermission(position_id, 68);
+			boolean newflow_after=permissionsManager.checkPermission(position_id, 76);
+			boolean newflow_seal=permissionsManager.checkPermission(position_id, 84);
+			boolean newflow_vechile=permissionsManager.checkPermission(position_id, 80);
+			boolean newflow_work=permissionsManager.checkPermission(position_id, 103);
+			boolean newflow_startupTask=permissionsManager.checkPermission(position_id, 112);
+			boolean newflow_shipping=permissionsManager.checkPermission(position_id, 125);
+			boolean new_device=permissionsManager.checkPermission(position_id, 136);
+			boolean newflow_performance=permissionsManager.checkPermission(position_id, 145);
+			boolean newflow_deliver=permissionsManager.checkPermission(position_id, 147);
+			boolean newflow_oDepartment=permissionsManager.checkPermission(position_id, 164);
+			session.setAttribute("newflow_task", newflow_task);
+			session.setAttribute("newflow_product", newflow_product);
+			session.setAttribute("newflow_project", newflow_project);
+			session.setAttribute("newflow_out", newflow_out);
+			//session.setAttribute("newflow_manufacture", newflow_manufacture);//屏蔽生产单，由统计报表-产品管理替代
+			session.setAttribute("newflow_shipments", newflow_shipments);
+			session.setAttribute("newflow_travel", newflow_travel);
+			session.setAttribute("newflow_leave", newflow_leave);
+			session.setAttribute("newflow_resumption", newflow_resumption);
+			session.setAttribute("newflow_track", newflow_track);
+			session.setAttribute("newflow_sale", newflow_sale);
+			session.setAttribute("newflow_purchase", newflow_purchase);
+			session.setAttribute("newflow_after", newflow_after);
+			session.setAttribute("newflow_seal", newflow_seal);
+			session.setAttribute("newflow_vechile", newflow_vechile);
+			session.setAttribute("newflow_work", newflow_work);
+			session.setAttribute("newflow_startupTask", newflow_startupTask);
+			session.setAttribute("newflow_shipping", newflow_shipping);
+			session.setAttribute("new_device", new_device);
+			session.setAttribute("newflow_performance", newflow_performance);
+			session.setAttribute("newflow_deliver", newflow_deliver);
+			session.setAttribute("newflow_oDepartment", newflow_oDepartment);
+			session.setAttribute("canNewFlow", newflow_startupTask||newflow_task||newflow_product||newflow_project||newflow_out||newflow_shipments
+					||newflow_travel||newflow_leave||newflow_resumption||newflow_track||newflow_sale||newflow_purchase||newflow_purchase
+					||newflow_after||newflow_seal||newflow_vechile||newflow_work||newflow_shipping||new_device||newflow_performance||newflow_deliver||newflow_oDepartment);
+			boolean communicate=admin||permissionsManager.checkPermission(position_id, 41)
+					||permissionsManager.checkPermission(position_id, 42)||permissionsManager.checkPermission(position_id, 43)
+					||permissionsManager.checkPermission(position_id, 44)||permissionsManager.checkPermission(position_id, 45)
+					||permissionsManager.checkPermission(position_id, 46)||permissionsManager.checkPermission(position_id, 47);
+			session.setAttribute("communicate", communicate);
+			boolean template_manager=permissionsManager.checkPermission(position_id, 137);
+			boolean watch_device=admin||permissionsManager.checkPermission(position_id, 33)||template_manager;
+			session.setAttribute("watch_device", watch_device);
+			boolean statistics_device=admin||permissionsManager.checkPermission(position_id, 33)||new_device||template_manager;
+			boolean statistics_travel=admin||permissionsManager.checkPermission(position_id, 37);
+			boolean statistics_leave=admin||permissionsManager.checkPermission(position_id, 36);
+			boolean statistics_track=admin||permissionsManager.checkPermission(position_id, 52)||permissionsManager.checkPermission(position_id, 54);
+			boolean statistics_customer=admin||permissionsManager.checkPermission(position_id, 64)||permissionsManager.checkPermission(position_id, 65);
+			boolean statistics_supplier=admin||permissionsManager.checkPermission(position_id, 70)||permissionsManager.checkPermission(position_id, 71);
+			boolean statistics_material=admin||permissionsManager.checkPermission(position_id, 66)||permissionsManager.checkPermission(position_id, 67);
+			boolean statistics_work=admin||permissionsManager.checkPermission(position_id, 104);
+			boolean statistics_sale=admin||permissionsManager.checkPermission(position_id, 63);
+			boolean statistics_purchase=admin||permissionsManager.checkPermission(position_id, 69);
+			boolean statistics_shipping=admin||permissionsManager.checkPermission(position_id, 126);
+			boolean statistics_vehicle=admin||permissionsManager.checkPermission(position_id, 168);;
+			if(!statistics_work){//下级或自己有新建权限
+				statistics_work=permissionsManager.checkPermissionOrSon(uid, 103);
+				if(!statistics_work){//本人或下级添加过工时
+					statistics_work=workManager.checkNumByLeaderId(uid);
+				}
+			}
+			boolean statistics_performance=admin||permissionsManager.checkPermission(position_id, 146);
+			if(!statistics_performance){//下级或自己有新建权限
+				statistics_performance=permissionsManager.checkPermissionOrSon(uid, 145);
+				if(!statistics_performance){//本人或下级添加过考核
+					statistics_performance=performanceManager.checkNumByLeaderId(uid);
+				}
+			}
+			session.setAttribute("template_manager", template_manager);
+			session.setAttribute("statistics_device", statistics_device);
+			session.setAttribute("statistics_travel", statistics_travel);
+			session.setAttribute("statistics_vehicle", statistics_vehicle);
+			session.setAttribute("statistics_leave", statistics_leave);
+			session.setAttribute("statistics_track", statistics_track);
+			session.setAttribute("statistics_customer", statistics_customer);
+			session.setAttribute("statistics_supplier", statistics_supplier);
+			session.setAttribute("statistics_material", statistics_material);
+			session.setAttribute("statistics_work", statistics_work);
+			session.setAttribute("statistics_sale", statistics_sale);
+			session.setAttribute("statistics_purchase", statistics_purchase);
+			session.setAttribute("statistics_shipping", statistics_shipping);
+			session.setAttribute("statistics_performance", statistics_performance);
+			session.setAttribute("statistics", statistics_device||statistics_travel||statistics_leave||statistics_track||statistics_customer
+					||statistics_supplier||statistics_material||statistics_work||statistics_sale||statistics_purchase||statistics_shipping
+					||statistics_performance||statistics_vehicle);
+			boolean sys_user=admin||permissionsManager.checkPermission(position_id, 34);
+			boolean sys_log=admin||permissionsManager.checkPermission(position_id, 35);
+			session.setAttribute("sys_user", admin||sys_user);
+			session.setAttribute("sys_log", admin||sys_log);
+			session.setAttribute("sys", admin||sys_user||sys_log);
+		}
+	}
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		userManager = (UserManager) WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("userManager");
+		position_userManager=(Position_userManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("position_userManager");
+		operationManager=(OperationManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("operationManager");
+		permissionsManager=(PermissionsManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("permissionsManager");
+		linkmanManager=(LinkmanManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("linkmanManager");
+		workManager=(WorkManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("workManager");
+		performanceManager=(PerformanceManager)WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext())
+				.getBean("performanceManager");
+	}
+}

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="travel">
+	<typeAlias alias="travel"
+		type="com.zzqa.pojo.travel.Travel" />
+
+	<resultMap id="result_basc" class="travel">
+		<result property="id" column="id" />
+		<result property="financial_id" column="financial_id" />
+		<result property="attendance_id" column="attendance_id" />
+		<result property="department" column="department" />
+		<result property="address" column="address" />
+		<result property="reason" column="reason" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+	</resultMap>
+	<resultMap id="result_basc2" class="travel">
+		<result property="id" column="id" />
+		<result property="financial_id" column="financial_id" />
+		<result property="attendance_id" column="attendance_id" />
+		<result property="department" column="department" />
+		<result property="address" column="address" />
+		<result property="reason" column="reason" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="create_name" column="create_name" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertTravel" parameterClass="travel">
+		insert into travel(financial_id,attendance_id,department,address,reason,starttime,endtime,create_id,create_time)
+		values(#financial_id#,#attendance_id#,#department#,#address#,#reason#,#starttime#,#endtime#,#create_id#,#create_time#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateTravel" parameterClass="travel">
+        update travel set 
+        financial_id=#financial_id#,
+        attendance_id=#attendance_id#,
+        department=#department#,
+        address=#address#,
+        reason=#reason#,
+        starttime=#starttime#,
+        endtime=#endtime#
+        where id = #id#
+    </update>
+	
+	<!--查询所有 -->
+	<select id="getAllTravelList" resultMap="result_basc">
+		select * from travel 
+	</select>
+	<!-- 老版本用于关联销假单，新版本不关联 ,operation=8为新版本的无责备案等待确认状态 -->
+	<select id="getTravelListAfterApproval" resultMap="result_basc" parameterClass="int">
+		select * from travel where create_id=#create_id# and 
+		(select operation from flow where type=7 and foreign_id=travel.id order by id desc limit 0,1) in (2,4,5) 
+		and id not in
+		(select foreign_id from resumption where type=1 and
+		 	(select  operation from flow where flow.foreign_id=resumption.id and flow.type=9 order by flow.create_time desc limit 0,1) 
+			not in (4)
+		)
+		order by id desc
+	</select>
+	
+	<!-- 通过id查询 -->
+	<select id="getTravelByID" resultClass="travel" parameterClass="int">
+		select * from travel where id=#id#
+	</select>
+	
+	<!-- 通过id删除 -->
+	<delete id="delTravelByID" parameterClass="int">
+		delete from travel where id=#id#
+	</delete>
+	
+	<!-- 判断该时间内是否有重复的流程 -->
+	<select id="checkTravelInScope" resultClass="int" parameterClass="java.util.Map">
+		select count(id) from travel left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=7 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on travel.id=f.foreign_id where create_id=#create_id# and f.operation !=3 and f.operation !=7 and #endtime#>=starttime and endtime>=#starttime#
+	</select>
+	
+	<!-- 查询未完成的流程 -->
+	<select id="getRunningTravel" resultMap="result_basc">
+		<!-- select * from travel where (select operation from flow where type=7 and foreign_id=travel.id order by id desc limit 0,1 ) not in(3,5,7) -->
+		select * from travel left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=7 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on travel.id=f.foreign_id 
+		where  f.operation!=3 and f.operation!=5 and f.operation!=7
+	</select>
+	
+	<!-- 查询最新添加的id -->
+	<select id="getNewTravelByCreateID" resultClass="travel" parameterClass="int">
+		select * from travel where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	<!-- 查询出差单 -->
+	<select id="getTravelListReport" resultMap="result_basc2" parameterClass="java.util.Map">
+		select a.id,a.financial_id, a.attendance_id,a.department,a.address,a.reason,a.starttime,
+		a.endtime,a.create_id,a.create_time,b.truename as create_name from travel as a
+		left join user as b on a.create_id=b.id
+		left join (select operation,foreign_id,create_time from 
+			(select operation,foreign_id,id,create_time from flow where type=7 order by id desc limit 10000000)as t
+			GROUP BY foreign_id order by id desc) as f 
+		on a.id=f.foreign_id
+		<dynamic prepend="WHERE">
+			<isNotEqual prepend="and" property="starttime" compareValue="-1">
+				 f.operation=4 or f.operation=5
+				 and (endtime>#starttime#
+			</isNotEqual>
+			<isNotEqual prepend="and" property="endtime" compareValue="-1">
+				starttime &lt;= #endtime#)
+			</isNotEqual>
+		</dynamic>
+		<dynamic >
+			order by department,create_name desc
+		</dynamic>
+	</select>
+	<select id="getAllList" resultClass="travel">
+		select travel.*,user.truename as create_name from travel
+		left join user on travel.create_id=user.id
+	</select>
+</sqlMap>

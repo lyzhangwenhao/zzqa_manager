@@ -1,0 +1,334 @@
+<%@page import="com.zzqa.util.DataUtil"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@page
+	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page import="com.zzqa.service.interfaces.user.UserManager"%>
+<%@page import="com.zzqa.service.interfaces.departmentPuchase.DepartPuchaseManager"%>
+<%@page import="com.zzqa.service.interfaces.file_path.File_pathManager"%>
+<%@page import="com.zzqa.pojo.file_path.File_path"%>
+<%@page import="com.zzqa.pojo.user.User"%>
+<%@page import="com.zzqa.util.PurchaseNum"%>
+<%@ page import="com.zzqa.pojo.departmentPuchase.DepartmentPuchase" %>
+<%@ page import="com.zzqa.service.interfaces.flow.FlowManager" %>
+<%@ page import="com.zzqa.pojo.flow.Flow" %>
+<%@ page import="com.zzqa.pojo.departePuchase_content.DepartePuchase_content" %>
+<%request.setCharacterEncoding("UTF-8");
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+	UserManager userManager = (UserManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("userManager");
+	DepartPuchaseManager departPuchaseManager = (DepartPuchaseManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("departPuchaseManager");
+	File_pathManager file_pathManager = (File_pathManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("file_pathManager");
+	FlowManager flowManager = (FlowManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("flowManager");
+	if (session.getAttribute("uid") == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	String curr_time = null;
+	int file_length=0;
+	int uid = (Integer) session.getAttribute("uid");
+	User mUser = userManager.getUserByID(uid);
+	if (mUser == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	int update_did=0;
+	if (session.getAttribute("update_did") != null) {
+		update_did=(Integer)session.getAttribute("update_did");
+	}
+	String purchaseNum = null;
+	List<File_path> flieList = null;
+	List<File_path> flieList_1 = null;
+	if(update_did==0){
+		if (session.getAttribute("curr_time") == null) {
+			request.getRequestDispatcher("/login.jsp").forward(request,
+					response);
+			return;
+		}
+		curr_time = (String)session.getAttribute("curr_time");
+		int count = departPuchaseManager.getCountByTime(curr_time);
+		purchaseNum = PurchaseNum.getD_PurchaseNum(count);
+	}
+
+	pageContext.setAttribute("purchaseNum", purchaseNum);
+
+	DepartmentPuchase departmentPuchase = departPuchaseManager.getLastDepartPuchaseByUid(uid);
+	Flow flow =null;
+	List<DepartePuchase_content> departePuchase_contentList = null;
+	if (departmentPuchase!=null){
+		flow = flowManager.getNewFlowByFID(22, departmentPuchase.getId());
+	}
+	if (flow!=null && flow.getOperation()==11){
+//		departePuchase_contentList = departPuchaseManager.getItemsByDid(departmentPuchase.getId());
+		pageContext.setAttribute("purchaseNum", departmentPuchase.getPurchaseNum());
+		update_did = departmentPuchase.getId();
+	}
+	flieList = file_pathManager.getAllFileByCondition(
+			7, update_did, 7, 0);
+	flieList_1 = file_pathManager.getAllFileByCondition(
+			7, update_did, 8, 0);
+	if(flieList_1!=null && flieList_1.size()>0){
+		file_length=flieList_1.size();
+	}
+%>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<%=basePath%>">
+
+		<title>新建其他部门采购单</title>
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="This is my page">
+		<link rel="stylesheet" type="text/css" href="css/top.css">
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<link rel="stylesheet" type="text/css" href="css/flowmanager.css">
+		<link rel="stylesheet" type="text/css" href="css/create_departmentPuchaseflow.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.filer.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery-filer.css">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css"
+				href="css/jquery.filer-dragdropbox-theme.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+		<script src="js/showdate.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/prettify.js"></script>
+		<script src="js/jquery.filer.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/dialog.js"></script>
+		<script src="js/public.js"></script>
+		<script src="js/custom.js"></script>
+		<script src="js/create_departmentPuchaseflow.js"></script>
+		<script type="text/javascript">
+		var departPuchase_id=<%=update_did%>;//修改的deliver_id
+		var departPuchas_length=<%=file_length%>;//修改的deliver_id
+		var departPurcahse_json;
+		var flow_json;
+		var items_json;
+		var del_ids="";
+		var nowTR;
+		var purchaseTimeUp="<%=curr_time%>"; 
+		var purchaseNumUp="<%=purchaseNum%>";
+		var delFileIDs="";
+		var flag=false;
+		
+		$(function(){
+			if(<%=file_length%>!=0){
+				$("#checkbox_id").attr("checked",true);
+				$(".td4_table").css("display","table");
+				flag=true;
+			}else{
+				$(".td4_table").css("display","none");
+				flag=false;
+			 
+			}
+		});
+		
+		</script>		
+	</head>
+
+	<body>
+	<jsp:include page="/top.jsp" >
+	<jsp:param name="name" value="<%=mUser.getName() %>" />
+	<jsp:param name="level" value="<%=mUser.getLevel() %>" />
+	<jsp:param name="index" value="1" />
+	</jsp:include>
+		<div class="div_center">
+			<table class="table_center">
+				<tr>
+					<jsp:include page="/flowmanager/flowTab.jsp">
+						<jsp:param name="index" value="3" />
+					</jsp:include>
+					<td class="table_center_td2_notfull">
+						<div class="td2_div2">其他部门采购单</div>
+						<table class="td2_table">
+							<colgroup class="table_tr2">
+								<col class="table_tr2_td1">
+								<col class="table_tr2_td2">
+								<col class="table_tr2_td3">
+								<col class="table_tr2_td4">
+							</colgroup>
+							<tr class="table_tr2">
+								<td class="table_tr2_td1">申购人:</td>
+								<td class="table_tr2_td2">
+								<span id="purchaseName"><%=mUser.getTruename()%></span>
+								</td>
+								<td class="table_tr2_td3">申购时间:</td>
+								<td class="table_tr2_td2">
+								<span id="purchaseTime"></span>
+								</td>
+								<td class="table_tr2_td3">申购单号:</td>
+								<td class="table_tr2_td2">
+								<span id="purchaseNum"></span>
+								</td>
+							</tr>
+						</table>
+						&nbsp;
+						&nbsp;
+						<table class="materials_tab_check">
+							<tr class="materials_tab_title_check">
+								<td class="tab_title_check_td1">启用物料明细附件<input type="checkbox" id="checkbox_id" onclick="checkboxOnclick(this,event)"></td>
+							</tr>
+						</table>
+						<div class="materials_title">
+							<div></div>
+							<div>物料明细</div>
+						</div>
+						<table class="materials_tab">
+							<tr class="materials_tab_title">
+								<td class="tab_title_td1">序号</td>
+								<td class="tab_title_td2">庆安物料编码</td>
+								<td class="tab_title_td3">物料名称</td>
+								<td class="tab_title_td4">型号</td>
+								<td class="tab_title_td5">工艺材料/封装</td>
+								<td class="tab_title_td6">数量</td>
+								<td class="tab_title_td7">特殊要求</td>
+								<td class="tab_title_td8">涉及项目</td>
+							</tr>
+							<tr class="materials_tab_add" title="添加明细" onclick="showDialog(0)">
+								<td><div class="td_center"><div class="add_deliver_btn"><div></div></div><div class="add_deliver_word">添加</div></div></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr style="background:#799dd8">
+								<td colspan="8"></td>
+							</tr>
+						</table>
+						<%
+							if (update_did==0) {
+						%>
+						<table class="td4_table" style="display:none">
+							<tr class="table_tr4">
+								<td class="table_tr4_td1">物料明细附件</td>
+								<td class="table_tr4_td2" style="padding:10px;"colspan="3">
+									<div id="section4" class="section-white5">
+										<input type="file" name="file_budget" id="file_input8"
+										multiple="multiple">
+									</div>
+								</td>
+							</tr>
+						</table>
+						<%
+							}else {
+						%>
+						<table class="td4_table">
+							<tr class="table_tr4">
+								<td class="table_tr4_td1" style="display:table-cell; vertical-align:middle">
+									物料明细附件
+								</td>
+								<td class="table_tr4_td2" style="padding:10px;"colspan="3">
+									<%
+										for (File_path file_path : flieList_1) {
+									%>
+									<div id="file_div_<%=file_path.getId()%>">
+									<a class="img_a"
+										href="javascript:void()" onclick="fileDown(<%=file_path.getId()%>)"><%=file_path.getFile_name()%></a>
+									[<a class="img_a" href="javascript:void(0);" onclick="delFile(<%=file_path.getId()%>,'<%=file_path.getFile_name()%>')">删除</a>]
+									</div>
+									<%
+										}
+									%>
+									<div id="section4" class="section-white5">
+										<input type="file" name="file_budget" id="file_input8"
+										multiple="multiple">
+									</div>
+								</td>
+							</tr>
+						</table>
+						<%
+							}
+						%>
+						
+						<%
+							if (update_did==0) {
+						%>
+						<table class="td3_table">
+							<tr class="table_tr3">
+								<td class="table_tr3_td1">其它附件</td>
+								<td class="table_tr3_td2" style="padding:10px;"colspan="3">
+									<div id="section4" class="section-white5">
+										<input type="file" name="file_budget" id="file_input7"
+										multiple="multiple">
+									</div>
+								</td>
+							</tr>
+						</table>
+						<%
+							}else {
+						%>
+						<table class="td3_table">
+							<tr class="table_tr3">
+								<td class="table_tr3_td1" style="display:table-cell; vertical-align:middle">
+									其它附件
+								</td>
+								<td class="table_tr3_td2" style="padding:10px;"colspan="3">
+									<%
+										for (File_path file_path : flieList) {
+									%>
+									<div id="file_div_<%=file_path.getId()%>">
+									<a class="img_a"
+										href="javascript:void()" onclick="fileDown(<%=file_path.getId()%>)"><%=file_path.getFile_name()%></a>
+									[<a class="img_a" href="javascript:void(0);" onclick="delFile(<%=file_path.getId()%>,'<%=file_path.getFile_name()%>')">删除</a>]
+									</div>
+									<%
+										}
+									%>
+									<div id="section4" class="section-white5">
+										<input type="file" name="file_budget" id="file_input7"
+										multiple="multiple">
+									</div>
+								</td>
+							</tr>
+						</table>
+						<%
+							}
+						%>
+						<div class="reason_parent">
+							<div class="materials_title"><div></div><div>修改理由</div></div>
+							<textarea name="reason" class="div_testarea"
+								placeholder="请输入修改理由" required="required" maxlength="500"
+								onkeydown="if(event.keyCode==32) return false"></textarea>
+						</div>
+						<div class="btns_group">
+							<div class="cancel_div">取 消</div>
+							<div class="submit_div">提 交</div>
+							<div class="agree_div" style="background: #43C753">保存</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="dialog_div">
+			<div class="dialog_top"><span class="title_left"><span>：</span><div class="justify">序号<span></span></div></span><span></span></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">物料编码<span></span></div><span class="star">*</span></span><input type="text" maxlength="100" id="material_id" placeholder="请输入庆安物料编码"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">物料名称<span></span></div><span class="star">*</span></span><input type="text" maxlength="100" id="material_name" placeholder="请输入物料名称"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">型号<span></span></div><span class="star">*</span></span><input type="text" maxlength="100" id="model" placeholder="请输入型号"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">工艺材料<span></span></div><span class="star">*</span></span><input type="text" maxlength="510" id="processMaterial" placeholder="请输入工艺材料/封装"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">数量<span></span></div><span class="star">*</span></span><input type="text" maxlength="8" id="num" oninput="checkIntPosition(this)" placeholder="请输入数量"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">特殊要求<span></span></div></span><input type="text" maxlength="500" id="remark" placeholder="请输入特殊要求"></div>
+			<div class="dialog_item"><span class="title_left"><span>：</span><div class="justify">涉及项目<span></span></div><span class="star">*</span></span><input type="text" maxlength="100" id="involveProject" placeholder="请输入涉及项目"></div>
+			<div class="bottom_btn_group"></div>
+		</div>
+		<div class="dialog_bg"></div>
+	</body>
+</html>

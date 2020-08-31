@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="sales_contract">
+	<typeAlias alias="sales_contract"
+		type="com.zzqa.pojo.sales_contract.Sales_contract" />
+
+	<resultMap id="result_basc" class="sales_contract">
+		<result property="id" column="id" />
+		<result property="project_name" column="project_name" />
+		<result property="sign_time" column="sign_time" />
+		<result property="contract_no" column="contract_no" />
+		<result property="saler" column="saler" />
+		<result property="payment_method" column="payment_method" />
+		<result property="payment_value" column="payment_value" />
+		<result property="shipping_method" column="shipping_method" />
+		<result property="expense_burden" column="expense_burden" />
+		<result property="delivery_points" column="delivery_points" />
+		<result property="inspect_time" column="inspect_time" />
+		<result property="service_promise" column="service_promise" />
+		<result property="company_name1" column="company_name1" />
+		<result property="company_address1" column="company_address1" />
+		<result property="postal_code1" column="postal_code1" />
+		<result property="law_person1" column="law_person1" />
+		<result property="entrusted_agent1" column="entrusted_agent1" />
+		<result property="phone1" column="phone1" />
+		<result property="fax1" column="fax1" />
+		<result property="bank1" column="bank1" />
+		<result property="company_account1" column="company_account1" />
+		<result property="tariff_item1" column="tariff_item1" />
+		<result property="customer_id" column="customer_id" />
+		<result property="company_address2" column="company_address2" />
+		<result property="postal_code2" column="postal_code2" />
+		<result property="law_person2" column="law_person1" />
+		<result property="entrusted_agent2" column="entrusted_agent2" />
+		<result property="phone2" column="phone2" />
+		<result property="fax2" column="fax2" />
+		<result property="bank2" column="bank2" />
+		<result property="company_account2" column="company_account2" />
+		<result property="tariff_item2" column="tariff_item2" />
+		<result property="contract_file" column="contract_file" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+	<resultMap id="result_Detail" class="sales_contract" extends="result_basc">
+		<result property="purchaseState" column="operation" />
+        <result property="product_infos" column="id" select="product_info.getProduct_infos"/>
+    </resultMap>
+	<resultMap id="result_basc2" class="sales_contract">
+		<result property="id" column="id" />
+		<result property="project_name" column="project_name" />
+		<result property="sign_time" column="sign_time" />
+		<result property="contract_no" column="contract_no" />
+		<result property="purchaseState" column="operation" />
+		<result property="saler" column="saler" />
+		<result property="payment_method" column="payment_method" />
+		<result property="payment_value" column="payment_value" />
+		<result property="customer_id" column="customer_id" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+	<!-- 添加 -->
+	<insert id="insertSales_contract" parameterClass="sales_contract">
+		insert into sales_contract(project_name,sign_time,contract_no,saler,payment_method,payment_value,shipping_method,expense_burden,delivery_points,inspect_time,service_promise,
+		company_name1,company_address1,postal_code1,law_person1,entrusted_agent1,phone1,fax1,bank1,company_account1,tariff_item1,
+		customer_id,company_address2,postal_code2,law_person2,entrusted_agent2,phone2,fax2,bank2,company_account2,tariff_item2,contract_file,create_id,create_time,update_time)
+		values(#project_name#,#sign_time#,#contract_no#,#saler#,#payment_method#,#payment_value#,#shipping_method#,#expense_burden#,#delivery_points#,#inspect_time#,#service_promise#,
+		#company_name1#,#company_address1#,#postal_code1#,#law_person1#,#entrusted_agent1#,#phone1#,#fax1#,#bank1#,#company_account1#,#tariff_item1#,
+		#customer_id#,#company_address2#,#postal_code2#,#law_person2#,#entrusted_agent2#,#phone2#,#fax2#,#bank2#,#company_account2#,#tariff_item2#,#contract_file#,#create_id#,#create_time#,#update_time#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateSales_contract" parameterClass="sales_contract">
+        update sales_contract set 
+       	 project_name=#project_name#,
+		sign_time=#sign_time#,
+		contract_no=#contract_no#,
+		saler=#saler#,
+		payment_method=#payment_method#,
+		payment_value=#payment_value#,
+		shipping_method=#shipping_method#,
+		expense_burden=#expense_burden#,
+		delivery_points=#delivery_points#,
+		inspect_time=#inspect_time#,
+		service_promise=#service_promise#,
+		company_name1=#company_name1#,
+		company_address1=#company_address1#,
+		postal_code1=#postal_code1#,
+		law_person1=#law_person1#,
+		entrusted_agent1=#entrusted_agent1#,
+		phone1=#phone1#,
+		fax1=#fax1#,
+		bank1=#bank1#,
+		company_account1=#company_account1#,
+		tariff_item1=#tariff_item1#,
+		customer_id=#customer_id#,
+		company_address2=#company_address2#,
+		postal_code2=#postal_code2#,
+		law_person2=#law_person2#,
+		entrusted_agent2=#entrusted_agent2#,
+		phone2=#phone2#,
+		fax2=#fax2#,
+		bank2=#bank2#,
+		company_account2=#company_account2#,
+		tariff_item2=#tariff_item2#,
+		contract_file=#contract_file#,
+		create_id=#create_id#,
+		create_time=#create_time#,
+		update_time=#update_time#
+        where id = #id#
+    </update>
+
+	<!-- 通过id删除 -->
+    <delete id="delSales_contractByID" parameterClass="int" >
+        delete from sales_contract where id=#id#
+    </delete>
+	
+	<select id="getSales_contractByID" parameterClass="int" resultClass="sales_contract">
+		select * from sales_contract where id=#id#
+	</select>
+	
+	<select id="getConmany_name1s" resultClass="java.lang.String">
+		select distinct company_name1 from sales_contract  left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=11 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on sales_contract.id=f.foreign_id where  f.operation=12
+	</select>
+	
+	<select id="getNewSalesIDByCreateID" parameterClass="int" resultClass="int">
+		select id from sales_contract where create_id=#create_id# order by id desc limit 1
+	</select>
+	<!-- 查询可能未完成的销售合同（service层继续过滤） -->
+	<select id="getRunningSales" resultMap="result_basc">
+		select * from sales_contract left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=11 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on sales_contract.id=f.foreign_id 
+		where  f.operation!=12 and  f.operation!=13
+	</select>
+	<!-- 审批正常结束 -->
+	<select id="getFinishedSales" resultMap="result_basc">
+		select * from sales_contract left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=11 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on sales_contract.id=f.foreign_id where  f.operation=12
+	</select>
+	<!-- 检查合同编号是否重复 -->
+	<select id="checkContract_no" resultClass="int" parameterClass="java.util.Map">
+		select id from sales_contract where contract_no=#contract_no# and id!=#sales_id# limit 1
+	</select>
+	<select id="getSalesByTime" resultMap="result_Detail" parameterClass="java.util.Map">
+		select sales_contract.*, f.operation 
+		from sales_contract left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=11 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on sales_contract.id=f.foreign_id 
+		where  f.operation!=13
+		and  (sales_contract.create_time>=#starttime1# and #endtime1# >=sales_contract.create_time)
+		and  (sales_contract.sign_time>=#starttime2# and #endtime2# >=sales_contract.sign_time)
+	</select>
+	<select id="getAllList" resultClass="sales_contract">
+		select sales_contract.*,user.truename as create_name from sales_contract left join user on sales_contract.create_id=user.id
+	</select>
+</sqlMap>

@@ -1,0 +1,868 @@
+/**销假单流程列表样式开始**/
+.td2_div1{
+	width:100%;
+	height:120px;
+}
+.td2_div1_1{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_1 div{
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div11_pass{
+	margin-left:17px;
+	color:#42c652;
+	float:left;
+}
+.td2_div11_nopass{
+	margin-left:17px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div11_nodid{
+	margin-left:17px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div12_pass{
+	margin-left:171px;
+	color:#42c652;
+	float:left;
+}
+.td2_div12_nopass{
+	margin-left:171px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div12_nodid{
+	margin-left:171px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div13_pass{
+	margin-left:171px;
+	color:#42c652;
+	float:left;
+}
+.td2_div13_nopass{
+	margin-left:171px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div13_nodid{
+	margin-left:171px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div14_pass{
+	margin-right:35px;
+	color:#42c652;
+	float:right;
+}
+.td2_div14_nopass{
+	margin-right:35px;
+	color:#FF4401;
+	float:right;
+}
+.td2_div14_nodid{
+	margin-right:35px;
+	color:#5C5C5C;
+	float:right;
+}
+
+
+.td2_div1_2{
+	width:92%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2 div{
+	float:left;
+}
+.td2_div2_img{
+ 	width:1%;
+	min-width:28px;
+}
+.td2_div2_img img{
+	width:28px;
+}
+.td2_div2_agree{
+	float:left;
+	width:28%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree{
+	float:left;
+	width:28%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid{
+	float:left;
+	width:28%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+}
+
+.td2_div1_3{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_3 div{
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div31{
+	float:left;
+	margin-left:17px;
+}
+.td2_div32{
+	float:left;
+	margin-left:169px;
+}
+.td2_div33{
+	float:left;
+	margin-left:170px;
+}
+.td2_div34{
+	float:right;
+	margin-right:17px;
+}
+/***老版本没有审批的样式结束***/
+
+/***新版本有审批的样式开始***/
+/***六个流程*****/
+.td2_div1_1_6{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_6 div:nth-of-type(1){
+	margin-left:33px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(2){
+	margin-left:53px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(3){
+	margin-left:39px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(4){
+	margin-left:25px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(5){
+	margin-left:26px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(6){
+	margin-left:48px;
+	float:left;
+}
+.td2_div1_1_6 div:nth-of-type(7){
+	margin-right:48px;
+	float:right;
+}
+/***五个流程*****/
+.td2_div1_1_5{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_5 div:nth-of-type(1){
+	margin-left:23px;
+	float:left;
+}
+.td2_div1_1_5 div:nth-of-type(2){
+	margin-left:78px;
+	float:left;
+}
+.td2_div1_1_5 div:nth-of-type(3){
+	margin-left:62px;
+	float:left;
+}
+.td2_div1_1_5 div:nth-of-type(4){
+	margin-left:51px;
+	float:left;
+}
+.td2_div1_1_5 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_1_5 div:nth-of-type(6){
+	margin-left:63px;
+	float:left;
+}
+.td2_div1_1_5 div:nth-of-type(7){
+	margin-right:39px;
+	float:right;
+}
+/***五个流程 第三次审批失败*****/
+.td2_div1_1_5no{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_5no div:nth-of-type(1){
+	margin-left:23px;
+	float:left;
+}
+.td2_div1_1_5no div:nth-of-type(2){
+	margin-left:76px;
+	float:left;
+}
+.td2_div1_1_5no div:nth-of-type(3){
+	margin-left:68px;
+	float:left;
+}
+.td2_div1_1_5no div:nth-of-type(4){
+	margin-left:46px;
+	float:left;
+}
+.td2_div1_1_5no div:nth-of-type(5){
+	margin-left:55px;
+	float:left;
+}
+.td2_div1_1_5no div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_1_5no div:nth-of-type(7){
+	margin-right:39px;
+	float:right;
+}
+/***四个流程 一级通过，二级不通过*****/
+.td2_div1_1_no4{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_no4 div:nth-of-type(1){
+	margin-left:22px;
+	float:left;
+}
+.td2_div1_1_no4 div:nth-of-type(2){
+	margin-left:114px;
+	float:left;
+}
+.td2_div1_1_no4 div:nth-of-type(3){
+	margin-left:96px;
+	float:left;
+}
+.td2_div1_1_no4 div:nth-of-type(4){
+	margin-left:82px;
+	float:left;
+}
+.td2_div1_1_no4 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_1_no4 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_1_no4 div:nth-of-type(7){
+	margin-right:39px;
+	float:right;
+}
+/***四个流程 只需一级审核*****/
+.td2_div1_1_4{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_4 div:nth-of-type(1){
+	margin-left:22px;
+	float:left;
+}
+.td2_div1_1_4 div:nth-of-type(2){
+	margin-left:112px;
+	float:left;
+}
+.td2_div1_1_4 div:nth-of-type(3){
+	margin-left:99px;
+	float:left;
+}
+.td2_div1_1_4 div:nth-of-type(4){
+	display:none;
+}
+.td2_div1_1_4 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_1_4 div:nth-of-type(6){
+	margin-left:97px;
+	float:left;
+}
+.td2_div1_1_4 div:nth-of-type(7){
+	margin-right:39px;
+	float:right;
+}
+/***3个流程  一级未通过*****/
+.td2_div1_1_3{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div1_1_3 div:nth-of-type(1){
+	margin-left:22px;
+	float:left;
+}
+.td2_div1_1_3 div:nth-of-type(2){
+	margin-left:168px;
+	float:left;
+}
+.td2_div1_1_3 div:nth-of-type(3){
+	margin-left:155px;
+	float:left;
+}
+.td2_div1_1_3 div:nth-of-type(4){
+	display:none;
+}
+.td2_div1_1_3 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_1_3 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_1_3 div:nth-of-type(7){
+	margin-right:39px;
+	float:right;
+}
+
+
+.td2_div15_pass{
+	margin-right:26px;
+	color:#42c652;
+	float:right;
+}
+.td2_div15_nopass{
+	margin-right:26px;
+	color:#FF4401;
+	float:right;
+}
+.td2_div15_nodid{
+	margin-right:26px;
+	color:#5C5C5C;
+	float:right;
+}
+.td2_div16_nopass{
+	margin-left:245px;
+	color:#FF4401;
+	float:left;
+}
+
+/****六个流程****/
+.td2_div1_2_6{
+	width:88%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2_6 div{
+	float:left;
+	width: 11.86%;
+	height:5px;
+	margin-top:10px;
+}
+.td2_div1_2_6 img:nth-of-type(1){
+	margin-left:2px;	
+}
+.td2_div1_2_6 img{
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+/****五个流程****/
+.td2_div1_2_5{
+	width:90%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2_5 div{
+	float:left;
+	width: 15.2%;
+	height:5px;
+	margin-top:10px;
+}
+.td2_div1_2_5 img{
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+.td2_div1_2_5 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_2_5 img:nth-of-type(7){
+	display:none;
+}
+/****四个流程****/
+.td2_div1_2_4{
+	width:90%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2_4 div{
+	float:left;
+	width:20%;
+	height:5px;
+	margin-top:10px;
+}
+.td2_div1_2_4 img{
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+.td2_div1_2_4 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_2_4 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_2_4 img:nth-of-type(6){
+	display:none;
+}
+.td2_div1_2_4 img:nth-of-type(7){
+	display:none;
+}
+/****三个流程****/
+.td2_div1_2_3{
+	width:90%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2_3 div{
+	float:left;
+	width:28%;
+	height:5px;
+	margin-top:10px;
+}
+.td2_div1_2_3 img{
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+.td2_div1_2_3 div:nth-of-type(4){
+	display:none;
+}
+.td2_div1_2_3 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_2_3 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_2_3 img:nth-of-type(5){
+	display:none;
+}
+.td2_div1_2_3 img:nth-of-type(6){
+	display:none;
+}
+.td2_div1_2_3 img:nth-of-type(7){
+	display:none;
+}
+/* .td2_div2_agree{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+}
+.td2_div2_agree_no{
+	width:45%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree_no{
+	width:44%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid_no{
+	width:44%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+} */
+
+/***6个时间**/
+.td2_div1_3_6{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div1_3_6 div:nth-of-type(1){
+	float:left;
+	margin-left:33px;
+}
+.td2_div1_3_6 div:nth-of-type(2){
+	float:left;
+	margin-left:50px;
+}
+.td2_div1_3_6 div:nth-of-type(3){
+	float:left;
+	margin-left:50px;
+}
+.td2_div1_3_6 div:nth-of-type(4){
+	float:left;
+	margin-left:50px;
+}
+.td2_div1_3_6 div:nth-of-type(5){
+	float:left;
+	margin-left:50px;
+}
+.td2_div1_3_6 div:nth-of-type(6){
+	float:left;
+	margin-left:50px;
+}
+.td2_div1_3_6 div:nth-of-type(7){
+	float:right;
+	margin-right:33px;
+}
+/***5个时间**/
+.td2_div1_3_5{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div1_3_5 div:nth-of-type(1){
+	float:left;
+	margin-left:22px;
+}
+.td2_div1_3_5 div:nth-of-type(2){
+	float:left;
+	margin-left:75px;
+}
+.td2_div1_3_5 div:nth-of-type(3){
+	float:left;
+	margin-left:76px;
+}
+.td2_div1_3_5 div:nth-of-type(4){
+	float:left;
+	margin-left:75px;
+}
+.td2_div1_3_5 div:nth-of-type(5){
+	float:left;
+	margin-left:75px;
+}
+.td2_div1_3_5 div:nth-of-type(6){
+	float:right;
+	margin-right:22px;
+}
+.td2_div1_3_5 div:nth-of-type(7){
+	display:none;
+}
+/***4个时间**/
+.td2_div1_3_4{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div1_3_4 div:nth-of-type(1){
+	float:left;
+	margin-left:22px;
+}
+.td2_div1_3_4 div:nth-of-type(2){
+	float:left;
+	margin-left:110px;
+}
+.td2_div1_3_4 div:nth-of-type(3){
+	float:left;
+	margin-left:108px;
+}
+.td2_div1_3_4 div:nth-of-type(4){
+	float:left;
+	margin-left:108px;
+}
+.td2_div1_3_4 div:nth-of-type(5){
+	float:right;
+	margin-right:22px;
+}
+.td2_div1_3_4 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_3_4 div:nth-of-type(7){
+	display:none;
+}
+/***3个时间**/
+.td2_div1_3_3{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div1_3_3 div:nth-of-type(1){
+	float:left;
+	margin-left:22px;
+}
+.td2_div1_3_3 div:nth-of-type(2){
+	float:left;
+	margin-left:165px;
+}
+.td2_div1_3_3 div:nth-of-type(3){
+	float:left;
+	margin-left:165px;
+}
+.td2_div1_3_3 div:nth-of-type(4){
+	float:right;
+	margin-right:22px;
+}
+.td2_div1_3_3 div:nth-of-type(5){
+	display:none;
+}
+.td2_div1_3_3 div:nth-of-type(6){
+	display:none;
+}
+.td2_div1_3_3 div:nth-of-type(7){
+	display:none;
+}
+
+
+
+
+
+
+
+.td2_div2{
+	text-align:center; 
+	margin-top:20px;
+	width:100%;
+	border:1px solid #878787;
+}
+.td2_div3{
+	text-align:center;
+	margin:20px auto;
+	color:#000;
+	font:20px/30px 'SimSun';
+	font-weight:700;
+}
+.td2_div4{
+	text-align:left;
+	margin:0px auto;
+	color:#000;
+	font:13px/20px 'SimSun';
+	color:red;
+}
+.td2_table0{
+	margin:20px auto;
+	width:93%;
+	color:#000;
+	border-collapse: collapse;
+	border-left:1px solid #878787;
+	border-top:1px solid #878787;
+}
+.td2_table0 td{
+	font:14px/18px 'SimSun';
+	border-right:1px solid #878787;
+	border-bottom:1px solid #878787;
+}
+.table0_tr1{
+	height:40px;
+}
+.table0_tr1_td1{
+	text-align:center;
+	width:1%;
+	min-width:120px;
+	color:#000;
+	margin-left:20px;
+}
+.table0_tr1_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table0_tr1_td2 a{
+	text-decoration: none;
+	outline:none;
+}
+.table0_tr1_td2 a:hover{
+	text-decoration: underline;
+}
+.td2_table4{
+	margin:0px auto 10px auto;
+	width:100%;
+	color:#000;
+	border-collapse: collapse;
+	border-left:1px solid #878787;
+	border-top:1px solid #878787;
+}
+.td2_table4 td{
+	font:14px/30px 'SimSun';
+	border-right:1px solid #878787;
+	border-bottom:1px solid #878787;
+}
+.table4_tr1{
+}
+.table4_tr1_td1{
+	text-align:center;
+	width:1%;
+	min-width:180px;
+	color:#000;
+	margin-left:20px;
+}
+.table4_tr1_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table4_tr1_td2 div{
+	float:left;
+	margin-left:15px;
+}
+.input-hide-time{
+	float: left;
+    width: 0px;
+    display: inline-block;
+    padding: 0px;
+    height: 0px;
+    border: 0px;
+    position: relative;
+    top: 25px;
+    left: 10px;
+    z-index: -100;
+}
+.table4_tr1_td2 img{
+	float:left;
+	margin-left:10px;
+	height:24px;
+	position: relative;
+    top: 2px;
+    cursor:pointer;
+}
+.table4_tr1_td2 select{
+	float:left;
+	margin-left:10px;
+	height:22px;
+	border:1px solid #878787;
+	vertical-align:middle;
+	position: relative;
+    top: 4px;
+}
+.table4_tr2_td1{
+	text-align:center;
+	width:1%;
+	min-width:180px;
+	color:#000;
+	margin-left:20px;
+}
+.table4_tr2_td2{
+	width:99%;
+	text-align:left;
+}
+.table4_tr2_td2 textarea {
+    display: block;
+    width: 100%;
+    height: 80px;
+    padding: -5px;
+    margin: 0;
+    border: 0;
+    outline: none;
+}
+.td2_table3{
+	width:93%;
+	margin:20px auto;
+	border-collapse: collapse;
+}
+.td2_table3_left{
+	width:90%;
+	text-align:left;
+	font:14px/20px 'SimSun';
+	padding:5px 5px 40px 5px;
+	word-break:break-all;
+}
+.td2_table3_right{
+	width:10%;
+	text-align:center;
+	vertical-align:bottom;
+	min-width:127px;
+	padding:20px 0px 10px 0px;
+}
+.td2_div5_bottom_right1{
+	margin-left:20px;
+	font:14px/30px 'SimSun';
+}
+.td2_div5_bottom_right2{
+	margin-left:20px;
+	font:13px/25px 'SimSun';
+}
+.td2_div5_bottom_agree{
+	vertical-align:middle;
+	width:127px;
+	height:69px;
+	background-image:url(../images/agree_bg.png);
+	filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+	-moz-background-size:100% 100%;  
+    background-size:100% 100%;  
+}
+.td2_div5_bottom_disagree{
+	height:69px;
+	width:127px;
+	background-image:url(../images/disagree_bg.png);
+	filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+	-moz-background-size:100% 100%;  
+    background-size:100% 100%;  
+}
+.div_testarea{
+	display:block;
+	height:60px; 
+	width:100%;
+	margin:20px auto;
+	font:13px/20px 'SimSun';
+	border:1px solid #878787;
+}
+/**销假单流程样式结束**/

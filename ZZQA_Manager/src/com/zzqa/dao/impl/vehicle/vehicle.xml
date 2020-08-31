@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="vehicle">
+	<typeAlias alias="vehicle"
+		type="com.zzqa.pojo.vehicle.Vehicle" />
+
+	<resultMap id="result_basc" class="vehicle">
+		<result property="id" column="id" />
+		<result property="approver" column="approver" />
+		<result property="executor" column="executor" />
+		<result property="apply_department" column="apply_department" />
+		<result property="initial_address" column="initial_address" />
+		<result property="address" column="address" />
+		<result property="vehicle_person" column="vehicle_person" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="reason" column="reason" />
+		<result property="remark" column="remark" />
+		<result property="cost_attributable" column="cost_attributable" />
+		<result property="mileage_used" column="mileage_used" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+		<result property="create_id" column="create_id" />
+		<result property="car_info" column="car_info" />
+		<result property="driver" column="driver" />
+		<result property="start_driver_time" column="start_driver_time" />
+		<result property="end_driver_time" column="end_driver_time" />
+		<result property="start_mail" column="start_mail" />
+		<result property="end_mail" column="end_mail" />
+	</resultMap>
+	
+	<resultMap id="result_basc2" class="vehicle">
+		<result property="id" column="id" />
+		<result property="approver" column="approver" />
+		<result property="executor" column="executor" />
+		<result property="apply_department" column="apply_department" />
+		<result property="initial_address" column="initial_address" />
+		<result property="address" column="address" />
+		<result property="vehicle_person" column="vehicle_person" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="reason" column="reason" />
+		<result property="remark" column="remark" />
+		<result property="cost_attributable" column="cost_attributable" />
+		<result property="mileage_used" column="mileage_used" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+		<result property="create_id" column="create_id" />
+		<result property="operation" column="operation" />
+		<result property="car_info" column="car_info" />
+		<result property="driver" column="driver" />
+		<result property="start_driver_time" column="start_driver_time" />
+		<result property="end_driver_time" column="end_driver_time" />
+		<result property="start_mail" column="start_mail" />
+		<result property="end_mail" column="end_mail" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertVehicle" parameterClass="vehicle">
+		insert into vehicle(approver,executor,apply_department,initial_address,address,
+		vehicle_person,starttime,endtime,reason,remark,cost_attributable,mileage_used,
+		create_time,update_time,create_id,car_info,driver,start_driver_time,end_driver_time,start_mail,end_mail)
+		values(#approver#,#executor#,#apply_department#,#initial_address#,#address#,#vehicle_person#,#starttime#,#endtime#,#reason#,#remark#,#cost_attributable#
+			,#mileage_used#,#create_time#,#update_time#,#create_id#,#car_info#,#driver#,#start_driver_time#,#end_driver_time#,#start_mail#,#end_mail#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateVehicle" parameterClass="vehicle">
+        update vehicle set 
+         approver=#approver#,
+        executor=#executor#,
+        apply_department=#apply_department#,
+        address=#address#,
+        vehicle_person=#vehicle_person#,
+        initial_address=#initial_address#,
+        starttime=#starttime#,
+        endtime=#endtime#,
+        reason=#reason#,
+        remark=#remark#,
+        cost_attributable=#cost_attributable#,
+        mileage_used=#mileage_used#,
+        car_info=#car_info#,
+        driver=#driver#,
+        start_driver_time=#start_driver_time#,
+        end_driver_time=#end_driver_time#,
+        start_mail=#start_mail#,
+        end_mail=#end_mail#,
+        update_time=#update_time#
+        where id = #id#
+    </update>
+	
+	<!--查询所有未完成的流程 -->
+	<select id="getRunningVehicle" resultMap="result_basc2">
+		select vehicle.*,f.operation as operation from vehicle left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=15 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on vehicle.id=f.foreign_id 
+		where  f.operation!=5 and f.operation!=6
+	</select>
+	
+	<!-- 通过id查询 -->
+	<select id="getVehicleByID" resultClass="vehicle" parameterClass="int">
+		select * from vehicle where id=#id#
+	</select>
+	
+	<!-- 通过id删除 -->
+	<delete id="delVehicleByID" parameterClass="int">
+		delete from vehicle where id=#id#
+	</delete>
+	
+	<!-- 查询最新添加的id -->
+	<select id="getNewVehicleIDByCreateID" resultClass="int" parameterClass="int">
+		select * from vehicle where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	<select id="getAllList" resultClass="vehicle">
+		select vehicle.*,user.truename as create_name from vehicle
+		left join user on vehicle.create_id=user.id
+		order by vehicle.id desc
+	</select>
+</sqlMap>

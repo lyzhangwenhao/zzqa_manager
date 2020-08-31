@@ -1,0 +1,703 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@page
+	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page import="com.zzqa.service.interfaces.user.UserManager"%>
+<%@page import="com.zzqa.pojo.user.User"%>
+<%@page import="com.zzqa.service.interfaces.position_user.Position_userManager"%>
+<%@page import="com.zzqa.pojo.position_user.Position_user"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.zzqa.util.DataUtil"%>
+<%request.setCharacterEncoding("UTF-8");
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+	UserManager userManager = (UserManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("userManager");
+	Position_userManager position_userManager = (Position_userManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("position_userManager");
+	if (session.getAttribute("uid") == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	int uid = (Integer) session.getAttribute("uid");
+	User mUser = userManager.getUserByID(uid);
+	if (mUser == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	String[] flowTypeArray = DataUtil.getFlowTypeArray();
+	String[] pCategoryArray=DataUtil.getPCategoryArray();
+	String[] productTypeArray=DataUtil.getProductTypeArray();
+	String[] pCaseArray=DataUtil.getPCaseArray();
+	String[] stageArray=DataUtil.getStageArray();
+	String[] pTypeArray=DataUtil.getPTypeArray();
+%>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<%=basePath%>">
+
+		<title>新建任务单流程</title>
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="This is my page">
+		<link rel="stylesheet" type="text/css" href="css/top.css">
+		<link rel="stylesheet" type="text/css" href="css/flowmanager.css">
+		<link rel="stylesheet" type="text/css" href="css/create_taskflow.css">
+		
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.filer.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery-filer.css">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" type="text/css"
+			href="css/jquery.filer-dragdropbox-theme.css">
+		<link rel="stylesheet" type="text/css"
+			href="css/font-awesome.min.css">
+		<script src="js/showdate1.js" type="text/javascript"></script>
+		<script src="js/prettify.js" type="text/javascript"></script>
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/jquery.filer.min.js" type="text/javascript"></script>
+		<script src="js/custom.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+ 		<script  type="text/javascript" src="js/jquery-ui.min.js"></script>
+ 		<script  type="text/javascript" src="js/dialog.js"></script>
+ 		<script type="text/javascript" src="js/public.js"></script>
+ 		
+		<!--[if IE]>
+			<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+		<![endif]-->
+		<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+		<script type="text/javascript">
+		var linkman_user_num=0;
+		var linkman_bill_num=0;
+		var linkman_device_num=0;
+	   	function addFlow(){
+	   		var k=0;
+	   		if(document.flowform.project_name.value.length<1){
+	   			k++;
+	   			document.getElementById("pname_error").innerText="请输入项目名称";
+	   		}else{
+	   			document.getElementById("pname_error").innerText="";
+	   		}
+	   		if(document.flowform.project_id.value.length<1){
+	   			k++;
+	   			document.getElementById("pid_error").innerText="请输入项目编号";
+	   		}else{
+	   			document.getElementById("pid_error").innerText="";
+	   		}
+	   		if(document.flowform.customer.value.length<1){
+	   			k++;
+	   			document.getElementById("customer_error").innerText="请输入用户名称";
+	   		}else{
+	   			document.getElementById("customer_error").innerText="";
+	   		}
+	   		if(document.flowform.address.value.length<1){
+	   			k++;
+	   			document.getElementById("address_error").innerText="请输入地址";
+	   		}else{
+	   			document.getElementById("address_error").innerText="";
+	   		}
+	   		if(strToDate(document.flowform.delivery_time.value)){ 
+  			 	k++;
+	   			document.getElementById("time_error").innerText="请检查时间格式";
+	   		}else{
+	   			document.getElementById("time_error").innerText="";
+	   		}
+	   		if(document.flowform.other.value.replace(/\s+/g,"").length<1){
+  				initdiglog2("提示信息","请在移交项目中心一栏填写风机台数!"); 
+  				k++;
+  			}
+	   		var linkman_user="";
+	   		for(var i=1;i<linkman_user_num+1;i++){
+	   			if(document.getElementById("linkman_user_div"+i)){
+	   			    var linkman= document.getElementById("linkman_user"+i).value;
+	   			    var phone= document.getElementById("phone_user"+i).value;
+					if(linkman.length>0&&testPhoneNumber(phone)){
+						document.getElementById("linkman_user"+i).value=linkman;
+						document.getElementById("phone_user"+i).value=phone;
+						document.getElementById("linkman_user_span"+i).innerText="";
+						if(linkman_user.length==0){
+							linkman_user=linkman+"の"+phone;
+						}else{
+							linkman_user+="い"+linkman+"の"+phone;
+						}
+					}else{
+						k++;
+						if(linkman.length<1&&phone.length<1){
+							document.getElementById("linkman_user_span"+i).innerText="请输入姓名和电话";
+						}else if(linkman.length<1){
+							document.getElementById("linkman_user_span"+i).innerText="请输入姓名";
+						}else if(phone.length<1){
+							document.getElementById("linkman_user_span"+i).innerText="请输入电话";
+						}else if(!testPhoneNumber(phone)){
+							document.getElementById("linkman_user_span"+i).innerText="电话格式不正确";
+						}else{
+							document.getElementById("linkman_user_span"+i).innerText="信息输入有误";
+						}
+					}
+				}
+	   		}
+	   		var linkman= document.getElementById("linkman_user0").value;
+  			var phone= document.getElementById("phone_user0").value;
+			if(linkman.length>0&&testPhoneNumber(phone)){
+				document.getElementById("linkman_user0").value=linkman;
+				document.getElementById("phone_user0").value=phone;
+				document.getElementById("linkman_user_span0").innerText="";
+				if(linkman_user.length==0){
+					linkman_user=linkman+"の"+phone;
+				}else{
+					linkman_user+="い"+linkman+"の"+phone;
+				}
+			}else{
+				k++;
+				if(linkman.length<1&&phone.length<1){
+					document.getElementById("linkman_user_span0").innerText="请输入姓名和电话";
+				}else if(linkman.length<1){
+					document.getElementById("linkman_user_span0").innerText="请输入姓名";
+				}else if(phone.length<1){
+					document.getElementById("linkman_user_span0").innerText="请输入电话";
+				}else if(!testPhoneNumber(phone)){
+					document.getElementById("linkman_user_span0").innerText="电话格式不正确";
+				}else{
+					document.getElementById("linkman_user_span0").innerText="信息输入有误";
+				}
+			}
+	   		
+	   		
+	   		document.flowform.linkman_user.value=linkman_user;
+	   		var linkman_bill="";
+	   		for(var i=1;i<linkman_bill_num+1;i++){
+	   			if(document.getElementById("linkman_bill_div"+i)){
+	   			    var linkman= document.getElementById("linkman_bill"+i).value;
+	   			    var phone= document.getElementById("phone_bill"+i).value;
+					if(linkman!=null&&linkman.length>0&&testPhoneNumber(phone)){
+						document.getElementById("linkman_bill"+i).value=linkman;
+						document.getElementById("phone_bill"+i).value=phone;
+						document.getElementById("linkman_bill_span"+i).innerText="";
+						if(linkman_bill.length==0){
+							linkman_bill=linkman+"の"+phone;
+						}else{
+							linkman_bill+="い"+linkman+"の"+phone;
+						}
+					}else{
+						k++;
+						if(linkman.length<1&&phone.length<1){
+							document.getElementById("linkman_bill_span"+i).innerText="请输入姓名和电话";
+						}else if(linkman.length<1){
+							document.getElementById("linkman_bill_span"+i).innerText="请输入姓名";
+						}else if(phone.length<1){
+							document.getElementById("linkman_bill_span"+i).innerText="请输入电话";
+						}else if(!testPhoneNumber(phone)){
+							document.getElementById("linkman_bill_span"+i).innerText="电话格式不正确";
+						}else{
+							document.getElementById("linkman_bill_span"+i).innerText="信息输入有误";
+						}
+					}
+				}
+	   		}
+	   		var linkman= document.getElementById("linkman_bill0").value;
+  			var phone= document.getElementById("phone_bill0").value;
+			if(linkman!=null&&linkman.length>0&&testPhoneNumber(phone)){
+				document.getElementById("linkman_bill0").value=linkman;
+				document.getElementById("phone_bill0").value=phone;
+				document.getElementById("linkman_bill_span0").innerText="";
+				if(linkman_bill.length==0){
+					linkman_bill=linkman+"の"+phone;
+				}else{
+					linkman_bill+="い"+linkman+"の"+phone;
+				}
+			}else{
+				k++;
+				if(linkman.length<1&&phone.length<1){
+					document.getElementById("linkman_bill_span0").innerText="请输入姓名和电话";
+				}else if(linkman.length<1){
+					document.getElementById("linkman_bill_span0").innerText="请输入姓名";
+				}else if(phone.length<1){
+					document.getElementById("linkman_bill_span0").innerText="请输入电话";
+				}else if(!testPhoneNumber(phone)){
+					document.getElementById("linkman_bill_span0").innerText="电话格式不正确";
+				}else{
+					document.getElementById("linkman_bill_span0").innerText="信息输入有误";
+				}
+			}
+	   		
+	   		
+	   		document.flowform.linkman_bill.value=linkman_bill;
+	   		var linkman_device="";
+	   		for(var i=1;i<linkman_device_num+1;i++){
+	   			if(document.getElementById("linkman_device_div"+i)){
+	   			    var linkman= document.getElementById("linkman_device"+i).value;
+	   			    var phone= document.getElementById("phone_device"+i).value;
+					if(linkman!=null&&linkman.length>0&&testPhoneNumber(phone)){
+						document.getElementById("linkman_device"+i).value=linkman;
+						document.getElementById("phone_device"+i).value=phone;
+						document.getElementById("linkman_device_span"+i).innerText="";
+						if(linkman_device.length==0){
+							linkman_device=linkman+"の"+phone;
+						}else{
+							linkman_device+="い"+linkman+"の"+phone;
+						}
+					}else{
+						k++;
+						if(linkman.length<1&&phone.length<1){
+							document.getElementById("linkman_device_span"+i).innerText="请输入姓名和电话";
+						}else if(linkman.length<1){
+							document.getElementById("linkman_device_span"+i).innerText="请输入姓名";
+						}else if(phone.length<1){
+							document.getElementById("linkman_device_span"+i).innerText="请输入电话";
+						}else if(!testPhoneNumber(phone)){
+							document.getElementById("linkman_device_span"+i).innerText="电话格式不正确";
+						}else{
+							document.getElementById("linkman_device_span"+i).innerText="信息输入有误";
+						}
+					}
+				}
+	   		}
+	   		var linkman= document.getElementById("linkman_device0").value;
+	   		var phone= document.getElementById("phone_device0").value;
+			if(linkman!=null&&linkman.length>0&&testPhoneNumber(phone)){
+				document.getElementById("linkman_device0").value=linkman;
+				document.getElementById("phone_device0").value=phone;
+				document.getElementById("linkman_device_span0").innerText="";
+				if(linkman_device.length==0){
+					linkman_device=linkman+"の"+phone;
+				}else{
+					linkman_device+="い"+linkman+"の"+phone;
+				}
+			}else{
+				k++;
+				if(linkman.length<1&&phone.length<1){
+					document.getElementById("linkman_device_span0").innerText="请输入姓名和电话";
+				}else if(linkman.length<1){
+					document.getElementById("linkman_device_span0").innerText="请输入姓名";
+				}else if(phone.length<1){
+					document.getElementById("linkman_device_span0").innerText="请输入电话";
+				}else if(!testPhoneNumber(phone)){
+					document.getElementById("linkman_device_span0").innerText="电话格式不正确";
+				}else{
+					document.getElementById("linkman_device_span0").innerText="信息输入有误";
+				}
+			}
+	   		document.flowform.linkman_device.value=linkman_device;
+	   		
+    		if(successUploadFileNum1==0) {
+    			k++;
+        		document.getElementById("file_input1_error").innerText="请选择文件";
+    		}else {
+        		document.getElementById("file_input1_error").innerText="";
+    		}
+	   		if(k==0){
+	   			document.flowform.submit();
+	   		}
+	   	}
+	   	function strToDate(str) {
+	   		//判断日期格式符合YYYY-MM-DD标准
+ 			var tempStrs = str.split("-");
+ 			if(tempStrs.length==3&&validate(tempStrs[0])&&tempStrs[0].length==4&&validate(tempStrs[1])&&tempStrs[1]<13&&validate(tempStrs[2])&&tempStrs[2]<32){
+				return false;
+ 			}
+ 			return true;
+ 		}
+ 		function validate(sDouble){
+			//检验是否为正数
+  			var re = /^\d+(?=\.{0,1}\d+$|$)/;
+ 		 	return re.test(sDouble)&&sDouble>0;
+		}
+	   	function addLinkman(n){
+		   	if(n==1){
+		   		var temp="";
+		   		linkman_user_num++;
+		   		for(var i=1;i<linkman_user_num;i++){
+	   				if(document.getElementById("linkman_user_div"+i)){
+	   					var linkman=document.getElementById("linkman_user"+i).value;
+		   				var phone=document.getElementById("phone_user"+i).value;
+	   					temp+='<div class="div_padding" id="linkman_user_div'+i+'">'+
+							'姓名：<input type="text" value="'+linkman+'"id="linkman_user'+i+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+							' 电话：<input type="phone" value="'+phone+'"id="phone_user'+i+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+							' <img src="images/delete.png" title="删除" onclick="delLinkman(1,'+i+');">'+
+							' <span id="linkman_user_span'+i+'"></span></div>';
+	   				}
+	   			}
+		   		var linkman=document.flowform.linkman_user0.value;
+		   		var phone=document.flowform.phone_user0.value;
+		   		var linkman_div = document.getElementById("linkman_user_div");
+		   		temp+='<div class="div_padding" id="linkman_user_div'+linkman_user_num+'">'+
+						'姓名：<input type="text" value="'+linkman+'"id="linkman_user'+linkman_user_num+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+						' 电话：<input type="phone" value="'+phone+'"id="phone_user'+linkman_user_num+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+						' <img src="images/delete.png" title="删除" onclick="delLinkman(1,'+linkman_user_num+');">'+
+						' <span id="linkman_user_span'+linkman_user_num+'"></span></div>';
+		   		linkman_div.innerHTML = temp;
+		   		document.flowform.linkman_user0.value="";
+		   		document.flowform.phone_user0.value="";
+		   	}else if(n==2){
+		   		linkman_bill_num++;
+		   		var temp="";
+		   		for(var i=1;i<linkman_bill_num;i++){
+	   				if(document.getElementById("linkman_bill_div"+i)){
+	   					var linkman=document.getElementById("linkman_bill"+i).value;
+		   				var phone=document.getElementById("phone_bill"+i).value;
+	   					temp+='<div class="div_padding" id="linkman_bill_div'+i+'">'+
+							'姓名：<input type="text" value="'+linkman+'"id="linkman_bill'+i+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+							' 电话：<input type="phone" value="'+phone+'"id="phone_bill'+i+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+							' <img src="images/delete.png" title="删除" onclick="delLinkman(2,'+i+');">'+
+							' <span id="linkman_bill_span'+i+'"></span></div>';
+	   				}
+	   			}
+		   		var linkman=document.flowform.linkman_bill0.value;
+		   		var phone=document.flowform.phone_bill0.value;
+		   		var linkman_div = document.getElementById("linkman_bill_div");
+		   		temp+='<div class="div_padding" id="linkman_bill_div'+linkman_bill_num+'">'+
+						'姓名：<input type="text" value="'+linkman+'"id="linkman_bill'+linkman_bill_num+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+						' 电话：<input type="phone" value="'+phone+'"id="phone_bill'+linkman_bill_num+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+						' <img src="images/delete.png" title="删除" onclick="delLinkman(2,'+linkman_bill_num+');">'+
+						' <span id="linkman_bill_span'+linkman_bill_num+'"></span></div>';
+		   		linkman_div.innerHTML = temp;
+		   		document.flowform.linkman_bill0.value="";
+		   		document.flowform.phone_bill0.value="";
+		   	}else if(n==3){
+		   		var temp="";
+		   		linkman_device_num++;
+		   		for(var i=1;i<linkman_device_num;i++){
+	   				if(document.getElementById("linkman_device_div"+i)){
+	   					var linkman=document.getElementById("linkman_device"+i).value;
+		   				var phone=document.getElementById("phone_device"+i).value;
+	   					temp+='<div class="div_padding" id="linkman_device_div'+i+'">'+
+							'姓名：<input type="text" value="'+linkman+'"id="linkman_device'+i+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+							' 电话：<input type="phone" value="'+phone+'"id="phone_device'+i+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+							' <img src="images/delete.png" title="删除" onclick="delLinkman(3,'+i+');">'+
+							' <span id="linkman_device_span'+i+'"></span></div>';
+	   				}
+	   			}
+		   		var linkman=document.flowform.linkman_device0.value;
+		   		var phone=document.flowform.phone_device0.value;
+		   		var linkman_div = document.getElementById("linkman_device_div");
+		   		temp+='<div class="div_padding" id="linkman_device_div'+linkman_device_num+'">'+
+						'姓名：<input type="text" value="'+linkman+'"id="linkman_device'+linkman_device_num+'" maxlength="10" onkeydown="if(event.keyCode==32) return false">'+
+						' 电话：<input type="phone" value="'+phone+'"id="phone_device'+linkman_device_num+'"  maxlength="20" onkeydown="if(event.keyCode==32) return false">'+
+						' <img src="images/delete.png" title="删除" onclick="delLinkman(3,'+linkman_device_num+');">'+
+						' <span id="linkman_device_span'+linkman_device_num+'"></span></div>';
+		   		linkman_div.innerHTML = temp;
+		   		document.flowform.linkman_device0.value="";
+		   		document.flowform.phone_device0.value="";
+		   	}
+	   	}
+	   	function delLinkman(n,name){
+	   		var id="";
+	   		var t_num = 1;
+	   		var t_name = "";
+	   		var t_phone = "";
+	   		var t_div = "";
+	   		if(n==1){
+	   			id="linkman_user_div"+name;
+	   			t_div = "linkman_user_div";
+	   			t_num = linkman_user_num;
+	   			t_name = "linkman_user";
+	   			t_phone = "phone_user";	   			
+	   		}else if(n==2){
+	   			id="linkman_bill_div"+name;
+	   			t_div = "linkman_bill_div";
+	   			t_num = linkman_bill_num;
+	   			t_name = "linkman_bill";
+	   			t_phone = "phone_bill";
+	   		}else if(n==3){
+	   			id="linkman_device_div"+name;
+	   			t_div = "linkman_device_div";
+	   			t_num = linkman_device_num;
+	   			t_name = "linkman_device";
+	   			t_phone = "phone_device";
+	   		}
+	   		var obj = document.getElementById(id);
+			if (obj != null) {
+				if(name == 0){
+					for(var i=t_num;i>0;i--){
+						if(document.getElementById(t_div+i)){
+							document.getElementById(t_name+0).value = document.getElementById(t_name+i).value;
+							document.getElementById(t_phone+0).value = document.getElementById(t_phone+i).value;
+							var lastId = t_div+i;
+							var lastObj = document.getElementById(lastId);
+							lastObj.parentNode.removeChild(lastObj);
+							break;
+						}
+					}
+					if(i == 0){
+						initdiglog2("提示信息","至少保留一行！");
+						return;
+					}
+				}
+				else{
+					obj.parentNode.removeChild(obj);
+				}
+			}
+	   	}
+		function setTime(time,obj){
+			var nowdate="<%=DataUtil.getTadayStr()%>";
+	    	//修改time的时间
+	    	if(compareTime1(nowdate,time)){
+	    		obj.value=time;
+	    	}else{
+	    		initdiglogtwo2("提示信息","发货时间早于当前时间，请确认输入无误？");
+		   		$( "#confirm2" ).click(function() {
+					$( "#twobtndialog" ).dialog( "close" );
+					obj.value=time;
+				});
+	    	}
+	    }
+	</script>
+	</head>
+
+	<body>
+		<jsp:include page="/top.jsp" >
+	<jsp:param name="name" value="<%=mUser.getName() %>" />
+	<jsp:param name="level" value="<%=mUser.getLevel() %>" />
+	<jsp:param name="index" value="1" />
+	</jsp:include>
+		<div class="div_center">
+			<table class="table_center">
+				<tr>
+					<jsp:include page="/flowmanager/flowTab.jsp">
+						<jsp:param name="index" value="3" />
+					</jsp:include>
+					<td class="table_center_td2">
+						<form action="FlowManagerServlet?type=addtaskflow&uid=<%=mUser.getId() %>&file_time=<%=System.currentTimeMillis() %>" method="post"
+							name="flowform" enctype="multipart/form-data">
+							<div class="td2_div">
+								<div class="td2_div1">
+									项目任务单
+								</div>
+								<table class="td2_table1">
+									<tr class="table1_tr1">
+										<td class="table1_tr1_td1">
+											<span class="star">*</span>项目类型
+										</td>
+										<td class="table1_tr1_td2">
+											<select name="pCategory">
+												<%for(int i=0;i<pCategoryArray.length;i++){ %>
+													<option value="<%=i%>" ><%=pCategoryArray[i]%></option>
+												<%} %>
+											</select>
+										</td>
+									</tr>
+									<tr class="table1_tr1">
+										<td class="table1_tr1_td1">
+											<span class="star">*</span>产品类型
+										</td>
+										<td class="table1_tr1_td2">
+											<select name="productType">
+												<%for(int i=1;i<productTypeArray.length;i++){ %>
+													<option value="<%=i%>" ><%=productTypeArray[i]%></option>
+												<%} %>
+											</select>
+										</td>
+									</tr>
+									<tr class="table1_tr1">
+										<td class="table1_tr1_td1">
+											<span class="star">*</span>项目名称
+										</td>
+										<td class="table1_tr1_td2">
+											<input type="text" name="project_name" maxlength="100" required="required">
+											<span id="pname_error"></span>
+										</td>
+									</tr>
+									<tr class="table1_tr2">
+										<td class="table1_tr2_td1">
+											<span class="star">*</span>项目编号
+										</td>
+										<td class="table1_tr2_td2">
+											<input type="text" name="project_id" maxlength="50" oninput="checkNum(this)">
+											<span id="pid_error"></span>
+										</td>
+									</tr>
+									
+									<tr class="table1_tr2">
+										<td class="table1_tr2_td1">
+											<span class="star"></span>项目质保期
+										</td>
+										<td class="table1_tr2_td2">
+											<input type="text" name="project_life" maxlength="50">
+										</td>
+									</tr>
+									<tr class="table1_tr2">
+										<td class="table1_tr2_td1">
+											<span class="star"></span>项目诊断报告周期
+										</td>
+										<td class="table1_tr2_td2">
+											<input type="text" name="project_report_peried" maxlength="50">
+										</td>
+									</tr>
+									<tr class="table1_tr3">
+										<td class="table1_tr3_td1">
+											<span class="star">*</span>项目情况
+										</td>
+										<td class="table1_tr3_td2">
+											<%for(int i=0;i<pCaseArray.length;i++){ %>
+												<label><input name="project_case" type="radio" value="<%=i %>" <%=i==0?"checked":"" %>/><%=pCaseArray[i] %></label>
+											<%} %>
+										</td>
+									</tr>
+									<tr class="table1_tr4">
+										<td class="table1_tr4_td1">
+											<span class="star">*</span>销售阶段
+										</td>
+										<td class="table1_tr4_td2">
+											<%for(int i=1;i<stageArray.length;i++){ %>
+												<label><input name="stage" type="radio" value="<%=i %>" <%=i==1?"checked":"" %>/><%=stageArray[i] %></label>
+											<%} %>
+										</td>
+									</tr>
+									<tr class="table1_tr5">
+										<td class="table1_tr5_td1">
+											<span class="star">*</span>工程类型
+										</td>
+										<td class="table1_tr5_td2">
+										<%for(int i=0;i<pTypeArray.length;i++){ %>
+											<label><input name="project_type" type="radio" value="<%=i %>" <%=i==0?"checked":"" %>/><%=pTypeArray[i] %></label>
+										<%} %>
+										</td>
+									</tr>
+								</table>
+								<table class="td2_table2">
+									<tr class="table2_tr1">
+										<td class="table2_tr1_td1">
+											<span class="star">*</span>用户名称
+										</td>
+										<td class="table2_tr1_td2">
+											<input type="text" name="customer" maxlength="100">
+											<span id="customer_error"></span>
+										</td>
+									</tr>
+									<tr class="table2_tr2">
+										<td class="table2_tr2_td1">
+											<span class="star">*</span>用户联系人
+										</td>
+										<input type="hidden" name="linkman_user">
+										<td class="table2_tr2_td2">
+											<div id="linkman_user_div"></div>
+											<div id="linkman_user_div0" class="div_padding">
+												姓名：<input type="text" id="linkman_user0" maxlength="10" onkeydown="if(event.keyCode==32) return false">
+												电话：<input type="phone" id="phone_user0" maxlength="20" onkeydown="if(event.keyCode==32) return false">
+												<img src="images/delete.png" title="删除" onclick="delLinkman(1,0);">
+												<img src="images/add_linkman.png" style="margin-left: 10px" title="添加" onclick="addLinkman(1);">
+												<span id="linkman_user_span0" style="margin-left: 10px"></span>
+											</div>
+										</td>
+									</tr>
+									<tr class="table2_tr3">
+										<td class="table2_tr3_td1">
+											<span class="star">*</span>发票接收人
+										</td>
+										<input type="hidden" name="linkman_bill">
+										<td class="table2_tr3_td2">
+											<div id="linkman_bill_div"></div>
+											<div id="linkman_bill_div0" class="div_padding">
+												姓名：<input type="text" id="linkman_bill0" maxlength="10" onkeydown="if(event.keyCode==32) return false">
+												电话：<input type="phone" id="phone_bill0" maxlength="20" onkeydown="if(event.keyCode==32) return false">
+												<img src="images/delete.png" title="删除" onclick="delLinkman(2,0);">
+												<img src="images/add_linkman.png" style="margin-left: 10px" title="添加" onclick="addLinkman(2);">
+												<span id="linkman_bill_span0" style="margin-left: 10px"></span>
+											</div>
+										</td>
+									</tr>
+									<tr class="table2_tr4">
+										<td class="table2_tr4_td1">
+											<span class="star">*</span>设备接收人
+										</td>
+										<input type="hidden" name="linkman_device">
+										<td class="table2_tr4_td2" id="linkman_device_td">
+											<div id="linkman_device_div"></div>
+											<div id="linkman_device_div0" class="div_padding">
+												姓名：<input type="text" id="linkman_device0" maxlength="10" onkeydown="if(event.keyCode==32) return false">
+												电话：<input type="phone" id="phone_device0" maxlength="20" onkeydown="if(event.keyCode==32) return false">
+												<img src="images/delete.png" title="删除" onclick="delLinkman(3,0);">
+												<img src="images/add_linkman.png" style="margin-left: 10px" title="添加" onclick="addLinkman(3);">
+												<span id="linkman_device_span0" style="margin-left: 10px"></span>
+											</div>
+										</td>
+									</tr>
+									<tr class="table2_tr5">
+										<td class="table2_tr5_td1">
+											<span class="star">*</span>要求发货时间
+										</td>
+										<td class="table2_tr5_td2">
+											<input type="text" id="time" name="delivery_time" value="<%=DataUtil.getTadayStr() %>" onClick="return Calendar('time');" readonly="readonly"/>
+											<span id="time_error"></span>
+										</td>
+									</tr>
+									<tr class="table2_tr1">
+										<td class="table2_tr1_td1">
+											<span></span>发货地址
+										</td>
+										<td class="table2_tr1_td2">
+											<input type="text" name="address" maxlength="200">
+											<span id="address_error"></span>
+										</td>
+									</tr>
+									<tr class="table2_tr6">
+										<td class="table2_tr6_td1">
+											<span class="star">*</span>项目说明及<br/>特殊要求
+										</td>
+										<td class="table2_tr6_td2">
+											<span>1.是否要求施工前现场开箱验货&nbsp</span>
+											<label><input name="inspection" type="radio" value="0" checked/>是</label>
+											<label><input name="inspection" type="radio" value="1" />否</label><br/>
+											<span>2.发货前是否要求需和销售经理确认&nbsp</span>
+											<label><input name="verify" type="radio" value="0" checked/>是</label>
+											<label><input name="verify" type="radio" value="1" />否</label><br/>
+											<div><%=DataUtil.getTask_Desc()%></div>
+											<textarea name="description" placeholder="此处输入项目说明和特殊要求(可选)" 
+											onkeydown="limitLength(this,1800);" onkeyup="limitLength(this,1800);"
+											maxlength="1800"></textarea>
+										</td>
+									</tr>
+									<tr class="table2_tr7">
+										<td class="table2_tr7_td1">
+											<span class="star">*</span>供货清单
+										</td>
+										<td class="table2_tr7_td2">
+											<div id="section4" class="section-white">
+												<input type="file" name="file_list" id="file_input1"
+												multiple="multiple">
+											</div>
+											<div class="section-white2">
+												<span id="file_input1_error"></span>
+											</div>
+										</td>
+									</tr>
+									<tr class="table2_tr8">
+										<td class="table2_tr8_td1">
+											<span class="star">*</span>移交项目中心<br/>技术附件
+										</td>
+										<td class="table2_tr8_td2">
+											<div id="section5" class="section-white">
+												<input type="file" name="file_technical" id="file_input2"
+												multiple="multiple">
+												
+											</div>
+											<div class="section-white2">
+												<span id="file_input2_error"></span>
+											</div>
+											<textarea name="other" placeholder="其它：如风机台数" maxlength="500"
+											onkeydown="limitLength(this,500);" onkeyup="limitLength(this,500);"></textarea>
+										</td>
+									</tr>
+									
+								</table>
+								<div class="div_btn"><img src="images/submit_flow.png" onclick="addFlow();"></div>
+							</div>
+						</form>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+	</body>
+</html>

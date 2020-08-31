@@ -1,0 +1,490 @@
+/****用户管理样式开始***/
+.div_center{
+	margin:20px auto;
+	width:1092px;
+	overflow:hidden;
+}
+.div_center_left{
+	float:left;
+	background:#fff;
+}
+.div_center_left ul{
+	border-right:1px solid #DDE0E2;
+	border-top:1px solid #DDE0E2;
+}
+.divlang_press{
+	height:55px;
+	width:198px;
+ 	background:#f5f5f5;
+ 	border-left:2px solid #40C552;
+	border-bottom:1px solid #DDE0E2;
+	cursor:pointer;
+}
+.divlang_normal{
+	height:55px;
+	width:199px;
+	background:#fff;
+	border-left:1px solid #DDE0E2;
+	border-bottom:1px solid #DDE0E2;
+	cursor:pointer;
+}
+.div_word{
+	float:left;
+	margin-left:15px;
+	font:15px/55px 'microsoft yahei';
+	width:70px;
+	text-align:center;
+}
+.divlang_press .div_word{
+	font-weight:bold;
+}
+.div_nav{
+	float:left;
+	font:18px/55px 'microsoft yahei';
+	margin-left:35px;
+}
+.divlang_press .div_nav{
+	font-weight:bold;
+}
+li:hover .divlang_normal{
+	color:#41C651;
+}
+.divlang_press img{
+	float:left;
+	width:19px;
+	border:0px;
+	margin-left:30px;
+	vertical-align:middle;
+}
+.divlang_normal img{
+	float:left;
+	width:19px;
+	margin-left:31px;
+	vertical-align:middle;
+}
+.div_center_right{
+	float:right;
+	width:872px;
+	background:#fff;
+	border:1px solid #E5E6E8;
+	padding:30px 0px;
+}
+
+
+.td2_div1{
+	text-align:right;
+	width:95%;
+	zoom:1;
+	margin:0px auto 10px auto;
+}
+.search-user-kw{
+	float:right;
+	height:26px;
+	width:200px;
+	background:#fff;
+	border:1px solid #c9c9c9;
+	padding:0px 10px;
+}
+.td2_div1 img{
+	float:right;
+	height:26px;
+	border-right:1px solid #c9c9c9;
+	border-top:1px solid #c9c9c9;
+	border-bottom:1px solid #c9c9c9;
+	cursor:pointer;
+}
+
+.position_detail{
+	color:#0000EE;
+	cursor:pointer;
+}
+.tab_img_left{
+	height:20px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.tab_img_right{
+	height:20px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.td2_div2{
+	width:80%;;
+	margin:10px auto;
+}
+.tab_createuser{
+	margin:0px auto;
+	border-collapse: collapse;
+	width:100%;
+}
+.tab_createuser td{
+	vertical-align:top;
+	padding:10px;
+}
+.tab_createuser_td1{
+	width:35%;
+	text-align:right;
+	color:#000;
+	font:15px/30px 'microsoft yahei';
+}
+.tab_createuser_td2{
+	width:65%;
+	text-align:left;
+	color:#000;
+	font:14px/30px 'microsoft yahei';
+}
+.tab_createuser_td2>input[type="text"]{
+	padding:0px 10px;
+	height:25px;
+	width:200px;
+}
+.tab_createuser_td2 input[type="password"]{
+	padding:0px 10px;
+	height:25px;
+	width:200px;
+}
+.tab_createuser_td2 input[type="email"]{
+	padding:0px 10px;
+	height:25px;
+	width:200px;
+}
+.tab_createuser_td2 select{
+	padding:0px 10px;
+	height:27px;
+	width:224px;
+}
+.tab_createuser_td2>span{
+	color:#f00;
+	margin-left:80px;
+}
+.getPassword_div{
+	color:#fff;
+	background:#2BA2FF;
+	padding:0 10px;
+	border:1px solid #c9c9c9;
+	text-align:center;
+	border-radius:3px;
+	display:inline-block;
+	margin:0 5px;
+	line-height:22px;
+	font-size:13px;
+	cursor:pointer;
+}
+.getPassword_div:hover{
+	background:#279ce8;
+}
+.getPassword_div2{
+	display:inline-block;
+	margin:0 5px 0 0;
+	line-height:29px;
+}
+.chexbox_div{
+	float:left;
+    background: #fff;
+    font:14px/30px 'microsoft yahei';
+}
+.chexbox_div label{
+	display:inline-block;
+	width:90px;
+}
+.chexbox_div input[type="radio"]{
+	position: relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+}
+.chexbox_div div{
+	height:30px;
+}
+.chexbox_div input[type="checkbox"]{
+	position:relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+}
+.error_div {
+	float:left;
+	color:#f00;
+	margin-left:33px;
+    background: #fff;
+}
+
+
+.tab_user{
+	margin:30px auto;
+	border-collapse: collapse;
+}
+.tab_user td{
+	vertical-align:top;
+	padding:10px;
+	font:15px/30px 'microsoft yahei';
+}
+.tab_user_td1{
+	text-align:right;
+	color:#000;
+}
+.tab_user_td2{
+	text-align:left;
+	color:#000;
+}
+.radio{
+	position:relative;
+	top:2px;
+}
+.changepass{
+	color:#0000EE;
+	cursor:pointer;
+}
+.tab_user_td2 a{
+	text-decoration: none;
+	outline:none;
+}
+.tab_user_td2 span{
+	color:#f00;
+	margin-left:90px;
+}
+.chexbox_div1{
+	float:left;
+}
+.chexbox_div1 label{
+	display:inline-block;
+	width:75px;
+}
+.chexbox_div1 div{
+	height:30px;
+}
+
+.fieldset{
+	width:70%;
+	margin:30px auto;
+	border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border:1px solid #959595;
+}
+.fieldset legend{
+	font: 16px 'microsoft yahei';
+	margin-left:-10px;
+	padding:0px 10px;
+	color:#000;
+	font-weight: bold;
+}
+#tooltip{
+	border:1px solid #799DD8;
+	background:#ffffff;
+	position:absolute;
+	padding:8px;
+	color:#333;
+	min-width:50px;
+	max-width:350px;
+	display:none;
+	text-align:center;
+}
+/****用户管理样式结束***/
+/*****组织架构样式开始******/
+.td2_div3{
+	width:95%;
+	margin:0px auto;
+}
+/*******组织架构样式结束******/
+/*****添加组织样式开始******/
+.td2_div4{
+	width:95%;
+	margin:0px auto;
+}
+/******添加组织样式结束******/
+.td2_div2_parent{
+	clear:both;
+	position:relative;
+	z-index:1;
+}
+.user_div2{
+	width: 320px;
+    border: 1px solid #c9c9c9;
+    text-align: left;
+    padding: 20px 30px 10px 30px;
+    /* overflow: hidden; */
+    background: #fff;
+    zoom: 1;
+    font: 13px 'SimSun';
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    right: 0px;
+    display: none;
+}
+.td2_div2_btns{
+	text-align:left;
+	zoom:1;
+	overflow: hidden;
+}
+.chk_1 { 
+	float:left;
+    display: none; 
+} 
+.chk_1 + label {
+	float:left;
+	margin-left:70px;
+    background-color: #FFF;
+    border: 1px solid #C1CACA;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    top:1px;
+    cursor:pointer;
+}
+.chk_1:checked + label {
+	padding: 0px;
+	display: block; 
+    background-color: #ECF2F7;
+    border: 1px solid #92A1AC; 
+    color: #243441;
+}
+.chk_1:checked + label:after {
+    position: relative;
+    content: '\2714';
+    bottom: 2px;
+    left: 3px;
+    color: #758794;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    vertical-align: text-top;
+}
+.td2_div2_btns>div:nth-of-type(1){
+	float:left;
+	font:15px/20px 'microsoft yahei';
+	text-align:center;
+	margin:0 10px 0 8px;
+	cursor:pointer;
+}
+.td2_div2_btns>div:nth-of-type(2){
+	float:left;
+	background:#FAA553;
+	font:15px/20px 'microsoft yahei';
+	width:50px;
+	border-radius: 3px;
+	color:#fff;
+	text-align:center;
+	margin:0 10px;
+	cursor:pointer;
+}
+.td2_div2_btns>div:nth-of-type(3){
+	float:left;
+	background:#32B16C;
+	font:15px/20px 'microsoft yahei';
+	width:50px;
+	border-radius: 3px;
+	color:#fff;
+	text-align:center;
+	margin:0 10px;
+	cursor:pointer;
+}
+.td2_div2_usergroup{
+	margin-top:10px;
+	text-align:left;
+	zoom:1;
+	overflow: hidden;
+}
+.td2_div2_usergroup>div{
+	margin:10px auto;
+	zoom:1;
+	overflow:hidden;
+}
+.chk_2 {
+    display: none; 
+} 
+.chk_2 + label {
+	float:left;
+    background-color: #FFF;
+    border: 1px solid #C1CACA;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    top:2px;
+    cursor:pointer;
+}
+.chk_2:checked + label {
+	padding: 0px;
+	display: block; 
+    background-color: #ECF2F7;
+    border: 1px solid #92A1AC; 
+    color: #243441;
+}
+.chk_2:checked + label:after {
+    position: relative;
+    content: '\2714';
+    bottom: 3px;
+    left: 2px;
+    color: #758794;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    vertical-align: text-top;
+}
+.td2_div2_usergroup>div>div{
+	float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    font: 15px/20px 'microsoft yahei';
+    width: 75px;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+.td2_div2_usergroup>div>div:nth-of-type(4){
+	margin-right:0px;
+}
+.sendMail_div{
+	width:325px;
+	font: 13px/30px 'microsoft yahei';
+}
+.sendMail_div label{
+	float:left;
+    width: 100px;
+    cursor:pointer;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.sendMail_div input{
+	position: relative;
+    top: 2px;
+    padding: 0px;
+    margin: 0px;
+}
+.searchable-select{
+	margin-right:22px;
+	bottom:3px;
+}
+.searchable-select-holder {
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.searchable-select-item {
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.searchable-select-dropdown{
+	z-index:1;
+}
+.searchable-select-items {
+    max-height: 200px;
+    overflow-y: scroll;
+    position: relative;
+}

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="flow">
+    <typeAlias alias="flow"
+               type="com.zzqa.pojo.flow.Flow"/>
+
+    <resultMap id="result_basc" class="flow">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="foreign_id" column="foreign_id"/>
+        <result property="operation" column="operation"/>
+        <result property="uid" column="uid"/>
+        <result property="reason" column="reason"/>
+        <result property="create_time" column="create_time"/>
+    </resultMap>
+    <resultMap id="result_basc2" class="flow">
+        <result property="foreign_id" column="foreign_id"/>
+        <result property="operation" column="operation"/>
+        <result property="create_time" column="create_time"/>
+        <result property="type" column="type"/>
+    </resultMap>
+	<resultMap id="result_basc3" class="flow">
+        <result property="foreign_id" column="foreign_id"/>
+        <result property="type" column="type"/>
+    </resultMap>
+    
+    <!-- 添加一条流程 -->
+    <insert id="insertFlow" parameterClass="flow">
+        insert into flow(type,foreign_id,operation,uid,reason,create_time) 
+        values(#type#,#foreign_id#,#operation#,#uid#,#reason#,#create_time#)
+        <selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+    </insert>
+    
+    <!-- 查询流程-->
+    <select id="getFlowListByCondition" parameterClass="flow" resultClass="flow">
+    	select flow.*,user.truename as username from flow 
+    	left join user on flow.uid=user.id
+    	where flow.type=#type# and flow.foreign_id=#foreign_id# order by flow.id asc
+    </select>
+    
+    <!-- 删除流程-->
+    <delete id="deleteByCondition" parameterClass="flow" >
+    	delete from flow where type=#type# and foreign_id=#foreign_id#
+    </delete>
+    
+    <!-- 删除流程-->
+    <delete id="deleteByPerformanceOP" parameterClass="flow" >
+    	delete from flow where type=19 and foreign_id=#foreign_id# and operation=6
+    </delete>
+    
+    <!-- 移除最近的特定步骤    注：不能先select出同一表中的某些值，再update这个表(在同一语句中更新查询出的结果)-->
+    <delete id="deleteRecentOperat" parameterClass="flow" >
+    	delete from flow where id in(
+    		select a.id from(
+    			select max(id) id from flow  where type=#type# and foreign_id=#foreign_id# and operation =#operation#
+    		) a
+		)
+    </delete>
+    
+    <!-- 查询意见和建议-->
+    <select id="getReasonList" parameterClass="flow" resultMap="result_basc">
+    	select * from flow where type=#type# and foreign_id=#foreign_id#
+    	 <isEqual property="operation" compareValue="0">
+    	 	 and  reason!="" 
+    	 </isEqual>
+    	 <isEqual property="operation" compareValue="1">
+    	 	 and  (reason!="" or  operation=-1)
+    	 </isEqual>
+    	order by id
+    </select>
+    
+    <!-- 查询最新流程-->
+    <select id="getNewFlowByFID" parameterClass="flow" resultClass="flow">
+    	select * from flow where type=#type# and foreign_id=#foreign_id# and operation !=0 order by id desc limit 0,1
+    </select>
+    
+    <!-- 查询流程时间-->
+    <select id="getFlowTimeByFlow" parameterClass="flow" resultClass="long">
+    	select create_time from flow where type=#type# and foreign_id=#foreign_id# and operation=#operation# order by id desc limit 0,1
+    </select>
+    
+    <!-- 查询所有最新的流程的foreign_id-->
+    <select id="getFIDsByType" parameterClass="int" resultMap="result_basc2">
+    	select foreign_id,operation,create_time,type from (select foreign_id,operation,create_time,type,id from flow where type=#type# and operation !=0 ORDER BY id DESC limit 10000000) as t
+    	GROUP BY foreign_id ORDER BY id DESC
+    </select>
+    
+    <!-- 查询所有最新的流程-->
+    <select id="getAllFlowList" resultMap="result_basc2">
+    	select foreign_id,type,operation,create_time ,id from (select * from flow where operation!=0 order by id desc limit 10000000) as x 
+    	group by foreign_id,type order by id desc
+    </select>
+    
+    <!-- 查询当前id能看到的所有最新的流程-->
+    <select id="getParentAllFlowList" parameterClass="flow" resultMap="result_basc2">
+    	select foreign_id,type,operation,create_time ,id from (
+		select * from flow f where f.uid=#uid# or EXISTS(select * from
+		(select id as kid from user u where EXISTS(
+		SELECT id from(select id from position_user where find_in_set(parent, getChildLst(#foreign_id#))) a where u.position_id = a.id)) o where f.uid = o.kid)
+		order by id desc limit 10000000)as x 
+		group by foreign_id,type order by id desc
+    </select>
+     
+     <!-- 修改理由 -->
+    <update id="updateFlow" parameterClass="flow">
+        update flow set reason=#reason# , create_time=#create_time# where id = #id#
+    </update>
+    
+     <!-- 修改状态 -->
+    <update id="updateFlowOperation" parameterClass="flow">
+        update flow set operation=#operation# where id = #id#
+    </update>
+    
+    <!-- 修改状态 -->
+    <update id="updateFlowOperationByFid" parameterClass="flow">
+        update flow set operation=#operation# where type=19 and foreign_id=#foreign_id# and operation=6
+    </update>
+    
+    <!-- 查询用户是否参与 -->
+    <select id="checkIsJoin" resultClass="int" parameterClass="flow">
+        select count(id) from flow where type=#type# and foreign_id=#foreign_id# and uid=#uid#
+    </select>
+    
+    <!-- 返回最近某一步的流程 -->
+    <select id="getFlowByOperation" resultClass="flow" parameterClass="flow">
+        select * from flow where type=#type# and foreign_id=#foreign_id# and operation=#operation# order by id desc limit 1
+    </select>
+    
+    <!-- 查询该出差是否延时 -->
+    <select id="checkTravelDelay" resultClass="int" parameterClass="int">
+		select 1 from flow where type=7 and foreign_id=#foreign_id# and operation=6 limit 1
+    </select> 
+    <!-- 查询某时间段内的流程 -->
+    <select id="getSomeFlow" resultMap="result_basc" parameterClass="java.util.Map">
+		select * from flow where  type=#type# and foreign_id=#foreign_id# and (create_time between #starttime# and #endtime#)
+    </select>
+    <!-- 删除某时间段内的流程 -->
+    <delete id="delSomeFlow" parameterClass="java.util.Map">
+		delete from flow where type=#type# and foreign_id=#foreign_id# and create_time between #starttime# and #endtime#
+    </delete> 
+     <!-- //查看自己参与过的流程记录-->
+    <select id="getAllJoinableFlowList" parameterClass="java.util.List" resultMap="result_basc2">
+    	select f.foreign_id,f.type,f.operation,f.create_time ,f.id from (
+    	SELECT ff.foreign_id,ff.type,ff.operation,ff.create_time ,ff.id from flow ff where ff.foreign_id IN
+		<iterate conjunction="," open="(" close=")">#fidList[]#</iterate>
+		ORDER BY ff.id DESC limit 10000000) f
+		GROUP BY foreign_id ORDER BY id DESC 
+    </select>
+     <!-- 查看权限记录和下属 但是自己没有参加过全部记录-->
+    <select id="getAllPermissionFlowList" resultMap="result_basc2" parameterClass="java.util.Map">
+    	SELECT f.foreign_id,f.type,f.operation,f.create_time ,f.id from (
+		SELECT f2.foreign_id,f2.type,f2.operation,f2.create_time ,f2.uid,f2.id from flow f2 where f2.create_time>#time# and f2.type IN(16,19) AND f2.foreign_id IN
+		<iterate property="foidList" conjunction="," open="(" close=")">#foidList[]#</iterate>
+		UNION All 
+		SELECT f3.foreign_id,f3.type,f3.operation,f3.create_time ,f3.uid,f3.id from flow f3 where f3.create_time>#time# and f3.type IN
+		<iterate property="flowTypes" conjunction="," open="(" close=")">#flowTypes[]#</iterate>
+		ORDER BY id DESC limit 10000000) f
+		WHERE f.uid!=#uid# 
+    	GROUP BY type,foreign_id ORDER BY id DESC
+    </select>
+     <!-- //没有查看权限只能看自己记录和所属人员考核记录-->
+   <select id="getJoinFlowwerFlowList" resultMap="result_basc2" parameterClass="java.util.Map">
+		SELECT f.foreign_id,f.type,f.operation,f.create_time ,f.id from (
+    	SELECT ff.foreign_id,ff.type,ff.operation,ff.create_time ,ff.id from flow ff where ff.create_time>#time# and ff.foreign_id IN
+    	<iterate property="fidList" conjunction="," open="(" close=")">#fidList[]#</iterate>
+		UNION All
+		SELECT fff.foreign_id,fff.type,fff.operation,fff.create_time ,fff.id from flow fff where fff.create_time>#time# and fff.type IN(16,19) and fff.foreign_id IN
+		<iterate property="foidList" conjunction="," open="(" close=")">#foidList[]#</iterate>
+		ORDER BY id DESC limit 10000000) f
+		GROUP BY f.type,f.foreign_id 
+		ORDER BY f.id DESC
+    </select>
+     <!-- 查看权限记录和自己参与过的和下属全部记录-->
+     <select id="getJoinPermissionFlowList" parameterClass="java.util.Map" resultMap="result_basc2">
+     	SELECT f.foreign_id,f.type,f.operation,f.create_time ,f.id from (
+    	SELECT ff.foreign_id,ff.type,ff.operation,ff.create_time ,ff.id from flow ff where ff.create_time>#time# and ff.foreign_id IN
+    	<iterate property="fidList" conjunction="," open="(" close=")">#fidList[]#</iterate>
+		UNION All
+		SELECT fff.foreign_id,fff.type,fff.operation,fff.create_time ,fff.id from flow fff where fff.create_time>#time# and fff.type IN(16,19) AND fff.foreign_id IN
+		<iterate property="foidList" conjunction="," open="(" close=")">#foidList[]#</iterate>
+		UNION All 
+		SELECT f3.foreign_id,f3.type,f3.operation,f3.create_time ,f3.id from flow f3 where f3.create_time>#time# and f3.type IN
+		<iterate property="flowTypes" conjunction="," open="(" close=")">#flowTypes[]#</iterate>
+		ORDER BY id DESC limit 10000000) f 
+    	GROUP BY type,foreign_id ORDER BY id DESC
+    </select>
+    
+    <!-- 根据uid查询该用户下属type为16和19的fid-->
+    <select id="getFidByPositionID" resultClass="int" parameterClass="int">
+    	<!-- SELECT foreign_id from(SELECT foreign_id,uid,id from flow ff 
+		RIGHT JOIN
+		(SELECT id as kid from user u where 
+		EXISTS(SELECT id from(SELECT id from position_user where find_in_set(parent, getChildLst(#position_id#))) a where u.position_id = a.id)) as f on f.kid = ff.uid
+		WHERE ff.type in(16,19)
+		ORDER BY id DESC limit 10000000) as k
+		GROUP BY foreign_id -->
+		SELECT foreign_id from(SELECT foreign_id,uid,id from (SELECT foreign_id,uid,id,type from flow where type in(16,19)) ff
+		RIGHT JOIN
+		(SELECT id as kid from user u where 
+		EXISTS(SELECT id from(SELECT id from position_user where find_in_set(parent, getChildLst(75))) a where u.position_id = a.id)) as f on f.kid = ff.uid
+		ORDER BY id DESC limit 10000000) as k
+		GROUP BY foreign_id
+    </select>
+    
+    <!-- 根据uid查询flow表中参与过的流程-->
+     <select id="getForeignIDByUid" resultClass="int" parameterClass="int">
+    	select foreign_id from flow  where operation!=0 and uid=#uid# group by foreign_id
+    </select>
+
+	<!--根据foreign_id查询流程中参与的人员-->
+	<select id="getUidByForeign" resultClass="int" parameterClass="int">
+		select DISTINCT uid from flow where foreign_id=#foreign_id# and type=3
+	</select>
+     
+</sqlMap>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="related_user">
+	<typeAlias alias="related_user"
+		type="com.zzqa.pojo.related_user.Related_user" />
+
+	<resultMap id="result_basc" class="related_user">
+		<result property="id" column="id" />
+		<result property="type" column="type" />
+		<result property="foreign_id" column="foreign_id" />
+		<result property="uid" column="uid" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertRelated_user" parameterClass="related_user">
+		insert into related_user(type,foreign_id,uid)
+		values(#type#,#foreign_id#,#uid#)
+	</insert>
+
+	<!-- 通过id删除 -->
+    <delete id="delRelated_userByID" parameterClass="int" >
+        delete from related_user where id=#id#
+    </delete>
+    
+    <!-- 通过条件删除 -->
+    <delete id="delRelated_userByCondition" parameterClass="related_user" >
+        delete from related_user where type=#type# and foreign_id=#foreign_id#
+        <isGreaterThan property="uid" compareValue="0">
+        	and uid=#uid#
+        </isGreaterThan>
+    </delete>
+	
+	<select id="getRelated_userByID" parameterClass="int" resultClass="related_user">
+		select * from related_user where id=#id#
+	</select>
+	
+	<select id="getRelated_userListByCondition" parameterClass="related_user" resultMap="result_basc">
+		select * from related_user where type=#type# and foreign_id=#foreign_id#
+	</select>
+	
+	<select id="getRelated_userCount" parameterClass="related_user" resultClass="int">
+		select count(*) from related_user where type=#type# and foreign_id=#foreign_id#
+		<isGreaterThan property="uid" compareValue="0">
+			and uid=#uid# limit 0,1
+		</isGreaterThan>
+	</select>
+</sqlMap>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings enhancementEnabled="true" maxTransactions="100" maxRequests="600" maxSessions="300"
+		 useStatementNamespaces="true" />
+	<!-- 设置数据库 映射文件 -->
+	
+	<!-- 用户登录 映射文件 -->
+	<sqlMap resource="com/zzqa/dao/impl/user/user.xml" />
+	<!-- 用户和担任职位的关系 -->
+	<sqlMap resource="com/zzqa/dao/impl/position_user/position_user.xml" />
+	<!-- 任务单 -->
+	<sqlMap resource="com/zzqa/dao/impl/task/task.xml" />
+	<!-- 对比任务单 -->
+	<sqlMap resource="com/zzqa/dao/impl/task_conflict/task_conflict.xml" />
+	<!-- 联系人 -->
+	<sqlMap resource="com/zzqa/dao/impl/linkman/linkman.xml" />
+	<!-- 文件存储 -->
+	<sqlMap resource="com/zzqa/dao/impl/file_path/file_path.xml" />
+	<!-- 操作记录 -->
+	<sqlMap resource="com/zzqa/dao/impl/operation/operation.xml" />
+	<!-- 流程 -->
+	<sqlMap resource="com/zzqa/dao/impl/flow/flow.xml" />
+	<!-- 产品验货 -->
+	<sqlMap resource="com/zzqa/dao/impl/procurement/procurement.xml" />
+	<!-- 生产采购 -->
+	<sqlMap resource="com/zzqa/dao/impl/product_procurement/product_procurement.xml" />
+	<!-- 项目采购 -->
+	<sqlMap resource="com/zzqa/dao/impl/project_procurement/project_procurement.xml" />
+	<!-- 外协生产 -->
+	<sqlMap resource="com/zzqa/dao/impl/outsource_product/outsource_product.xml" />
+	<!-- 生产流程 -->
+	<sqlMap resource="com/zzqa/dao/impl/manufacture/manufacture.xml" />
+	<!-- 设备 -->
+	<sqlMap resource="com/zzqa/dao/impl/device/device.xml" />
+	<!-- 生产所需器皿 -->
+	<sqlMap resource="com/zzqa/dao/impl/material/material.xml" />
+	<!-- 发货流程 -->
+	<sqlMap resource="com/zzqa/dao/impl/shipments/shipments.xml" />
+	<!-- 操作权限 -->
+	<sqlMap resource="com/zzqa/dao/impl/permissions/permissions.xml" />
+	<!-- 出差 -->
+	<sqlMap resource="com/zzqa/dao/impl/travel/travel.xml" />
+	<!-- 请假 -->
+	<sqlMap resource="com/zzqa/dao/impl/leave/leave.xml" />
+	<!-- 销假 -->
+	<sqlMap resource="com/zzqa/dao/impl/resumption/resumption.xml" />
+	<!-- 建议 -->
+	<sqlMap resource="com/zzqa/dao/impl/advise/advise.xml" />
+	<!-- 反馈 -->
+	<sqlMap resource="com/zzqa/dao/impl/feedback/feedback.xml" />
+	<!-- 通知 -->
+	<sqlMap resource="com/zzqa/dao/impl/notify/notify.xml" />
+	<!-- 交流平台相关用户关系 -->
+	<sqlMap resource="com/zzqa/dao/impl/related_user/related_user.xml" />
+	<!-- 评论 -->
+	<sqlMap resource="com/zzqa/dao/impl/comments/comments.xml" />
+	<!-- 回复 -->
+	<sqlMap resource="com/zzqa/dao/impl/reply/reply.xml" />
+	<!-- 用户已读关联表 -->
+	<sqlMap resource="com/zzqa/dao/impl/read_user/read_user.xml" />
+	<!-- 状态跟踪 -->
+	<sqlMap resource="com/zzqa/dao/impl/track/track.xml" />
+	<!-- 物料信息表-->
+	<sqlMap resource="com/zzqa/dao/impl/materials_info/materials_info.xml" />
+	<!-- 客户/供应商 -->
+	<sqlMap resource="com/zzqa/dao/impl/customer_data/customer_data.xml" />
+	<!-- 产品信息 -->
+	<sqlMap resource="com/zzqa/dao/impl/product_info/product_info.xml" />
+	<!-- 销售合同表 -->
+	<sqlMap resource="com/zzqa/dao/impl/sales_contract/sales_contract.xml" />
+	<!-- 采购合同表 -->
+	<sqlMap resource="com/zzqa/dao/impl/purchase_contract/purchase_contract.xml" />
+	<!-- 采购单信息表 -->
+	<sqlMap resource="com/zzqa/dao/impl/purchase_note/purchase_note.xml" />
+	<!-- 售后任务单信息表 -->
+	<sqlMap resource="com/zzqa/dao/impl/aftersales_task/aftersales_task.xml" />
+	<!-- 用印申请表 -->
+	<sqlMap resource="com/zzqa/dao/impl/seal/seal.xml" />
+	<!--  用车申请表 -->
+	<sqlMap resource="com/zzqa/dao/impl/vehicle/vehicle.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/work/work.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/work_day/work_day.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/workday_project/workday_project.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/project/project.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/shipping/shipping.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/shipping_list/shipping_list.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/equipment_template/equipment_template.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/equipment/equipment.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/circuit_card/circuit_card.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/performance/performance.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/performance_content/performance_content.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/deliver/deliver.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/deliver_content/deliver_content.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/task_updateflow/task_updateflow.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/departmentPuchase/departmentPuchase.xml" />
+	<sqlMap resource="com/zzqa/dao/impl/departPuchase_content/departPuchase_content.xml" />
+</sqlMapConfig>

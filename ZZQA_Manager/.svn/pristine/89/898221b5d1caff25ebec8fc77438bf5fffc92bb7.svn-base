@@ -1,0 +1,180 @@
+package com.zzqa.dao.impl.task;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+import com.zzqa.dao.interfaces.task.ITaskDAO;
+import com.zzqa.pojo.task.Task;
+@Component("taskDAO")
+public class TaskDAOImpl implements ITaskDAO {
+	SqlMapClient sqlMapclient = null;
+
+	public SqlMapClient getSqlMapclient() {
+		return sqlMapclient;
+	}
+	@Resource(name="sqlMapClient")
+	public void setSqlMapclient(SqlMapClient sqlMapclient) {
+		this.sqlMapclient = sqlMapclient;
+	}
+
+	public void delTaskByCreateID(int create_id) {
+		// TODO Auto-generated method stub
+		try {
+            sqlMapclient.delete("task.delTaskByCreateID", create_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+
+	public void delTaskByID(int id) {
+		// TODO Auto-generated method stub
+		try {
+            sqlMapclient.delete("task.delTaskByID", id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+
+	public List<Task> getFinishTaskList() {
+		List<Task> list = new ArrayList<Task>();
+		Set<Task> set=new HashSet<Task>();  
+		try {
+			set.addAll(sqlMapclient.queryForList("task.getFinishTaskList"));
+			set.addAll(sqlMapclient.queryForList("task.getFinishStartupTaskList"));
+			set.addAll(sqlMapclient.queryForList("task.getBeforeTaskList"));
+			if(set.size()>0){
+				for (Iterator<Task> it = set.iterator(); it.hasNext();){  
+					list.add(it.next());  
+		        }  
+			}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+	}
+	
+	public List<Task> getRunningTask() {
+		List<Task> list = null;
+		try {
+            list = sqlMapclient.queryForList("task.getRunningTask");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+	}
+	public List getRunningStartupTask() {
+		List<Task> list = null;
+		try {
+            list = sqlMapclient.queryForList("task.getRunningStartupTask");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+	}
+
+	public Task getTaskByID(int id) {
+		// TODO Auto-generated method stub
+		Task task = null;
+        try {
+        	task = (Task)sqlMapclient.queryForObject("task.getTaskByID", id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return task;
+	}
+	
+	public Task getTask2ByID(int id) {
+		// TODO Auto-generated method stub
+		Task task = null;
+        try {
+        	task = (Task)sqlMapclient.queryForObject("task.getTask2ByID", id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return task;
+	}
+	public Task getNewTaskByCreateID(int create_id){
+		Task task = null;
+        try {
+        	task = (Task)sqlMapclient.queryForObject("task.getNewTaskByCreateID", create_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return task;
+	}
+	
+	public int insertTask(Task task) {
+		// TODO Auto-generated method stub
+		try {
+            Object object=sqlMapclient.insert("task.insertTask", task);
+            if(object!=null){
+            	return (Integer)object;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+		return 0;
+	}
+
+	public void updateEdited(Task task) {
+		// TODO Auto-generated method stub
+		try {
+            sqlMapclient.update("task.updateEdited", task);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+
+	public void updateTask(Task task) {
+		// TODO Auto-generated method stub
+		try {
+            sqlMapclient.update("task.updateTask", task);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+
+	public void updateRemarks(Task task) {
+		// TODO Auto-generated method stub
+		try {
+            sqlMapclient.update("task.updateRemarks", task);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	@Override
+	public boolean checkTaskBind(int task_id) {
+		// TODO Auto-generated method stub
+		try {
+			Object obj=sqlMapclient.queryForObject("task.checkTaskBind",task_id);
+			if(obj!=null&&(Integer)obj==1){
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public List getAllList(){
+		List<Task> list = null;
+		try {
+            list = sqlMapclient.queryForList("task.getAllList");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+	}
+	
+}

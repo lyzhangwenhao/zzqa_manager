@@ -1,0 +1,1104 @@
+<%@page import="com.zzqa.util.DataUtil"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@page
+	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page import="com.zzqa.service.interfaces.user.UserManager"%>
+<%@page import="com.zzqa.service.interfaces.position_user.Position_userManager"%>
+<%@page import="com.zzqa.pojo.user.User"%>
+<%@page import="com.zzqa.pojo.position_user.Position_user"%>
+<%request.setCharacterEncoding("UTF-8");
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+	UserManager userManager = (UserManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext())
+			.getBean("userManager");
+	Position_userManager position_userManager=(Position_userManager) WebApplicationContextUtils
+			.getRequiredWebApplicationContext(getServletContext()).getBean(
+					"position_userManager");
+	if (session.getAttribute("uid") == null||session.getAttribute("performance_month") == null||session.getAttribute("performance_cid") == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	int uid = (Integer) session.getAttribute("uid");
+	long performance_month=(Long)session.getAttribute("performance_month");
+	User mUser = userManager.getUserByID(uid);
+	if (mUser == null) {
+		request.getRequestDispatcher("/login.jsp").forward(request,
+				response);
+		return;
+	}
+	int performance_cid=(Integer) session.getAttribute("performance_cid");
+	User positionUser = userManager.getUserByID(performance_cid);
+	Position_user position_user = position_userManager.getPositionByID(positionUser.getPosition_id());
+	int parentID=0;
+	parentID=position_user.getParent();
+	int bossId=position_userManager.getBossParentID();
+%>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<%=basePath%>">
+
+		<title>绩效考核</title>
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="This is my page">
+		<link rel="stylesheet" type="text/css" href="css/top.css">
+		<link rel="stylesheet" type="text/css" href="css/flowmanager.css">
+		<link rel="stylesheet" type="text/css" href="css/performance_detailflow.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+		<script src="js/showdate.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/dialog.js"></script>
+		<script type="text/javascript" src="js/public.js"></script>
+		<script src="js/performance_detailflow.js"></script>
+		<script type="text/javascript">
+		var uid=<%=mUser.getId()%>;
+		var parent_id=<%=parentID%>;
+		var boss_id=<%=bossId%>;
+		var performance_cid=<%=performance_cid%>;
+		var performance_month=<%=performance_month%>;
+		var tab_id="#tab_table";//当前操作表的#id
+		var tab_index=0;//0=考核表 1=计划表
+		var user_type = 2;//0=本人 1=领导 2=其他
+		var time_type = 2;//1=历史 2=当月 3=下月
+		var items_json=[];//当月考核详细
+		var performance_json={};//当月考核表信息	
+		var flow_json={};//流程对象（存operation等）
+		var flows=[];//流程列表
+		var len_flowshow=0;//显示的流程长度
+		var items_json2=[];//下月
+		var performance_json2={};
+		var flow_json2={};//流程对象（存operation等）
+		var flows2=[];//流程列表
+		var len_flowshow2=0;//显示的流程长度
+		var arr_quotiety=["","A+","A","A-","B+","B","B-","C+","C","C-","D+","D","D-"];
+		var arr_score=[0,106,102,98,94,90,86,82,78,74,70,66,62];
+		var sum_wt_plan=0;//计划权重
+		var sum_wt_carry=0;//实施权重
+		var sum_wt_leader=0;//考评权重
+		var sum_wt_plan2=0;//计划权重
+		var sum_wt_carry2=0;//实施权重
+		var sum_wt_leader2=0;//考评权重
+		var arr_level=["第一档","第二档","第三档"];
+		var arr_level_score=[-0.5,0,0.5];
+		var final_quotiety = 0;//最终考评A+
+		var final_score = 0;//最终分数106
+		var final_rate = 0;
+		var table_type = 0;//0=审核状态 1=审批完成或暂存 2=历史月份 3=驳回后审批
+		var pfm_operation_old=0;//考核表状态（用于保存时，是否有交叉操作判断）
+		var pfm_operation_old2=0;
+		
+		/**初始化员工信息**/
+		$(function(){
+			var score_html='';			
+			$(arr_quotiety).each(function(i){
+				score_html += '<option value="'+i+'">'+this+'</option>';
+			});
+			$("#sel_a_self").html(score_html);
+			$("#sel_a_leader").html(score_html);
+			var level_html="";
+			$(arr_level).each(function(i){
+				level_html += '<option value="'+i+'">'+this+'</option>';
+			});
+			$("#sel_level_1").html(level_html);
+			$("#sel_level_2").html(level_html);
+			$("#sel_level_3").html(level_html);
+			$("#sel_level_4").html(level_html);
+			$("#sel_level_1").val(1);
+			$("#sel_level_2").val(1);
+			$("#sel_level_3").val(1);
+			$("#sel_level_4").val(1);
+			$("#span_quotiety").attr("quotiety_index",final_quotiety);
+			$("#span_score").text(final_score);
+			$("#span_rate").text(span_rate);
+			$("#div_table2").hide();
+			$("#div_flows_contol").click(function(){
+				controlFlows(1);
+			});
+			$("#div_flows_contol2").click(function(){
+				controlFlows(2);
+			});
+			$("#btn_reject").hide();
+			$("#btn_confirm").hide();
+		});
+		/**显示或隐藏流程**/
+		function controlFlows(index){
+			var t_id = "";
+			var t_id2 = "";
+			if(index == 1){
+				t_id = "#div_flows";
+				t_id2 = "#div_flows_contol";
+			}
+			else if(index == 2){
+				t_id = "#div_flows2";
+				t_id2 = "#div_flows_contol2";
+			}
+			var display = $(t_id).css("display");
+			if(display == "none"){
+				$(t_id).show();
+				$(t_id2+" span").text("隐藏审核流程");
+				$(t_id2+" img").attr("src","images/show_check.png");
+			}
+			else{
+				$(t_id).hide();
+				$(t_id2+" span").text("显示审核流程");
+				$(t_id2+" img").attr("src","images/hide_check.png");
+			}
+		}
+		/**切换表格**/
+		function onTabTypeChange(){
+			var d;
+			var year;
+			var month;
+			tab_index = (tab_index==0) ? 1 : 0;
+			if(tab_index == 1){
+				tab_id = "#tab_table2";
+				$("#div_table2").show();
+				$("#div_table").hide();
+				d = new Date(performance_json2.performance_month);
+				year=d.getFullYear();
+				month=d.getMonth()+1;
+				$(".div_title").text(month+"月计划表");
+				$("#span_date").text(year+"年"+month+"月");
+				$("#btn_table").text("上一页");
+				if(table_type == 0 || table_type ==3){
+					$("#btn_reject").show();
+					$("#btn_confirm").show();
+				}				
+			}
+			else{
+				tab_id = "#tab_table";
+				$("#div_table2").hide();
+				$("#div_table").show();
+				d = new Date(performance_json.performance_month);
+				year=d.getFullYear();
+				month=d.getMonth()+1;
+				$(".div_title").text(month+"月考核表");
+				$("#span_date").text(year+"年"+month+"月");
+				$("#btn_table").text("下一页");
+				$("#btn_reject").hide();
+				$("#btn_confirm").hide();
+			}
+			initTR();
+		}
+		/**初始化表格**/
+		function initTable(flag_month,data){
+			var len = 0;
+			var i=0;
+			var str_flows="";
+			var t_flow={};
+			/**判断operation**/
+			var operation=data.operation;
+			if(flag_month==1){//计划
+				sum_wt_plan2 = 0;
+				sum_wt_carry2 = 0;
+				sum_wt_leader2 = 0;
+				len_flowshow2=0;
+				pfm_operation_old2 = operation;
+				if(operation!=0){//空
+					flows2=data.flows;					
+					len = flows2.length;
+					if(len>0){
+						flow_json2=flows2[len-1];
+					}
+					str_flows = "";
+					for(i=0; i<len; i++){
+						t_flow = flows2[i];
+						if(!(t_flow.operation==6 || t_flow.operation==7 || t_flow.operation == 3)){
+							continue;
+						}
+						str_flows += '<div class="div_flow">';
+						str_flows += '<div class="flow_left">'+ toDomStr(flows2[i].reason) +'</div>';
+						if(t_flow.operation == 7){//驳回
+							str_flows += '<div class="flow_right_disagree">';
+						}
+						else if(t_flow.operation == 6 || t_flow.operation ==3){
+							str_flows += '<div class="flow_right_agree">';
+						}
+						str_flows += '<div class="flow_right1">'+t_flow.username+'</div>';
+						str_flows += '<div class="flow_right2">'+timeTransLongToStr(t_flow.create_time,4,".",true)+'</div>';
+						str_flows += '</div></div>';
+						len_flowshow2++;
+					}
+					$("#div_flows2").append(str_flows);
+					if(len_flowshow2>0){
+						$("#div_flows2").show();
+					}
+					setTableInfo("#tab_table2",data);
+					items_json2=data.items;
+					performance_json2=data;
+					performance_json2.items=null;
+				}				
+			}
+			else{//考核
+				sum_wt_plan = 0;
+				sum_wt_carry = 0;
+				sum_wt_leader = 0;
+				len_flowshow=0;
+				pfm_operation_old = operation;
+				if(operation!=0){
+					tableTypeChange(data);
+					$("#span_username").text(data.create_name);
+					$("#span_position").text(data.position_name);
+					$("#span_leader").text(data.leader_name);
+					$("#span_department").text(data.department_name);
+					$("#span_department").attr("title",data.department_name);
+					
+					final_quotiety = data.quotiety;
+					final_score = data.score;
+					$("#span_quotiety").attr("quotiety_index",data.quotiety);
+					$("#span_quotiety").text(arr_quotiety[data.quotiety]);
+					$("#span_score").text((data.score).toFixed(2));	
+					$("#span_rate").text((data.score/90).toFixed(2));										
+					flows=data.flows;
+					initFlowTitle();
+					len = flows.length;
+					if(len>0){
+						flow_json=flows[len-1];
+					}					
+					str_flows = "";
+					for(i=0; i<len; i++){
+						t_flow = flows[i];
+						if(!(t_flow.operation==6 || t_flow.operation==7 || t_flow.operation==3 || t_flow.operation==8)){
+							continue;
+						}
+						if(t_flow.reason==undefined || t_flow.reason.length == 0){
+							continue;
+						}
+						str_flows += '<div class="div_flow">';
+						str_flows += '<div class="flow_left">'+ toDomStr(flows[i].reason) +'</div>';
+						if(t_flow.operation == 7){//驳回
+							str_flows += '<div class="flow_right_disagree">';
+						}
+						else if(t_flow.operation==6 || t_flow.operation ==3 || t_flow.operation ==8){
+							str_flows += '<div class="flow_right_agree">';
+						}
+						str_flows += '<div class="flow_right1">'+t_flow.username+'</div>';
+						str_flows += '<div class="flow_right2">'+timeTransLongToStr(t_flow.create_time,4,".",true)+'</div>';
+						str_flows += '</div></div>';
+						len_flowshow++;
+						if(t_flow.operation==8 && table_type==0){//驳回再审核
+							table_type = 3;
+						}
+					}					
+					$("#div_flows").append(str_flows);
+					if(len_flowshow>0){
+						$("#div_flows").show();
+					}
+					if(table_type == 0){
+						$("#div_bt_feedback").show();
+						$("#div_feedback").show();
+						$("#div_bt_feedback2").show();
+						$("#div_feedback2").show();
+						$("#sel_level_1").val(data.item1);
+						$("#sel_level_2").val(data.item2);
+						$("#sel_level_3").val(data.item3);
+						$("#sel_level_4").val(data.item4);
+					}
+					else{
+						if(table_type==3){
+							$("#div_bt_feedback2").show();
+							$("#div_feedback2").show();
+						}
+						$("#tab_behaviour tr:eq(1)").children("td:eq(5)").html(arr_level[data.item1]);
+						$("#tab_behaviour tr:eq(2)").children("td:eq(5)").html(arr_level[data.item2]);
+						$("#tab_behaviour tr:eq(3)").children("td:eq(5)").html(arr_level[data.item3]);
+						$("#tab_behaviour tr:eq(4)").children("td:eq(5)").html(arr_level[data.item4]);
+					}
+					setTableInfo("#tab_table",data);
+					items_json=data.items;
+					performance_json=data;
+					performance_json.items=null;
+				}				
+			}
+		}
+		/**初始化头部流程**/
+		function initFlowTitle(){
+			var len=flows.length;
+			var i=0;
+			if(len == 0){
+				return;
+			}
+			var curFlow = flows[len-1];
+			var t_flow = {};
+			var str_time = "";
+			switch(curFlow.operation){
+				case 4://暂存完成
+					str_time = buildDateStr(curFlow.create_time);
+					$(".flow_title1 div:eq(0)").html("暂存完成");
+					$(".flow_title1 div:eq(0)").css("color","#42c652");
+					$(".flow_title2 img:eq(0)").attr("src","images/go.png");
+					$(".flow_title3 div:eq(0)").html(str_time);
+					break;
+				case 5://提交完成
+					str_time = buildDateStr(curFlow.create_time);
+					$(".flow_title1 div:eq(0)").html("提交完成");
+					$(".flow_title1 div:eq(0)").css("color","#42c652");
+					$(".flow_title2 img:eq(0)").attr("src","images/pass.png");
+					$(".flow_title2 div:eq(0)").css("background-color","#42c652");
+					$(".flow_title3 div:eq(0)").html(str_time);
+					$(".flow_title1 div:eq(1)").html("审核确认");
+					$(".flow_title1 div:eq(1)").css("color","#5C5C5C");
+					$(".flow_title2 img:eq(1)").attr("src","images/go.png");
+					break;
+				case 6://审核结束
+					str_time = buildDateStr(curFlow.create_time);
+					$(".flow_title1 div:eq(1)").html("审核完成");
+					$(".flow_title1 div:eq(1)").css("color","#42c652");
+					$(".flow_title2 img:eq(1)").attr("src","images/pass.png");
+					$(".flow_title2 div:eq(1)").css("background-color","#42c652");
+					$(".flow_title3 div:eq(1)").html(str_time);
+					$(".flow_title1 div:eq(2)").html("结束");
+					$(".flow_title1 div:eq(2)").css("color","#42c652");
+					$(".flow_title2 img:eq(2)").attr("src","images/pass.png");
+					$(".flow_title3 div:eq(2)").html(str_time);
+					for(i=len-1; i>=0; i--){
+						t_flow = flows[i];
+						if(t_flow.operation == 5){
+							str_time = buildDateStr(t_flow.create_time);
+							$(".flow_title1 div:eq(0)").html("提交完成");
+							$(".flow_title1 div:eq(0)").css("color","#42c652");
+							$(".flow_title2 img:eq(0)").attr("src","images/pass.png");
+							$(".flow_title2 div:eq(0)").css("background-color","#42c652");
+							$(".flow_title3 div:eq(0)").html(str_time);
+							break;
+						}
+					}
+					break;
+				case 8://计划驳回
+					str_time = buildDateStr(curFlow.create_time);
+					$(".flow_title1 div:eq(1)").html("计划驳回");
+					$(".flow_title1 div:eq(1)").css("color","#FF4401");
+					$(".flow_title2 img:eq(1)").attr("src","images/error.png");
+					$(".flow_title3 div:eq(1)").html(str_time);
+					for(i=len-1; i>=0; i--){
+						t_flow = flows[i];
+						if(t_flow.operation == 5){
+							str_time = buildDateStr(t_flow.create_time);
+							$(".flow_title1 div:eq(0)").html("提交完成");
+							$(".flow_title1 div:eq(0)").css("color","#42c652");
+							$(".flow_title2 img:eq(0)").attr("src","images/pass.png");
+							$(".flow_title2 div:eq(0)").css("background-color","#FF4401");
+							$(".flow_title3 div:eq(0)").html(str_time);
+							break;
+						}
+					}
+					break;
+			}
+		}
+		/**构造时间字符串（包含换行符）**/
+		function buildDateStr(t_time){
+			var str_date = "";
+			var t_date = new Date(t_time);
+			var t_year = t_date.getFullYear();
+			var t_month = t_date.getMonth()+1;
+			var t_day = t_date.getDate();
+			var t_hour = t_date.getHours();
+			var t_minute = t_date.getMinutes();
+			var t_second = t_date.getSeconds();
+			str_date += t_year+"-"+t_month+"-"+t_day+"<br>"+t_hour+":"+t_minute+":"+t_second;
+			return str_date;
+		}
+		/**表格风格**/
+		function tableTypeChange(data){
+			if(uid == data.create_id){//本人
+				user_type = 0;
+			}
+			else if(uid == data.leader){//领导
+				user_type = 1;						
+			}
+			else{
+				user_type = 2;
+			}
+			if(time_type == 1){//历史月份
+				table_type = 2;
+				$("#div_control").hide();
+			}
+			else if(data.operation==1 || data.operation==2 || data.operation==3 || data.operation==7){//计划阶段
+				table_type = 2;
+				$("#div_control").hide();
+			}
+			else if(data.operation==4 || data.operation==6 || data.operation==8){//审批完成或已驳回
+				table_type = 1;
+				$("#btn_reject").hide();
+				$("#btn_confirm").hide();
+			}
+			else if(user_type==0 || user_type==2){//审核状态，但不是直属领导
+				table_type = 1;
+				$("#btn_reject").hide();
+				$("#btn_confirm").hide();
+			}
+			else{//审核状态
+				table_type = 0;
+			}
+		}
+		
+		/**设置表格信息**/
+		function setTableInfo(tab_id,data){
+			var items = data.items;
+			var str_table = "";
+			var t_sum_wt_plan = 0;
+			var t_sum_wt_carry = 0;
+			var t_sum_wt_leader = 0;
+			for(var i=0; i<items.length; i++){
+				var work = items[i];
+				var target = work.target;
+				var schedule = work.plain;
+				var wt_plan = work.weight;
+				var assessor = work.assessor;
+				var wt_carry = work.weight_self;
+				var situation = work.situation;
+				var a_self = work.score_self;
+				var wt_leader = work.weight_leader;
+				var a_leader = work.score_leader;
+				t_sum_wt_plan += Number(wt_plan);
+				t_sum_wt_carry += Number(wt_carry);
+				t_sum_wt_leader += Number(wt_leader);
+				str_table += '<tr><td class="tooltip_div tln_left">'+toDomStr(target)+'</td>'
+						+'<td class="tooltip_div tln_left">'+toDomStr(schedule)+'</td>'
+						+'<td class="tooltip_div">'+wt_plan+'</td>'
+						+'<td class="tooltip_div">'+assessor+'</td>'
+						+'<td class="tooltip_div">'+wt_carry+'</td>'
+						+'<td class="tooltip_div tln_left">'+toDomStr(situation)+'</td>'
+						+'<td class="tooltip_div" a_self_index="'+a_self+'">'+arr_quotiety[a_self]+'</td>'
+						+'<td class="tooltip_div">'+wt_leader+'</td>'
+						+'<td class="tooltip_div" a_leader_index="'+a_leader+'">'+arr_quotiety[a_leader]+'</td></tr>';				
+			}
+			$(tab_id+" tr:eq(-2)").before(str_table);
+			showToolTip($(tab_id).find("tr:gt(0)"));
+			
+			$(tab_id+" .tab_tr4").children("td:eq(2)").text(t_sum_wt_plan);
+			$(tab_id+" .tab_tr4").children("td:eq(4)").text(t_sum_wt_carry);
+			$(tab_id+" .tab_tr4").children("td:eq(7)").text(t_sum_wt_leader);
+			setWeightColor(tab_id+" .tab_tr4","td:eq(2)",t_sum_wt_plan);
+			setWeightColor(tab_id+" .tab_tr4","td:eq(4)",t_sum_wt_carry);
+			setWeightColor(tab_id+" .tab_tr4","td:eq(7)",t_sum_wt_leader);
+			if(tab_id=="#tab_table"){				
+				sum_wt_plan = t_sum_wt_plan;
+				sum_wt_carry = t_sum_wt_carry;
+				sum_wt_leader = t_sum_wt_leader;
+			}
+			else{
+				sum_wt_plan2 = t_sum_wt_plan;
+				sum_wt_carry2 = t_sum_wt_carry;
+				sum_wt_leader2 = t_sum_wt_leader;
+			}
+			initTR(tab_id);
+		}
+		/**设置权重颜色**/
+		function setWeightColor(id,childId,value){
+			if(value == 100){
+				$(id).children(childId).css("background-color","#799dd9");
+			}
+			else{
+				$(id).children(childId).css("background-color","#ff0000");
+			}
+		}
+		
+		/**初始化表格行样式**/
+		function initTR(tab_id){
+			var index=0;
+			var len = $(tab_id+" tr:gt(0)").length;
+			$(tab_id+" tr:gt(0)").each(function(){				
+				if(index == len-1){
+					;
+				}
+				else if(index%2==0){
+					$(this).attr("class","tab_tr2");
+				}else{
+					$(this).attr("class","tab_tr3");
+				}
+				index++;
+			});
+			if(table_type == 0 || (table_type == 3 && tab_id=="#tab_table2")){
+				$(tab_id+" .tab_tr2").unbind("click").click(function(){
+					showDialog($(this));
+				});
+				$(tab_id+" .tab_tr3").unbind("click").click(function(){
+					showDialog($(this));
+				});
+			}
+			$("#tr_addRow").unbind("click");
+			$("#tr_addRow2").unbind("click");
+		}
+		
+		/**显示工作对话框**/
+		var nowTR;//当前行
+		function showDialog(jq_tr){
+			var top_val=(($(window).height()-550)/2+$(window).scrollTop())+"px";
+			$(".dlg_work ").css("top",top_val);
+			if(arguments.length>0){//修改
+				if(tab_index == 1){
+					$(".work_div:nth-child(8)").hide();
+					$(".work_div:nth-child(9)").hide();
+				}
+				else{
+					$(".work_div:nth-child(8)").show();
+					$(".work_div:nth-child(9)").show();
+				}
+				nowTR=jq_tr;
+				var target=onlyGetText(jq_tr,0);
+				var schedule=onlyGetText(jq_tr,1);
+				var wt_plan=jq_tr.children("td:eq(2)").text().trim();
+				var assessor=jq_tr.children("td:eq(3)").text().trim();
+				var wt_carry=jq_tr.children("td:eq(4)").text().trim();
+				var situation=onlyGetText(jq_tr,5);
+				var a_self=jq_tr.children("td:eq(6)").attr("a_self_index");
+				var wt_leader=jq_tr.children("td:eq(7)").text().trim();
+				var a_leader=jq_tr.children("td:eq(8)").attr("a_leader_index");
+				if(a_leader==0){
+					wt_leader = wt_carry;
+				}
+				$("#ipt_target").val(target);
+				$("#ta_schedule").val(schedule);
+				$("#ipt_wt_plan").val(wt_plan);
+				$("#ipt_assessor").val(assessor);
+				$("#ipt_wt_carry").val(wt_carry);
+				$("#ta_situation").val(situation);	
+				$("#sel_a_self").val(a_self);
+				$("#ipt_wt_leader").val(wt_leader);
+				$("#sel_a_leader").val(a_leader);
+			}else{//添加				
+				nowTR=null;
+			}
+			$(".dlg_work").css("display","block");
+		}
+		/**关闭工作对话框**/
+		function closeDialog(btn_id){
+			var t_sum_wt_plan = 0;
+			var t_sum_wt_carry = 0;
+			if(tab_id=="#tab_table"){
+				t_sum_wt_plan = sum_wt_plan;
+				t_sum_wt_carry = sum_wt_carry;
+				t_sum_wt_leader = sum_wt_leader;
+			}
+			else{
+				t_sum_wt_plan = sum_wt_plan2;
+				t_sum_wt_carry = sum_wt_carry2;
+				t_sum_wt_leader = sum_wt_leader2;
+			}
+			if(btn_id==2){//删除				
+				initdiglogtwo2("提示信息","你确定要删除该任务吗？");
+		   		$( "#confirm2" ).click(function() {
+					$( "#twobtndialog" ).dialog( "close" );
+					nowTR.remove();
+					initTR();
+					if(tab_id=="#tab_table"){
+						sum_wt_plan = t_sum_wt_plan;
+						sum_wt_carry = t_sum_wt_carry;
+						sum_wt_leader = t_sum_wt_leader;
+					}
+					else{
+						sum_wt_plan2 = t_sum_wt_plan;
+						sum_wt_carry2 = t_sum_wt_carry;
+						sum_wt_leader2 = t_sum_wt_leader;
+					}
+					$(tab_id+" .tab_tr4").children("td:eq(2)").text(t_sum_wt_plan);
+					$(tab_id+" .tab_tr4").children("td:eq(4)").text(t_sum_wt_carry);
+					$(tab_id+" .tab_tr4").children("td:eq(7)").text(t_sum_wt_leader);
+					setWeightColor(tab_id+" .tab_tr4","td:eq(2)",t_sum_wt_plan);
+					setWeightColor(tab_id+" .tab_tr4","td:eq(4)",t_sum_wt_carry);
+					setWeightColor(tab_id+" .tab_tr4","td:eq(7)",t_sum_wt_leader);
+					initDialogVal();
+					calculate_score();
+				});
+			}else if(btn_id==1){//保存
+				var target = $("#ipt_target").val();
+				var c_target = toDomStr(target);
+				var schedule = $("#ta_schedule").val();
+				var c_schedule = toDomStr(schedule);
+				var wt_plan = $("#ipt_wt_plan").val();
+				var assessor = $("#ipt_assessor").val();
+				var wt_carry = $("#ipt_wt_carry").val();
+				var situation = $("#ta_situation").val();
+				var c_situation = toDomStr(situation);
+				var a_self = $("#sel_a_self").val();
+				var wt_leader = $("#ipt_wt_leader").val();
+				var a_leader = $("#sel_a_leader").val();
+				if(validValues() == false){
+					return;
+				}
+				if(nowTR == null){//添加
+					var temp='<tr><td class="tooltip_div tln_left">'+c_target+'</td>'
+							+'<td class="tooltip_div tln_left">'+c_schedule+'</td>'
+							+'<td class="tooltip_div">'+wt_plan+'</td>'
+							+'<td class="tooltip_div">'+assessor+'</td>'
+							+'<td class="tooltip_div">'+wt_carry+'</td>'
+							+'<td class="tooltip_div tln_left">'+c_situation+'</td>'
+							+'<td class="tooltip_div" a_self_index="'+a_self+'">'+arr_quotiety[a_self]+'</td>'
+							+'<td class="tooltip_div">'+wt_leader+'</td>'
+							+'<td class="tooltip_div" a_leader_index="'+a_leader+'">'+arr_quotiety[a_leader]+'</td></tr>';
+					$(tab_id+" tr:eq(-2)").before(temp);
+					showToolTip($(tab_id).find("tr:last"));
+					t_sum_wt_plan += Number(wt_plan);
+					t_sum_wt_carry += Number(wt_carry);
+					t_sum_wt_leader += Number(wt_leader);
+				}
+				else{//修改
+					t_sum_wt_plan -= Number(nowTR.children("td:eq(2)").text());
+					t_sum_wt_carry -= Number(nowTR.children("td:eq(4)").text());
+					t_sum_wt_leader -= Number(nowTR.children("td:eq(7)").text());
+					nowTR.children("td:eq(0)").html(c_target);
+					nowTR.children("td:eq(1)").html(c_schedule);
+					nowTR.children("td:eq(2)").text(wt_plan);
+					nowTR.children("td:eq(3)").text(assessor);
+					nowTR.children("td:eq(4)").text(wt_carry);
+					nowTR.children("td:eq(5)").html(c_situation);
+					nowTR.children("td:eq(6)").attr("a_self_index",a_self);
+					nowTR.children("td:eq(6)").text(arr_quotiety[a_self]);
+					nowTR.children("td:eq(7)").text(wt_leader);
+					nowTR.children("td:eq(8)").attr("a_leader_index",a_leader);
+					nowTR.children("td:eq(8)").text(arr_quotiety[a_leader]);
+					t_sum_wt_plan += Number(nowTR.children("td:eq(2)").text());
+					t_sum_wt_carry += Number(nowTR.children("td:eq(4)").text());
+					t_sum_wt_leader += Number(nowTR.children("td:eq(7)").text());
+				}
+				initTR();
+				if(tab_id=="#tab_table"){
+					sum_wt_plan = t_sum_wt_plan;
+					sum_wt_carry = t_sum_wt_carry;
+					sum_wt_leader = t_sum_wt_leader;
+				}
+				else{
+					sum_wt_plan2 = t_sum_wt_plan;
+					sum_wt_carry2 = t_sum_wt_carry;
+					sum_wt_leader2 = t_sum_wt_leader;
+				}
+				$(tab_id+" .tab_tr4").children("td:eq(2)").text(t_sum_wt_plan);
+				$(tab_id+" .tab_tr4").children("td:eq(4)").text(t_sum_wt_carry);
+				$(tab_id+" .tab_tr4").children("td:eq(7)").text(t_sum_wt_leader);
+				setWeightColor(tab_id+" .tab_tr4","td:eq(2)",t_sum_wt_plan);
+				setWeightColor(tab_id+" .tab_tr4","td:eq(4)",t_sum_wt_carry);
+				setWeightColor(tab_id+" .tab_tr4","td:eq(7)",t_sum_wt_leader);
+				initDialogVal();
+				calculate_score();
+			}else{//取消
+				initDialogVal();;
+			}
+			
+		}
+		/**验证值**/
+		function validValues(){
+			var wt_leader = $("#ipt_wt_leader").val();
+			var a_leader = $("#sel_a_leader").val();
+			if(tab_id=="#tab_table"){
+				if(wt_leader.length == 0){
+					initdiglog2("提示信息","权重%（考评）不能为空");
+					return false;
+				}
+				if(wt_leader>100 || wt_leader>100){
+					initdiglog2("提示信息","权重必须为0~100");
+					return false;
+				}
+				if(wt_leader>0 && a_leader==0){
+					initdiglog2("提示信息","终评不能为空");
+					return false;
+				}
+			}
+			return true;
+		}
+		/**初始化工作对话框的值**/
+		function initDialogVal(){
+			$(".dlg_work").css("display","none");
+			$("#ipt_target").val("");
+			$("#ta_schedule").val("");
+			$("#ipt_wt_plan").val("");
+			$("#ipt_assessor").val("");
+			$("#ipt_wt_carry").val("");
+			$("#ta_situation").val("");			
+			$("#sel_a_self").val(0);
+			$("#ipt_wt_leader").val("");
+			$("#sel_a_leader").val(0);
+		}
+		
+		/**保存考核表**/
+		function onSubmit(type){
+			if(sum_wt_leader!=100){
+				initdiglog2("提示信息","考核表的考评权重之和必须为100%");
+				return;
+			}
+			if(table_type == 0 && $("#ta_feedback").val().length == 0){
+				initdiglog2("提示信息","考核表的考核人点评不能为空");
+				return;
+			}
+			if($("#ta_feedback2").val().length == 0){
+				initdiglog2("提示信息","计划表的考核人点评不能为空");
+				return;
+			}
+			performance_json.operation = (type==7 ? type+1 : type+3);
+			performance_json.operation_old = pfm_operation_old;
+			if(table_type == 0){
+				performance_json.item1 = $("#sel_level_1").val();
+				performance_json.item2 = $("#sel_level_2").val();
+				performance_json.item3 = $("#sel_level_3").val();
+				performance_json.item4 = $("#sel_level_4").val();
+			}			
+			final_quotiety = $("#span_quotiety").attr("quotiety_index");
+			final_score = $("#span_score").text().trim();
+			final_rate =(final_score/90).toFixed(2);
+			performance_json.quotiety = final_quotiety;
+			performance_json.score = final_score;
+			items_json = makeItemJson("#tab_table");
+			flow_json.operation = (type==7 ? type+1 : type+3);
+			flow_json.operation_old = pfm_operation_old;
+			if(table_type==0){
+				flow_json.reason = $("#ta_feedback").val();
+			}
+			else{
+				flow_json.reason = "";
+			}			
+			performance_json2.operation = type;
+			performance_json2.operation_old = pfm_operation_old2;
+			items_json2 = makeItemJson("#tab_table2");
+			flow_json2.operation = type;
+			flow_json2.operation_old = pfm_operation_old2;
+			flow_json2.reason = $("#ta_feedback2").val();
+			savePerformanceFlow(JSON.stringify(items_json),JSON.stringify(performance_json),JSON.stringify(flow_json),JSON.stringify(items_json2),JSON.stringify(performance_json2),JSON.stringify(flow_json2));
+		}
+		
+		/**构造items**/
+		function makeItemJson(t_tab_id){
+			var items_json=[];
+			var work;
+			var len = $(t_tab_id+" tr:gt(0)").length;
+			$(t_tab_id+" tr:gt(0)").each(function(i){
+				if(i>=(len-2)){
+					return false;//相当于break
+				}
+				work = {};
+				work.target = onlyGetText($(this),0);//工作内容
+				work.plain = onlyGetText($(this),1);//预计达到的工作目标
+				work.weight = $(this).children("td:eq(2)").text().trim();//权重（计划）
+				work.assessor = $(this).children("td:eq(3)").text().trim();//考核人
+				work.weight_self = $(this).children("td:eq(4)").text().trim();//权重（实施）
+				work.situation = onlyGetText($(this),5);//完成情况分析
+				work.score_self = $(this).children("td:eq(6)").attr("a_self_index");//自评
+				work.weight_leader = $(this).children("td:eq(7)").text().trim();//权重（考评）
+				work.score_leader = $(this).children("td:eq(8)").attr("a_leader_index");//终评
+				items_json.push(work);
+			});
+			return items_json;
+		}
+		
+		/**计算考评和系数**/
+		function calculate_score(){
+			var sum_score = 0;
+			var t_weight;
+			var t_score;
+			var len = $("#tab_table tr:gt(0)").length;
+			$("#tab_table tr:gt(0)").each(function(i){
+				if(i>=(len-2)){
+					return false;
+				}
+				t_weight = $(this).children("td:eq(7)").text().trim();//权重（考评）(权重是百分比，需要除以100)
+				t_score = arr_score[$(this).children("td:eq(8)").attr("a_leader_index")];//终评
+				sum_score += t_weight*t_score;
+			});
+			if(sum_wt_leader==100 && sum_score!=0){
+				sum_score = Math.round(sum_score)/100;//权重是百分比，需要除以100
+				sum_score+= arr_level_score[$("#sel_level_1").val()];
+				sum_score+= arr_level_score[$("#sel_level_2").val()];
+				sum_score+= arr_level_score[$("#sel_level_3").val()];
+				sum_score+= arr_level_score[$("#sel_level_4").val()];
+				final_score = sum_score;
+				final_score = Math.round(final_score*100)/100;
+				var len_score = arr_score.length;
+				for(var i=1; i<len_score; i++){
+					if(final_score>=(arr_score[i]-2)){
+						final_quotiety = i;
+						$("#span_quotiety").attr("quotiety_index",final_quotiety);
+						$("#span_quotiety").text(arr_quotiety[final_quotiety]);
+						$("#span_score").text(final_score);
+						break;
+					}
+				}
+			}
+			else{
+//				initdiglog2("提示信息","权重和必须为100%");
+			}
+		}
+		
+		/**有浮窗的单元格获取文本**/
+		function onlyGetText(jq_tr,index){
+			var jq_td = jq_tr.children("td:eq("+index+")").clone();
+			jq_td.find("div").remove();
+			var t_str = toNormalStr(jq_td.html().trim());
+			return t_str;
+		}
+		
+		/**普通字符串转dom字符串**/
+		function toDomStr(str){
+			var t_str = str.toString();
+//			t_str = t_str.replace(/\r\n/g, '<br/>'); 
+			t_str = t_str.replace(/\n/g, '<br/>');
+//			t_str = t_str.replace(/\s/g, ' '); //空格处理
+			return t_str;
+		}
+		
+		/**dom字符串转普通字符串**/
+		function toNormalStr(str){
+			var t_str = str.toString();
+			var reg=new RegExp("<br/>","g");
+			t_str = t_str.replace(reg,"\n");
+			reg=new RegExp("<br>","g");
+			t_str = t_str.replace(reg,"\n");
+			return t_str;
+		}
+		</script>		
+	</head>
+
+	<body>
+		<jsp:include page="/top.jsp" >
+	<jsp:param name="name" value="<%=mUser.getName() %>" />
+	<jsp:param name="level" value="<%=mUser.getLevel() %>" />
+	<jsp:param name="index" value="1" />
+	</jsp:include>
+		<div class="div_center">
+			<table class="table_center">
+				<tr>
+					<jsp:include page="/flowmanager/flowTab.jsp">
+						<jsp:param name="index" value="0" />
+					</jsp:include>
+					<td class="table_center_td2_notfull">
+						
+						<div class="flow_title">
+							<div class="flow_title1">
+								<div class="acflow_action" style="margin-left:3%;">提交完成</div>
+								<div class="acflow_action" style="margin-left:36%;">审核确认</div>
+								<div class="acflow_action" style="margin-left:38%;">结束</div>
+							</div>
+							<div class="flow_title2">
+								<img src="images/notdid.png" class="acflow_img">
+								<div class="acflow_line"></div>									
+								<img src="images/notdid.png" class="acflow_img">
+								<div class="acflow_line"></div>									
+								<img src="images/notdid.png" class="acflow_img">
+							</div>
+							<div class="flow_title3">
+								<div class="acflow_time" style="margin-left:2em;"></div>
+								<div class="acflow_time" style="margin-left:37.5%;"></div>
+								<div class="acflow_time" style="margin-left:37.5%;"></div>
+							</div>
+						</div>
+						
+						<div id="div_title" class="div_title" style="margin-top: 40px;">考核表</div>
+						<form action="" method="post" name="flowform" enctype="multipart/form-data">
+							<input type="text"  name="hide"  style="display:none"/><!-- 防止按回车直接上传 -->
+							<div class="div_user">
+								<div style="width:100px">
+									<span>员工：</span>
+									<span id="span_username">name</span>
+								</div>
+								<div style="width:215px">
+									<span>所属部门：</span>
+									<span id="span_department">department</span>
+								</div>
+								<div style="width:175px">
+									<span>岗位名称：</span>
+									<span id="span_position"></span>
+								
+								</div>
+								<div style="width:100px">
+									<span>审核人：</span>
+									<span id="span_leader"></span>
+								</div>
+								<div style="width:150px">
+									<span>日期：</span>
+									<span id="span_date"></span>
+								</div>
+							</div>
+							<!-- 考核表 -->
+							<div id="div_table">
+								<div class="div_row2">
+									<div class="div_tleft"><div class="div_point"></div>绩效评价</div>
+								</div>
+								<table id="tab_table" class="tab_table">
+									<tr>
+										<th style="width: 15%">工作内容</th>
+										<th style="width: 22.5%">预计达到的工作目标</th>
+										<th style="width: 6.5%">权重%<br>（计划）</th>
+										<th style="width: 8%">考核人</th>
+										<th style="width: 6.5%">权重%<br>（实施）</th>
+										<th style="width: 25%">完成情况分析</th>
+										<th style="width: 5%">自评</th>
+										<th style="width: 6.5%">权重%<br>（考评）</th>
+										<th style="width: 5%">终评</th>
+									</tr>
+									<tr id="tr_addRow" class="tab_tr2">
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr class="tab_tr4">
+										<td></td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+									</tr>
+								</table>
+								<div style="height: 3em;"></div>
+								<div class="div_row2">
+									<div class="div_tleft"><div class="div_point"></div>日常工作评价</div>
+								</div>
+								<table id="tab_behaviour" class="tab_behaviour">
+									<tr class="tab_tr4">
+										<th style="width: 10%">考核项</th>
+										<th style="width: 15%">评价内容及标准</th>
+										<th style="width: 20%">第一档</th>
+										<th style="width: 20%">第二档</th>
+										<th style="width: 20%">第三档</th>
+										<th style="width: 10%">评分</th>
+									</tr>
+									<tr class="tab_tr5" style="font:1.6em/1.1em 'SimSun';">
+										<td>主动性</td>
+										<td>主动承担工作中的责任；主动帮助他人的奉献精神</td>
+										<td>工作态度不积极不主动，不能推进工作</td>
+										<td>能承担工作中的较重要的责任；有失误能勇于承认</td>
+										<td>在不影响当前工作业绩的情况下主动承担有竞争的工作项目或影响部门业绩的工作</td>
+										<td><select id="sel_level_1" onchange="calculate_score()"></select></td>
+									</tr>
+									<tr class="tab_tr6" style="font:1.6em/1.1em 'SimSun';">
+										<td>团队合作</td>
+										<td>部门内部、部门之间的互助与合作或者工作信息的共享协作</td>
+										<td>不主动配合他人开展工作；不为他人提供便利或不能与人充分共享信息</td>
+										<td>能承担工作中的能够及时响应公司或部门其他人的需求；乐于共享工作信息或经验；配合其他同事完成团队工作</td>
+										<td>能够无保留地帮助部门成员或其他同事，得到他人一致认可；在个人利益与团队利益发生冲突时主动牺牲个人利益</td>
+										<td><select id="sel_level_2" onchange="calculate_score()"></select></td>
+									</tr>
+									<tr class="tab_tr5" style="font:1.6em/1.1em 'SimSun';">
+										<td>流程执行</td>
+										<td>公司及部门流程执行的自觉性和主动性</td>
+										<td>执行发生明显错误</td>
+										<td>流程执行造成其他部门的被动；或执行流程制度不主动，需要督促</td>
+										<td>能基本按照流程执行；且能本着节约公司成本、提高工作效率的思想完成工作</td>
+										<td><select id="sel_level_3" onchange="calculate_score()"></select></td>
+									</tr>
+									<tr class="tab_tr6" style="font:1.6em/1.1em 'SimSun';">
+										<td>学习进步</td>
+										<td>主动学习对实际工作有帮助的知识与技能</td>
+										<td>学习停滞不前，能力范围内的问题无法解决，影响工作绩效</td>
+										<td>能运用所学知识，在预期内有一定的进步</td>
+										<td>善于钻研，主动学习对工作有帮助的各项专业知识技能，并能运用到实际工作中去，明显提升了工作绩效</td>
+										<td><select id="sel_level_4" onchange="calculate_score()"></select></td>
+									</tr>
+								</table>
+								<div class="div_bkrow">
+									<span style="padding-left: 3em;">综合评价：</span>
+									<span id="span_quotiety"></span>
+									<span style="padding-left: 4em;">绩效分数：</span>
+									<span id="span_score">0</span>
+									<span style="padding-left: 4em;">绩效系数：</span>
+									<span id="span_rate">0</span>
+								</div>
+								<div id="div_flows_contol" class="flows_control">
+									<span>显示审核流程</span>
+									<img src="images/show_check.png" class="btn_flows_control">
+								</div>
+								<div id="div_flows" class="div_flows" style="margin-left:2.5em;">
+								</div>
+								<div id="div_bt_feedback" class="div_row2" style="display:none;">
+									<div class="div_tleft"><div class="div_point"></div>考核人点评</div>
+								</div>
+								<div id="div_feedback" class="div_row2" style="display:none;text-align:left;width:785px">
+									<textarea id="ta_feedback" class="div_testarea"
+									placeholder="请输入领导评语" required="required" maxlength="500"></textarea>
+								</div>
+							</div>							
+							<!-- 以下为计划表 -->
+							<div id="div_table2">
+								<table id="tab_table2" class="tab_table">
+									<tr>
+										<th style="width: 15%">工作内容</th>
+										<th style="width: 22.5%">预计达到的工作目标</th>
+										<th style="width: 6.5%">权重%<br>（计划）</th>
+										<th style="width: 8%">考核人</th>
+										<th style="width: 6.5%">权重%<br>（实施）</th>
+										<th style="width: 25%">完成情况分析</th>
+										<th style="width: 5%">自评</th>
+										<th style="width: 6.5%">权重%<br>（考评）</th>
+										<th style="width: 5%">终评</th>
+									</tr>
+									<tr id="tr_addRow2" class="tab_tr2">
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr class="tab_tr4">
+										<td></td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+										<td></td>
+										<td>0</td>
+										<td></td>
+									</tr>
+								</table>
+								<div id="div_flows_contol2" class="flows_control">
+									<span>显示审核流程</span>
+									<img src="images/show_check.png" class="btn_flows_control">
+								</div>
+								<div id="div_flows2" class="div_flows" style="margin-top:1em;">
+								</div>
+								<div id="div_bt_feedback2" class="div_row2" style="display:none;">
+									<div class="div_tleft"><div class="div_point"></div>考核人点评</div>
+								</div>
+								<div id="div_feedback2" class="div_row2" style="display:none;text-align:left;width:785px">
+									<textarea id="ta_feedback2" class="div_testarea"
+									placeholder="请输入领导评语" required="required" maxlength="500"></textarea>
+								</div>
+							</div>
+							<!-- 控制bar -->						
+							<div id="div_control" class="control_bottom">
+								<div id="btn_table" class="div_button" style="background-color:#799dd9" onclick="onTabTypeChange()">下一页</div>
+								<div id="btn_reject" class="div_button" style="background-color:#41c651" onclick="onSubmit(7)">驳回</div>
+								<div id="btn_confirm" class="div_button" style="background-color:#799dd9" onclick="onSubmit(3)">确认</div>						
+							</div>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="dlg_work">
+			<div class="work_div"><span>工作内容：</span><input id="ipt_target" type="text" maxlength="50" disabled="disabled"></div>
+			<div class="work_div"><span>预计达到的工作目标：</span><textarea id="ta_schedule" maxlength="500" disabled="disabled"></textarea></div>
+			<div class="work_div"><span>权重%（计划）：</span><input id="ipt_wt_plan" type="text" maxlength="4" disabled="disabled"></div>
+			<div class="work_div"><span>考核人：</span><input id="ipt_assessor" type="text" maxlength="50" disabled="disabled"></div>
+			<div class="work_div"><span>权重%（实施）：</span><input id="ipt_wt_carry" type="text" maxlength="4" disabled="disabled"></div>
+			<div class="work_div"><span>完成情况分析：</span><textarea id="ta_situation" maxlength="500" disabled="disabled"></textarea></div>
+			<div class="work_div"><span>自评：</span><select id="sel_a_self" name="sel_a_self" disabled="disabled"></select></div>
+			<div class="work_div"><span>权重%（考评）：</span><input id="ipt_wt_leader" type="text" maxlength="4" oninput="checkFloatPositive(this,2)"></div>
+			<div class="work_div"><span>终评：</span><select id="sel_a_leader" name="sel_a_leader"></select></div>
+			<div class="work_bottom">
+				<img src="images/cancle_materials.png" onclick="closeDialog(0)">
+				<img src="images/submit_materials.png" onclick="closeDialog(1)">
+			</div>
+		</div>
+	</body>
+</html>

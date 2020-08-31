@@ -1,0 +1,203 @@
+.td1_div3 {
+    margin: 35px auto 50px auto;
+    text-align: center;
+    font: bold 36px/40px 'KaiTi';
+}
+.td1_div4{
+	text-align:right;
+	margin:30px auto 5px auto;
+	width:95%;
+	overflow:hidden;
+	zoom:1;
+}
+.addMaterials{
+	float: left;
+    height: 34px;
+    margin-left:2px;
+    cursor: pointer;
+}
+.importMaterials{
+	float: right;
+    width: 22px;
+    margin-left: 8px;
+    margin-right: 25px;
+    position: relative;
+    top: 6px;
+    cursor: pointer;
+}
+.exportMaterials{
+	float: right;
+    width: 22px;
+    margin-left: 15px;
+    margin-right: 8px;
+    position: relative;
+    top: 6px;
+    cursor: pointer;
+}
+.searchMaterials{
+	float: right;
+    height: 26px;
+    border-right: 1px solid #c9c9c9;
+    border-top: 1px solid #c9c9c9;
+    border-bottom: 1px solid #c9c9c9;
+    position: relative;
+    top: 3px;
+    cursor: pointer;
+}
+.td1_div4 input{
+	float: right;
+    height: 26px;
+    width: 100px;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    padding: 0px 10px;
+    margin-right: -3px;
+    position: relative;
+    top: 3px;
+}
+.dialog_materials_bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    opacity: 0.3;
+    filter: alpha(opacity=0.3);
+    background-color: #000000;
+    z-index: 1;
+    border: 1px solid #e5e5e5;
+}
+.dialog_materials {
+    background: #fff;
+    border:1px solid #787878;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: -150px;
+    width: 510px;
+    z-index: 2;
+    display: none;
+    padding:20px 30px 40px 30px;
+    font: 15px/25px 'microsoft yahei';
+}
+.materials_top{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.materials_top span:nth-of-type(1){
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:80px;
+	color:#FF9999;
+}
+.materials_top span:nth-of-type(2){
+	display:inline-block;
+	width:410px;
+	color:#FF9999;
+	float:right;
+}
+.materials_id{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.materials_id span{
+	display:inline-block;
+}
+.materials_id div:nth-of-type(1){
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:80px;
+	color:#70CFF9;
+}
+.materials_id input{
+	display:inline-block;
+	width:400px;
+	float:right;
+	padding:0 5px;
+	text-align:left;
+	line-height: 25px;
+}
+.materials_model{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.materials_model span{
+	display:inline-block;
+}
+.materials_model div:nth-of-type(1){
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:80px;
+	color:#70CFF9;
+}
+.materials_model input{
+	display:inline-block;
+	width:400px;
+	float:right;
+	padding:0 5px;
+	text-align:left;
+	line-height: 25px;
+}
+.materials_remark{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.materials_remark span{
+	display:inline-block;
+}
+.materials_remark div:nth-of-type(1){
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:80px;
+	color:#70CFF9;
+}
+.materials_remark input{
+	display:inline-block;
+	margin-left:15px;
+	width:400px;
+	float:left;
+	padding:0 5px;
+	text-align:left;
+	line-height: 25px;
+}
+.materials_unit{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.materials_unit span{
+	display:inline-block;
+}
+.materials_unit div:nth-of-type(1){
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:80px;
+	color:#70CFF9;
+}
+.materials_unit input{
+	display:inline-block;
+	margin-left:15px;
+	width:400px;
+	float:left;
+	padding:0 5px;
+	text-align:left;
+	line-height: 25px;
+}
+.materials_bottom{
+	margin:40px 0 0 0;
+}
+.materials_bottom img{
+	float:right;
+	height:34px;
+	margin-left:20px;
+	cursor:pointer;
+}

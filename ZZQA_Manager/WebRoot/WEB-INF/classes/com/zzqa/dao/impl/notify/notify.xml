@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="notify">
+	<typeAlias alias="notify"
+		type="com.zzqa.pojo.notify.Notify" />
+
+	<resultMap id="result_basc" class="notify">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="publisher" column="publisher" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertNotify" parameterClass="notify">
+		insert into notify(id,title,content,publisher,create_id,create_time,update_time)
+		values(#id#,#title#,#content#,#publisher#,#create_id#,#create_time#,#update_time#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateNotify" parameterClass="notify">
+        update notify set 
+        title=#title#,
+        content=#content#,
+        publisher=#publisher#,
+        update_time=#update_time#
+        where id = #id#
+    </update>
+
+	<!-- 通过id删除 -->
+    <delete id="delNotifyByID" parameterClass="int" >
+        delete from notify where id=#id#
+    </delete>
+	
+	<select id="getNotifyByID" parameterClass="int" resultClass="notify">
+		select * from notify where id=#id#
+	</select>
+	
+	<select id="getNewNotifyIDByCreateID" parameterClass="int" resultClass="int">
+		select id from notify where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	
+	<select id="getNotifyListByCreateID" parameterClass="java.util.Map" resultMap="result_basc">
+		select * from notify where create_id=#create_id# 
+		<isGreaterThan property="starttime" compareValue="0">
+			and update_time between #starttime# and #endtime# 
+		</isGreaterThan>
+			order by update_time desc
+	</select>	
+	
+	<select id="getNotifyListByYear" parameterClass="java.util.Map" resultMap="result_basc">
+		select * from notify
+		<dynamic  prepend="WHERE">
+			<isGreaterThan prepend="and" property="starttime" compareValue="0">
+				update_time between #starttime# and #endtime# 
+			</isGreaterThan>
+		</dynamic>
+		order by update_time desc
+		<isGreaterThan property="maxRow" compareValue="0">
+			 limit 0,#maxRow#
+		</isGreaterThan>
+	</select>
+	<!--未读回复的通知 -->
+	<select id="getNotReadReplyNotifyList" parameterClass="java.util.Map" resultMap="result_basc">
+		select * from notify where 
+		(select max(update_time)from comments where create_id != #create_id# and comments.type=3 and comments.foreign_id=notify.id and notify.create_id=#create_id#)
+		>(select max(update_time) from read_user where type=3 and read_user.foreign_id=notify.id and read_user.uid=#create_id#)
+		or (select max(reply.update_time) from reply,comments where notify.id=comments.foreign_id and 
+				comments.type=3 and reply.comment_id=comments.id and reply.create_id!=#create_id# and reply.reply_uid=#create_id#)
+				>(select max(update_time) from read_user where read_user.type=3 and read_user.foreign_id=notify.id and read_user.uid=#create_id#)
+		order by notify.update_time desc
+	</select>
+</sqlMap>

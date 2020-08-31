@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:王国才  -->
+<sqlMap namespace="task_updateflow">
+	<typeAlias alias="task_updateflow" type="com.zzqa.pojo.task_updateflow.Task_updateflow" />
+
+	<resultMap id="result_basc" class="task_updateflow">
+		<result property="id" column="id" />
+		<result property="foreign_id" column="foreign_id" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+		<result property="count" column="count" />
+	</resultMap>
+
+	<!-- 添加 -->
+	<insert id="insertTask_updateflow" parameterClass="task_updateflow">
+		insert into
+		task_updateflow(foreign_id,create_id,create_time,update_time,count)
+		values(#foreign_id#,#create_id#,#create_time#,#update_time#,0)
+		<selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 通过task_id查询任务单 -->
+	<select id="getTask_updateflowByTaskId" parameterClass="int" resultClass="task_updateflow">
+		select * from task_updateflow where foreign_id=#forignId# ORDER BY id DESC limit 1
+	</select>
+	<!-- 通过id查询任务单 -->
+	<select id="getTask_updateflowById" parameterClass="int" resultClass="task_updateflow">
+		select * from task_updateflow where id=#id#
+	</select>
+	
+	<select id="getRunningTask_updateflow" resultClass="task_updateflow">
+		select task_updateflow.*,t.operation,user.truename as create_name
+			 from task_updateflow left join 
+			( select * from (select operation,foreign_id,create_time from flow  where type=21 order by id desc limit 10000000 ) as f group by foreign_id ) t
+			on t.foreign_id=task_updateflow.id 
+			left join user on task_updateflow.create_id=user.id
+			where t.operation!=3 and t.operation!=5 and t.operation!=7 and t.operation!=9 and t.operation!=11 and user.position_id != 56
+	</select>
+	
+	<select id="getAllList" resultClass="task_updateflow">
+		select task_updateflow.*,user.truename as create_name from task_updateflow
+		left join user on task_updateflow.create_id=user.id
+	</select>
+	
+	<!-- 修改编辑次数 -->
+	<update id="updateTask_updateflowCount" parameterClass="int">
+		update task_updateflow set count =1
+		where foreign_id=#task_id#
+	</update>
+
+</sqlMap>

@@ -1,0 +1,163 @@
+/**�����б���ʽ��ʼ**/
+.td2_div1{
+	text-alig:center;
+	margin:0px auto;
+	color:#000;
+	font:20px/30px 'SimSun';
+	font-weight:700;
+	display: inline-block;
+}
+.td2_table1{
+	border:0px;
+	border-collapse: collapse;
+	margin:0px auto;
+	width:100%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+}
+.td2_table1 td{
+	height: 30px;
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+	text-align:center;
+}
+.td2_table1 input{
+	display: block;
+	height: 100%;
+	width:100%;
+	text-align:center;
+	border-width:0px;
+}
+.td2_table0{
+	border:0px;
+	border-collapse: collapse;
+	margin:30px auto;
+	width:100%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+}
+.td2_table0 td{
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+	font:14px/30px 'SimSun';
+	padding:10px 10px 10px 5px;
+}
+.table0_tr1_td1{
+	text-align:center;
+	width:19.6%;
+	min-width:120px;
+	color:#000;
+	font:14px/25px 'SimSun';
+}
+.table0_tr1_td2{
+	width:99%;
+	text-align:left;
+}
+.table0_tr1_td2 a{
+	text-decoration: none;
+	font:14px/25px 'SimSun';
+}
+.table0_tr1_td2 a:hover {
+    text-decoration: underline;
+}
+
+.td2_table2{
+	border:0px;
+	border-collapse: collapse;
+	margin:0px auto;
+	margin-top:30px;
+	width:100%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+}
+.td2_table2 td{
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+	padding:10px 5px 10px 5px;
+}
+.table2_tr1_td1{
+	text-align:center;
+	width:19.6%;
+	min-width:120px;
+	color:#000;
+	font:14px/25px 'SimSun';
+}
+.table2_tr1_td2{
+	width:99%;
+	text-align:left;
+}
+.table2_tr1_td2 a{
+	text-decoration: none;
+	font:14px/25px 'SimSun';
+}
+.table2_tr1_td2 a:hover {
+    text-decoration: underline;
+}
+
+.table1_tr1{
+	height:40px;
+}
+.table1_tr1_td1{
+	width:20%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td2{
+	width:20%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td3{
+	width:20%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td7{
+	width:15%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td4{
+	width:12%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td5{
+	width:8%;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td6{
+	width:5%;
+	min-width:47px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr2{
+	height:40px;
+}
+.table1_tr2 td{
+	color:#000;
+	font:14px/30px 'SimSun';
+	text-align: center;
+}
+.table1_tr2_td6{
+	min-width:40px;
+}
+.table1_tr2_td6 img{
+	width:15px;
+	margin:0 2px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.div_btn{
+	
+}
+.div_btn img{
+	border: none; 
+	height:35px;
+	margin-top:20px;
+	cursor:pointer;
+}
+/**�½�����������ʽ����**/
+

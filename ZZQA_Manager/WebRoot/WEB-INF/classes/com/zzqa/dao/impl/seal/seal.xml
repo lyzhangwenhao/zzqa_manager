@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="seal">
+	<typeAlias alias="seal"
+		type="com.zzqa.pojo.seal.Seal" />
+
+	<resultMap id="result_basc" class="seal">
+		<result property="id" column="id" />
+		<result property="approver" column="approver" />
+		<result property="executor" column="executor" />
+		<result property="apply_department" column="apply_department" />
+		<result property="type" column="type" />
+		<result property="apply_time" column="apply_time" />
+		<result property="reason" column="reason" />
+		<result property="seal_user" column="seal_user" />
+		<result property="num" column="num" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+		<result property="create_id" column="create_id" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertSeal" parameterClass="seal">
+		insert into seal(approver,executor,apply_department,type,apply_time,reason,seal_user,num,create_time,update_time,create_id)
+		values(#approver#,#executor#,#apply_department#,#type#,#apply_time#,#reason#,#seal_user#,#num#,#create_time#,#update_time#,#create_id#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateSeal" parameterClass="seal">
+        update seal set 
+        approver=#approver#,
+        executor=#executor#,
+        apply_department=#apply_department#,
+        type=#type#,
+        apply_time=#apply_time#,
+        reason=#reason#,
+        seal_user=#seal_user#,
+        num=#num#,
+        update_time=#update_time#
+        where id = #id#
+    </update>
+	
+	<!--查询所有未完成的流程 -->
+	<select id="getRunningSeal" resultMap="result_basc">
+		select seal.* from seal left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=14 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on seal.id=f.foreign_id 
+		where  f.operation!=4 and f.operation!=5
+	</select>
+	
+	<!-- 通过id查询 -->
+	<select id="getSealByID" resultClass="seal" parameterClass="int">
+		select * from seal where id=#id#
+	</select>
+	
+	<!-- 通过id删除 -->
+	<delete id="delSealByID" parameterClass="int">
+		delete from seal where id=#id#
+	</delete>
+	
+	<!-- 查询最新添加的id -->
+	<select id="getNewSealIDByCreateID" resultClass="int" parameterClass="int">
+		select * from seal where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	<select id="getAllList" resultClass="seal">
+		select seal.*,user.truename as create_name from seal
+		left join user on seal.create_id=user.id
+	</select>
+</sqlMap>

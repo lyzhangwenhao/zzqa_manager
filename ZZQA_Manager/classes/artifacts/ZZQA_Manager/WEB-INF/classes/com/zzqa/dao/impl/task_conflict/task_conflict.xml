@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="task_conflict">
+    <typeAlias alias="task_conflict"
+               type="com.zzqa.pojo.task_conflict.Task_conflict"/>
+    <!-- 添加一条对比任务单 -->
+	<insert id="insertTask_conflict" parameterClass="task_conflict">
+		insert into
+		task_conflict(task_id,project_category,product_type,project_id,project_name,project_case,stage,project_type,customer,
+		delivery_time,description,inspection,verify,protocol,other,other2,other3,other4,other5,other6
+		,contract_time,remarks,project_life,project_report_peried,address,
+		fan_num,factory,submit_date,contract_type,equipment_type,consignee,fan_product_type,is_new_data)
+		values(#task_id#,#project_category#,#product_type#,#project_id#,#project_name#,#project_case#,#stage#,#project_type#,#customer#,
+		#delivery_time#,#description#,#inspection#,#verify#,#protocol#,#other#,#other2#
+		,#other3#,#other4#,#other5#,#other6#,#contract_time#,#remarks#,#project_life#,#project_report_peried#,#address#,
+		#fan_num#,#factory#,#submit_date#,#contract_type#,#equipment_type#,#consignee#,#fan_product_type#,#is_new_data#)
+	</insert>
+	
+	<!-- 修改 -->
+	<update id="updateTask_conflict" parameterClass="task_conflict">
+		update task_conflict set 
+		project_category=#project_category#,product_type=#product_type#, project_id =#project_id#, 
+		project_name=#project_name#, project_case =#project_case#, stage =#stage#,
+		project_type =#project_type#, customer =#customer#,	delivery_time =#delivery_time#, 
+		description =#description#,	inspection =#inspection#, verify =#verify#, 
+		protocol=#protocol#, other =#other#,remarks=#remarks# ,other2=#other2#,other3=#other3#,
+		other4=#other4#,other5=#other5#,other6=#other6#,contract_time=#contract_time#,
+		project_life=#project_life#,project_report_peried=#project_report_peried#,address=#address#,
+		fan_num=#fan_num#,factory=#factory#,submit_date=#submit_date#,contract_type=#contract_type#,
+		equipment_type=#equipment_type#,consignee=#consignee#,fan_product_type=#fan_product_type#,is_new_data=#is_new_data#
+
+		where task_id=#task_id#
+	</update>
+	
+	<!-- 通过id查询任务单 -->
+	<select id="getTask_conflictByTaskID" parameterClass="int" resultClass="task_conflict">
+		select * from task_conflict where task_id=#task_id# limit 0,1
+	</select>
+	
+     <!-- 查询是否保存对比任务单 -->
+    <select id="checkTask_conflict" resultClass="int" parameterClass="java.lang.String">
+        select id from task_conflict where task_id=#task_id#
+    </select>
+    
+    <!-- 删除对比任务单 -->
+    <delete id="delTask_conflictByID" parameterClass="int">
+        delete from task_conflict where task_id = #task_id#
+    </delete>
+     
+</sqlMap>

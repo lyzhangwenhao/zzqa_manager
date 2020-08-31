@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="performance_content">
+	<typeAlias alias="performance_content"
+		type="com.zzqa.pojo.performance_content.Performance_content" />
+
+	<!-- 添加 -->
+	<insert id="insertPerformance_content" parameterClass="performance_content">
+		insert into performance_content(p_id,target,plain,weight,
+		weight_self,weight_leader,situation,score_self,score_leader,assessor)
+		values(#p_id#,#target#,#plain#,#weight#,
+		#weight_self#,#weight_leader#,#situation#,#score_self#,#score_leader#,#assessor#)
+	</insert>
+	
+	<delete id="delPerformance_content" parameterClass="int">
+		delete from performance_content where p_id=#p_id#
+	</delete>
+	
+	<select id="getPerformance_contentListByPID" parameterClass="int" resultClass="performance_content">
+		select * from performance_content where p_id=#p_id#
+	</select>
+
+	
+</sqlMap>

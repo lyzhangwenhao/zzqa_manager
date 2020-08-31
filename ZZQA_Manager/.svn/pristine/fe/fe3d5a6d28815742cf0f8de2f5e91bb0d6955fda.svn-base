@@ -1,0 +1,782 @@
+package com.zzqa.util;
+
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.zzqa.pojo.user.User;
+/******
+ * 工具类
+ * @author louph
+ *
+ */
+public class DataUtil {
+	/*****
+	 * 操作权限
+	 * 1.新建项目任务单权限（有新建自然就拥有修改的权限，下同）；2.新建生产采购权限；3.新建项目采购权限（生产主管）；
+	 * 4.新建外协生产权限；5.新建生产单权限；6.新建发货单权限；7.新建出差单权限；8.新建请假单权限；9.总经理审核权限；
+	 * 10.项目任务单查看权限；11.风电商务助理审核权限；12.项目任务单查看权限(风电)（指查看别人的，可以看就可以下载附件和打印，下同,已弃用）；
+	 * 13.项目配置单查看权限(项目主管务必勾选，因为无法获取文件上传者)；14.预算单风电项目审核权限；15.预算单风电运营审核权限；16.预算单最终审核权限；
+	 * 17.采购单审核权限（适用全部涉及到的地方）；18.项目采购单查看权限（指查看别人的，关联项目任务单的创建者自动可见）；
+	 * 19.生产采购单查看权限；20.外协生产单查看权限；21.采购权限（适用全部涉及到的地方）；22.验货权限（适用全部涉及到的地方,包括确认到货）；
+	 * 23.出入库权限（适用全部涉及到的地方）；24.设备生产权限；25.生产单查看权限；
+	 * 26.发货单查看权限（指查看别人的，关联项目任务单的创建者自动可见）；27.发货权限（由发货人填写到货及上传回执单）；
+	 * 28.请假单查看权限（指查看别人的）；29.出差单查看权限（指查看别人的）；30.请假/销假考勤备案权限；
+	 * 31.出差单财务备案权限；32.出差单考勤备案权限；33.产品管理查看权限；34.用户管理权限；35.操作日志查看权限；
+	 * 36.请假月报表查看权限；37.出差月报表查看；38.财务发货清单查看;39.新建销假单；40.销假单查看权限；
+	 * 41：员工交流查看权限（默认勾选）；42：通知提交权限；43：通知评论权限（默认勾选）；44：建议提交权限（默认勾选）；45：建议回复权限；
+	 * 46：反馈提交权限（默认勾选），47：反馈回复权限，48:风电销售经理审核权限，49：石化销售经理审核权限,50：工程审核
+	 * 51:工业通讯销售经理审核权限， 52：新建状态跟踪表；53：审批状态跟踪表；54：跟踪表查看权限；55：石化商务助理审核权限；
+	 * 56：工业商务助理审核权限；57：销售合同提交权限；58：客户合同评审权限；59：销售合同商务审核；60：销售合同部门审核；
+	 * 61：销售合同运营审核:；62：销售合同总经理审核；63：销售合同查看权限；64：客户资料操作权限；65：客户资料查看权限；
+	 * 66：物料信息操作权限；67：物料信息查看权限；68：新建采购合同；69：查看采购合同权限；70：供应商操作权限；71：供应商查看权限；
+	 * 72：采购合同商务审核；73：采购合同部门审核；74：采购合同运营审核:；75：采购合同总经理审核；
+	 * 76：新建售后任务单；77：现场服务负责人风电权限；78：现场服务助理风电权限；79：售后任务单查看权限；
+	 * 80：新建用车申请表；81：用车申请表查看权限；82：用车审批权限；83：车辆归还确认权限；
+	 * 84：新建用印申请表；85：用印申请表查看权限；86：开发部印章审批权限；87：生产部印章审批权限；88：财务部印章审批权限；
+	 * 89：现场服务部印章审批权限；90：售后服务部印章审批权限； 91：综合管理部印章审批权限；92：品质管理部印章审批权限；
+	 * 93：风电事业部印章审批权限；94：旋转机械监测事业部印章审批权限；95：工业通讯事业部印章审批权限；
+	 * 96：公章管理权限；97：合同章管理权限；98：售后服务专用章管理权限；99：投标专用章管理权限；100：法人章管理权限；
+	 * 101：法人签字章管理权限；102：财务专用章管理权限；103：工时统计新建权限；104：工时统计查看权限；105：项目管理权限；
+	 * 106：综合销售部印章审批权限；107：项目预算表提交权限；108：水泥项目销售经理审核权限；109：水泥项目商务助理审核权限
+	 * 110：新建任务单邮件提醒；111：屏蔽离职用户；112：新建项目启动任务单;113:技术负责人审核权限；114：部门经理审核权限;115：项目启动任务单查看权限；
+	 * 116：同级人员OA申请查看权限;117:销售合同商务盖章权限;118:采购合同采购权限；119：采购合同到货验货权限；120：采购合同入库权限；
+	 * 121：水泥事业部印章审批权限；122：预算单石化项目审核权限；123：预算单工业通讯项目审核权限；124：预算单水泥项目审核权限
+	 * 125：出货流程新建权限；126：出货流程查看权限；127：出货流程审批权限；128：仓库管理权限；129：发货执行权限;
+	 * 130：现场服务负责人石化权限；131：现场服务负责人工业通讯权限；132：现场服务负责人水泥权限；
+	 * 133：现场服务助理石化权限；134：现场服务助理工业通讯权限；135：现场服务助理水泥权限；136：添加产品权限；137：印制版模板管理权限；
+	 * 138：预算单石化运营审核权限；139：预算单工业通讯运营审核权限；140：预算单水泥运营审核权限;141:人力资源部印章审批权限；
+	 * 142：轨道交通事业部印章审批权限；143：现场服务负责人轨道交通权限；144：现场服务助理轨道交通权限；
+	 * 145：新建考核权限；146：考核查看权限（全部）；147：新建出库权限；148：出库查看权限；149：出库管理员权限；
+	 * 150：轨道交通项目销售经理审核权限；151：轨道交通项目商务助理审核权限；152：预算单轨道交通项目审核权限;153:预算单轨道交通运营审核权限
+	 * 154:成品出厂检查记录表提交权限；155：项目启动单合同审批权限；156：诊断中心印章审批权限；157：售后审核；158：诊断审核；159：产品部印章审批权限
+	 * 160:提前任务单修改财务审核权限；161：提前任务单修改生产审核权限；162：提前任务单修改部门审核权限；163：新产品试装产品部门审核权限
+	 * 164:新建其他部门采购单；165:项目启动任务单修改申请查看权限；166:其它部门申购单查看权限;167:预算单新产品试装项目审核权限;168:用车统计表查看权限
+	 * 169:煤炭、冶金商务助理审核权限; 170:煤炭、冶金销售经理审核权限; 171:煤炭、冶金审核;172:预算单煤炭、冶金项目审核权限;173:工程经理审核权限;
+	 * PS：项目任务单查看权限保留一个，项目主管审核权限改为现场技术支持审核权限，负责现场技术支持审批和填写项目配置单
+	 * PS:2018-11-21新增售后审核  并且将现场服务经理审核换成工程审核
+	 * PS:2019-03-05新增提前任务单修改财务审核  提前任务单修改生产审核    提前任务单修改部门主管审核
+	 */
+	private static String[] permissionsArray = new String[] { "","新建项目任务单", "新建生产采购单", "新建项目采购单", 
+		"新建外协生产单","新建生产单（已屏蔽）","新建发货单","新建出差单","新建请假单","总经理审核",
+		"项目单查看权限","风电商务助理审核","风电项目单查看","项目配置单查看","预算单风电项目审核权限",
+		"预算单风电运营审核权限","预算单最终审核","采购单审核","项目采购单查看","生产采购单查看",
+		"外协生产单查看","采购权限","验货权限","出入库权限","设备生产权限（已屏蔽）","生产单查看权限","发货单查看权限",
+		"发货权限","请假单查看权限","出差单查看权限","请假考勤备案","出差单财务备案","出差单考勤备案","产品管理查看",
+		"用户管理权限","操作日志查看","请假月报表查看","出差月报表查看","财务发货清单查看","新建销假单","销假单查看权限",
+		"员工交流查看权限","通知提交权限","通知评论权限","建议提交权限","建议回复权限","反馈提交权限","反馈回复权限",
+		"风电销售经理审核","石化销售经理审核","工程审核","工业销售经理审核","新建状态跟踪表","审批状态跟踪表","跟踪表查看权限"	,
+		"石化商务助理审核","工业商务助理审核","新建销售合同","客户合同评审权限","销售合同商务审核","销售合同部门审核",
+	 	"销售合同运营审核","销售合同总经理审核","销售合同查看权限","客户资料操作权限","客户资料查看权限",
+	 	"物料信息操作权限","物料信息查看权限","新建采购合同","采购合同查看权限","供应商操作权限","供应商查看权限",
+	 	"采购合同商务审核","采购合同部门审核","采购合同运营审核","采购合同总经理审核","新建售后任务单","现场服务负责人风电权限","现场服务助理风电权限",
+	 	"售后任务单查看权限","新建用车申请表","用车申请表查看权限","用车审批权限","车辆归还确认权限","新建用印申请表","用印申请表查看权限",
+	 	"开发部印章审批权限","生产部印章审批权限","财务部印章审批权限","现场服务部印章审批权限","售后服务部印章审批权限",
+	 	"综合管理部印章审批权限","品质管理部印章审批权限","风电事业部印章审批权限","旋转机械监测事业部印章审批权限","工业通讯事业部印章审批权限",
+	 	"公章管理权限","合同章管理权限","售后服务专用章管理权限","投标专用章管理权限","法人章管理权限","法人签字章管理权限","财务专用章管理权限",
+	 	"工时统计新建权限","工时统计查看权限","项目管理权限","综合销售部印章审批权限","项目预算表提交权限","水泥项目销售经理审核权限",
+	 	"水泥项目商务助理审核权限","新建任务单邮件提醒","屏蔽离职用户","新建项目启动任务单","技术负责人审核权限","部门经理审核权限",
+	 	"项目启动任务单查看权限","同级人员OA申请查看权限","销售合同商务盖章权限","采购合同采购权限","采购合同到货验货权限","采购合同入库权限",
+	 	"水泥事业部印章审批权限","预算单石化项目审核权限","预算单工业通讯项目审核权限","预算单水泥项目审核权限",
+	 	"出货流程新建权限","出货流程查看权限","出货流程审批权限","仓库管理权限","发货执行权限",
+	 	"现场服务负责人石化权限","现场服务负责人工业通讯权限","现场服务负责人水泥权限",
+	 	"现场服务助理石化权限","现场服务助理工业通讯权限","现场服务助理水泥权限","添加产品权限","印制版模板管理权限",
+	 	"预算单石化运营审核权限","预算单工业通讯运营审核权限","预算单水泥运营审核权限","人力资源部印章审批权限","轨道交通事业部印章审批权限",
+	 	"现场服务负责人轨道交通权限","现场服务助理轨道交通权限","新建考核权限","考核查看权限","新建出库权限","出库查看权限","出库管理员权限",
+	 	"轨道交通项目销售经理审核权限","轨道交通项目商务助理审核权限","预算单轨道交通项目审核权限","预算单轨道交通运营审核权限","成品出厂检查记录表提交权限",
+	 	"合同审批权限","诊断中心印章审批权限","售后审核","诊断审核","产品部印章审批权限","项目启动任务单修改财务审核","项目启动任务单修改生产审核","项目启动任务单修改部门审核",
+	 	"新产品试装产品部门审核权限","新建其他部门采购单","项目启动任务单修改申请查看权限","其他部门采购单查看权限","预算单新产品试装项目审核权限","用车统计表查看权限",
+	 	"煤炭、冶金商务助理审核权限","煤炭、冶金销售经理审核权限","煤炭、冶金等工程审核","预算单煤炭、冶金项目审核权限","工程经理审核权限"};
+	//项目类型
+	private static String[] pCategoryArray = new String[] {"风电项目","石化项目","工业通讯项目","水泥项目","轨道交通项目","新产品试装","煤炭项目","冶金项目","其它项目"};
+	private static String[] pCategoryArray2 = new String[] {"石化项目","创为实产品项目"};
+	//项目类型对应的销售经理审批权限，方便项目增加
+	private static int[] pCategoryPIDArray = new int[]{48,49,51,108,150,163,170,170,170};
+	//项目类型对应的商务助理审批权限，方便项目增加
+	private static int[] businessPIDArray = new int[]{11,55,56,109,151,163,169,169,169};
+	//项目采购单的预算单项目审批权限
+	private static int[] purchasePIDArray = new int[]{14,122,123,124,152,167,172,172,172};
+	//项目采购单的预算单运营审批权限
+	private static int[] officerPIDArray = new int[]{15,138,139,140,153};
+	//售后任务单的现场服务负责人审批权限
+	private static int[] afterSaleApproveArray = new int[]{77,130,131,132,143};
+	//售后任务单的现场服务助理审批权限
+	private static int[] afterSaleAssistantArray = new int[]{78,133,134,135,144};
+	//产品类型 屏蔽CS2000增加，新加选项：CS2000-V1,CS2000-V2
+	//新加选项TMS2000(2018/10/31)
+	private static String[] productTypeArray = new String[] { "CS2000","CS2200","DS9000","DS9100有线版","DS9100无线版","MOXA","配件采购",
+		"CS2000-V1","CS2000-V2","TMS2000","TMS CPU Board","CS2600"};
+	private static String[] productTypeArray2 = new String[] { "CS2000","CS2200","DS9000","DS9100有线版","DS9100无线版","MOXA","配件采购",
+		"创为实","培训","TMS2000"};
+	//项目情况
+	private static String[] pCaseArray = new String[] { "普项","急项"};
+	//销售阶段
+	private static String[] stageArray = new String[] { "","试用","已签订技术协议","已签订商务合同"};
+	private static String[] stageArray2 = new String[] { "全部","试用","已签订技术协议","已签订商务合同","提前启动"};
+	//项目类型
+	private static String[] pTypeArray = new String[] { "新建项目","技改项目","售后项目"};
+	//是否合格
+	private static String[] qualifyArray = new String[] { "","合格","不合格"};
+	
+	private static String[] inspectionArray = new String[] { "要求施工前现场开箱验货","不需要施工前现场开箱验货"};
+	
+	private static String[] verifyArray = new String[] { "发货前需和销售经理确认","发货前不需和销售经理确认"};
+	
+	/**
+	 * 1:新建,等待商务助理签字；2：新建,等待销售经理签字；3：商务助理通过，等待项目主管审核；
+	 * 4：项目主管通过，等待销售经理审核； 5：总经理通过，发给生产主管；6：销售经理通过，等待总经理审核；
+	 * 7：项目主管通过，等待商务助理审核；8：商务助理通过，发给生产主管；9：商务助理不通过；10：项目主管不通过；
+	 * 11：总经理不通过；12：取消；13：商务助理审批通过；14：商务助理审批不通过；15现场技术支持通过；
+	 * 16：现场技术支持不通过；17：现场服务经理通过；18：现场服务经理不通过；19：销售经理通过；20：销售经理不通过
+	 * 21：总经理通过;22:总经理不通过；23：已完成
+	 * 1
+	 */
+	 private static String[] flowArray = new String[] { "","提交，等待商务助理审核","提交，等待销售经理审核",
+		 "商务助理已审核","项目主管已审核","已完成","总经理已审核","项目主管已审核","已完成",
+		 "商务助理审核未通过","项目主管审核未通过","总经理审核未通过","已撤销,结束","商务助理已审核","商务助理审核未通过",
+		 "现场技术支持审核通过","现场技术支持审核未通过","工程经理审核通过","工程审核未通过","销售经理审核通过",
+		 "销售经理审核未通过","总经理审核通过","总经理审核未通过","已完成","诊断审核通过","诊断审核未通过","工程审核通过","工程经理审核未通过"};
+	 
+	 private static String[] flowArray1 = new String[] { "","提交，等待产品经理审核","提交，等待产品经理审核", "","","","","","",
+		 "","","","已撤销,结束","产品经理审核通过，等待创建人上传文件","产品经理审核未通过",
+		 "","","文件已上传，等待产品经理审核","创建人文件上传失败","产品经理审核通过，等待总经理审核",
+		 "产品经理审核未通过","总经理审核通过","总经理审核未通过","已完成","",""};
+	 /****
+	  * 1:创建生产采购需求表；2：运行总监审批通过；3：运行总监审批未通过；4：采购人员采购单审核；
+	  * 5：完成采购，7：生产主管全部验货，并完成统计； 8：仓库管理员确认入库；
+	  * 除去流程 6：全部确认到货
+	  */
+//	 private static String[] flowArray2 = new String[] { "","已创建，等待运营审核","审批通过，等待采购人员确认",
+//		 "运营审批未通过","采购人员已确认，正在采购","完成采购，等待验货","","完成验货，等待入库","已入库，结束"};
+	 private static String[] flowArray2 = new String[] { "","已创建，等待采购审核","审批通过，等待采购人员确认",
+		 "采购审核未通过","采购人员已确认，正在采购","完成采购，等待验货","","完成验货，等待入库","已入库，结束"};
+	 /*******
+	  * 1:新建,提交项目预算表；2：预算单项目审核通过；3：预算单项目审核未通过；
+	  * 12：预算单运营审核通过；13：预算单运营审核未通过；14：预算单最终审核通过；15：预算单最终审核未通过；
+	  * 4：生产主管创建采购需求表；5：采购单审核通过；6：采购单审核未通过；7：采购人员采购单审核；
+	  * 8：完成采购，10：生产主管全部验货，并完成统计； 11：仓库管理员确认入库；16：关联项目采购单；17：已撤销
+	  * 除去流程 9：全部采购
+	  */
+	 private static String[] flowArray3 = new String[] { "","预算单已提交，等待部门审核","部门审核通过，等待总经理审核",
+		 "部门审核未通过","采购单已创建，等待审核","审核通过，等待采购人员确认","采购单审核未通过","采购人员已确认，正在采购",
+		 "采购完成，等待验货","","验货完毕，等待入库","已入库,结束","部门审核通过，等待总经理审核","部门审核未通过",
+		 "预算单审核通过，正在填写采购单","总经理审核未通过","关联项目采购单","已撤销"};
+	 /***********
+	  * 1:创建外协生产单，关联生产采购，提交外协生产需求表；2：出库；3：采购人员预计外协品到货时间；
+	  * 4:生产主管确认到货时间；5：生产主管验货，并完成统计；6：仓库管理员确认入库；
+	  */
+	 private static String[] flowArray4 = new String[] { "","已创建，等待出库","已出库，等待生产","正在生产",
+		 "已到货，等待验货","验货完毕，等待入库","已入库，结束"};
+	 /*******
+	  * 1：新建、备料；5：请求出库；2：出库；3：生产；4：入库
+	  */
+	 private static String[] flowArray5 = new String[] { "","生产单已创建","已出库，正在生产","生产完毕","生产完毕，已入库","完成请求，等待出库"};
+	 /*******
+	  * 1：新建；2：出库；3：发货单据；4：发货；5：到货；6：完成；7:成品出厂检查记录表已上传
+	  */
+	 private static final String[] flowArray6 = new String[] { "","发货单已创建，等待出库","已出库，等待单据上传","单据已上传，等待发货","已发货","已到货，等待回执单上传",
+		 "回执单已上传，结束","等待单据上传"};
+	 /*******
+	  * 1：出差申请提交；2：上级领导审批通过；3：审批不通过；4：考勤备案；5：财务备案；7：已撤销,结束；8,无责备案，等待确认
+	  *删除流程=>6：要求延时；
+	  */
+	 private static final String[] flowArray7 = new String[] { "","出差单已创建，等待上级审批","上级审批通过,等待考勤备案","结束"
+		 ,"考勤备案完成，等待财务备案","结束","出差延长","已撤销,结束","无需备案，等待确认"};
+	 /*******
+	  * 1：请假申请提交；2：部门领导审批通过；3：部门领导审批不通过；4：分管领导审批通过；5：分管领导审批不通过；6：考勤备案；
+	  * 7：总经理审批通过；8：总经理审批不通过；9：撤销
+	  */
+	private static final String[] flowArray8 = new String[] { "","请假单已创建，等待部门审批","部门审批通过","结束"
+		,"分管审批通过","结束","结束","总经理审批通过，等待考勤备案","结束","已撤销"};
+	 /*******
+	  * 1：单据已关联，等待提交；2：填写销假:；3：行政审核通过；4：审核未通过；
+	  * 5：部门领导审批通过；6：部门领导审批不通过；7：分管领导审批通过；8：分管领导审批不通过；
+	  * 9：总经理审批通过；10：总经理审批不通过；
+	  */
+	 private static final String[] flowArray9= new String[] { "","单据已关联，等待提交","销假单已创建，等待部门审批","结束","结束","部门审批通过","结束","分管审批通过"
+		 ,"结束","总经理审批通过，等待考勤备案","结束"};
+	 
+	 /*******
+	  * 1：跟踪表新建，待审批；2：结束；3：审批未通过
+	  */
+	 private static final String[] flowArray10= new String[] { "","状态跟踪表已创建，等待审批","结束","审批未通过"};
+	 /*******
+	  * 1：新建，待审批；2：客户合同审批通过；3：客户合同审批未通过；4：商务审批通过；5：商务审批未通过；6：部门经理审批通过；
+	  * 7：部门经理审批未通过；8：运营总监审批通过；9：运营总监审批未通过；10：总经理审批通过；11：总经理审批未通过；
+	  * 12：结束；13：撤销
+	  */
+	 private static final String[] flowArray11= new String[] { "","已创建，等待审批","客户合同审批通过","客户合同审批未通过","商务审批通过",
+		 "商务审批未通过","部门经理审批通过","部门经理审批未通过","运营总监审批通过","运营总监审批未通过","总经理审批通过","总经理审批未通过",
+		 "结束","已撤销"};
+	 /*******
+	  * 1：采购申请单已创建；2：商务审批通过；3：商务审批未通过； 4：部门经理审批通过；5：部门经理审批未通过；6：运营总监审批通过；
+	  * 7：运营总监审批未通过；8：总经理审批通过；9：总经理审批未通过； 10：结束；11：撤销；12:确认采购；13：验货完成，等待入库
+	  */
+	 private static final String[] flowArray12= new String[] { "","已创建，等待商务审批","商务审批通过","商务审批未通过","部门经理审批通过",
+		 "部门经理审批未通过","运营总监审批通过","运营总监审批未通过" ,"总经理审批通过","总经理审批未通过","已入库","已撤销","确认采购","验货完成，等待入库"};
+	 /*******
+	  * 1：售后任务单已创建；2：现场服务负责人审批通过；3：现场服务负责人审批未通过； 4：现场服务助理已确认；5：任务完成情况已确认；
+	  * 6：已上传任务记录；7：任务完成情况审批通过；8：任务完成情况审批未通过；9：撤销；10：挂起
+	  */
+	 private static final String[] flowArray13= new String[] { "","售后任务单已创建","现场服务负责人审批通过","现场服务负责人审批未通过",
+		 "现场服务助理已确认","任务完成情况已确认","已上传任务记录","结束","任务完成情况审批未通过","已撤销","挂起"};
+	 /*******
+	  * 1：用印申请表已创建；2：用印审批通过；3：用印审批未通过； 4：用印管理人已确认；5：已撤销
+	  */
+	 private static final String[] flowArray14= new String[] { "","用印申请表已创建","部门审批通过","部门审批未通过","结束","已撤销","总经理审批通过","用印审批未通过"};
+	 /*******
+	  * 1：用车申请表已创建；2：用车审批通过；3：用车审批未通过； 4：车辆借用中；5：用车归还确认；6：已撤销
+	  */
+	 private static final String[] flowArray15= new String[] { "","用车申请表已创建","用车审批通过","用车审批未通过","车辆信息填写完毕","结束","已撤销","","","","用车审批通过"};
+	 /*******
+	  * 1：新建，等待审批；2：全部提交；3：结束
+	  */
+	 private static final String[] flowArray16= new String[] { "","工时统计表已更新","工时统计表已更新","工时统计表已更新"};
+	 /****
+	  * 1:已创建，等待技术负责人审批;2:技术负责人审批通过，等待部门经理审批;3:技术负责人审批未通过;
+	  * 4:部门经理审批通过，等待总经理审核通过;5:部门经理审批未通过;6:总经理审核未通过;7:已完成;8:已撤销"；9：合同审批通过，已完成;10:总经理审核通过；11：合同已上传；12：合同审批未通过
+	  */
+	 private static String[] flowArray17 = new String[] { "","已创建，等待技术负责人审批","技术负责人审批通过，等待部门经理审批",
+		 "技术负责人审批未通过","部门经理审批通过，等待总经理审批","部门经理审批未通过","总经理审批未通过","已完成","已撤销","已完成",
+		 "总经理审核通过，等待上传合同","合同已上传，等待审批","合同审批未通过"};
+	 /*******
+	  * 1：新建，等待审批；2：部门领导审批通过，等待仓库领料；3：部门领导审批未通过；4：领料完成；5：已发货；6：结束；7：已撤销
+	  */
+	 private static final String[] flowArray18= new String[] { "","出货单已创建,等待部门领导审批","部门领导审批通过，等待仓库领料","部门领导审批未通过"
+		 ,"仓库领料完毕，等待发货","已发货","结束","已撤销"};
+	 /*******
+	  * 1.保存计划；2：提交计划；3：计划表已批阅；4.保存考核；5：提交考核；6：考核完成，结束；7：计划驳回；8：考核驳回；
+	  */
+	 private static final String[] flowArray19= new String[] { "","保存计划","提交计划","计划表已批阅","保存考核","提交考核","结束","计划驳回","结束"};
+	 /*******
+	  * 1.新建出库申领单，等待领导审批；2：领导审批通过；3：领导审批未通过；4.出库结束；5：仓管审批未通过；6：撤销
+	  */
+	 private static final String[] flowArray20= new String[] { "","提交出库申领单，等待领导审批","领导审批通过","领导审批未通过","出库结束","仓管审批未通过","已撤销"};
+	 /*******
+	  * 1.新建提前启动任务修改单，等待财务部门审批；2：财务部门审批通过，等待生产部门审批；3：财务部门审批未通过；4.生产部门审批通过，等待部门经理审批；5：生产部门审批不通过；6：部门经理审批通过，等待总经理审批；7：部门经理审批不通过
+	  * 8：总经理审批通过 ；9.总经理审批不通过； 10.“”；11.完成
+	  */
+	 private static final String[] flowArray21= new String[] { "","已新建，等待财务审批","财务审批通过，等待生产审批","财务审批未通过，结束","生产审批通过，等待部门审批","生产审批不通过，结束","部门审批通过，等待总经理审批",
+		 "部门审批不通过，结束","总经理审批通过","总经理审批不通过，结束","撤销","完成"};
+	 /*******
+	  * 1.已新建，等待部门领导审批；2：部门领导审批未通过；3：部门领导审批通过，等待采购审批；4.采购审批未通过；5：采购人员已确认，正在采购；6：撤销；7：完成；8：采购失败；9：完成采购，等待验货；10：采购审批通过，等待采购执行
+	  */
+	 private static final String[] flowArray22= new String[] { "","已新建，等待上级领导审批","上级领导审批未通过","上级领导审批通过，等待采购审批","采购审批未通过","采购人员已确认，正在采购","已撤销,结束","完成","采购失败","完成采购，等待验货","采购审批通过，等待采购执行"};
+	 /**
+		 * 1:新建,等待商务助理签字；2：新建,等待销售经理签字；3：商务助理通过，等待项目主管审核；
+		 * 4：项目主管通过，等待销售经理审核； 5：总经理通过，发给生产主管；6：销售经理通过，等待总经理审核；
+		 * 7：项目主管通过，等待商务助理审核；8：商务助理通过，发给生产主管；9：商务助理不通过；10：项目主管不通过；
+		 * 11：总经理不通过；12：取消；13：商务助理审批通过；14：商务助理审批不通过；15现场技术支持通过；
+		 * 16：现场技术支持不通过；17：现场服务经理通过；18：现场服务经理不通过；19：销售经理通过；20：销售经理不通过
+		 * 21：总经理通过;22:总经理不通过；23：已完成
+		 * 1
+		 */
+		 private static String[] flowArray23 = new String[] { "","新建,等待销售经理审批","新建,等待销售经理审批",
+			 "","","","","","",
+			 "","","","","","",
+			 "","","","","销售经理审批通过，等待总经理审批",
+			 "销售经理审核未通过","总经理审核通过","总经理审核未通过","已完成"};
+	 
+	 
+	 /***
+	 * 流程类别 1:任务单；2：采购；3：生产；4：外协生产；5：生产；6：发货；7：出差；8：请假；9：销假；10：状态跟踪表；
+	 * 11：销售合同；12：采购合同；13：售后任务单；14：用印申请表；15：用车申请表；16：工时统计表
+	 */
+	private static final String[] flowTypeArray = new String[] { "请选择流程类型","项目任务单","生产采购流程","项目采购流程","外协生产流程"
+		,"生产流程","发货流程","出差流程","请假流程","销假流程","状态跟踪流程","销售合同流程","采购合同流程","售后任务单","用印申请流程",
+		"用车申请流程","工时统计流程","项目启动任务单","出货流程","考核流程","出库流程","项目启动任务单修改申请","其他部门采购流程"};
+	private static final String[] flowNameArray = new String[] { "请选择流程类型","项目任务单","生产采购单","项目采购单","外协生产单"
+		,"生产单","发货单","出差单","请假单","销假单","状态跟踪表","销售合同单","采购合同单","售后任务单","用印申请表","用车申请表","工时统计表","项目启动任务单"
+		,"出货单","考核表","出库表","项目启动任务单修改申请单","其它部门申购单"};
+	/****
+	 * 报表类型 1：流程管理；2：出差月报表；3：请假月报表
+	 */
+	private static final String[] statisticalArray=new String[]{"","产品管理表","出差月报表","请假月报表","状态跟踪表","客户资料库",
+		"供应商资料库","物料信息表","工时统计报表","销售合同明细表","采购合同明细表","出货明细表","考核统计报表","用车统计表"};
+	/****
+	 * 流程类别 1:LB印制板；2：PB印制板；3：MB印制板；4：CB印制板(6410)；5：FB印制板
+	 */
+	private static final String[] materialTypeArray = new String[] {"","LB印制板","PB印制板","MB印制板","CB印制板(6410)","FB印制板","核心板"};
+	/**
+	 * 任务单描述-提示信息
+	 * */
+	private static final String task_desc="(注：此处标注还未签订商务合同的情况，发货前必须和销售经理确认，且需确定商务合同是否已经签订，商务合同未签订但需发货的情况需征得总经理的同意，项目中心需有个确认的电子邮件留底)";
+	/**
+	 * 产品状态 已弃用
+	 */
+	private static final String[] productState = new String[] { "", "生产中","等待入库","入库","出库","发货","到货" };
+	/**
+	 * 请假类型
+	 */
+	private static final String[] leaveType=new String[]{"请选择请假类型","事假","病假","婚假","产假","丧假","年休假","调休"};
+	/**
+	 * 部门
+	 */
+	private static final String[] department=new String[]{"请选择部门","开发部","生产部","销售部","财务部","现场服务部","售后服务部"
+		,"综合管理部","品质管理部","风电事业部","旋转机械监测事业部","工业通讯事业部","综合销售部","水泥事业部","人力资源部","轨道交通事业部","诊断中心","产品部"};
+	/***
+	 * 用印者对应部门审批权限
+	 */
+	private static final int[] sealApprovePermissionID=new int[]{0,86,87,0,88,89,90,91,92,93,94,95,106,121,141,142,156,159};
+	/****
+	 * 章名
+	 * 是否为总经理审批 0：是；1：对应部门负责人审批
+	 */
+	private static final String[][] sealArray=new String[][]{{"公章","1"},{"合同章","1"},{"财务专用章","0"},{"法人章","0"},
+		{"法人签字章","0"},{"投标专用章","1"},{"售后服务专用章","1"}};
+	/***
+	 * 用车申请表费用归属
+	 */
+	private static String[] cost_attributable=new String[]{"个人","综合管理部","使用部门"};
+	/**
+	 * 印章管理权限
+	 */
+	public static final int[] sealManagerPermission=new int[]{96,97,102,100,101,99,98};
+	/**
+	 * 节假日  需要在程序启动时初始化
+	 */
+	private static String[][] holiday=new String[][]{};
+	/**
+	 * 现场人员状态
+	 */
+	private static final String[][] stateTrackArray=new String[][]{{"风电现场","WP"},{"陆地现场","LF"},{"海上油田","OF"},{"出差","BT"}
+		,{"加班","OT"},{"培训","T"},{"病假","SL"},{"事假","PL"},{"公休","H"},{"调休","DO"},{"旷工","AW"}};
+	public static String[] getPermissionsArray(){
+		return permissionsArray;
+	}
+	public static String[] getPCategoryArray(){
+		return pCategoryArray;
+	}
+	public static String[] getPCategoryArray2(){
+		return pCategoryArray2 ;
+	}
+	/****
+	 * 返回项目单对应的销售经理审批权限id
+	 * @param category
+	 * @return
+	 */
+	public static int getPCategoryPIDArray(int category){
+		return pCategoryPIDArray[category] ;
+	}
+	/***
+	 * 返回项目单对应的商务理审批权限id
+	 * @param category
+	 * @return
+	 */
+	public static int getBussinessPIDArray(int category){
+		return businessPIDArray[category] ;
+	}
+	/***
+	 * 返回项目采购单的预算单项目审批权限
+	 * 项目启动任务单都用石化审批
+	 * @param category
+	 * @return
+	 */
+	public static int getPurchasePIDArray(int type,int category){
+		if(type==1&&category==0){
+			category=1;
+		}
+		return purchasePIDArray[category] ;
+	}
+	/***
+	 * 返回项目采购单的预算单运营审批权限
+	 * 项目启动任务单都用石化审批
+	 * @param category
+	 * @return
+	 */
+	public static int getOfficerPIDArray(int type,int category){
+		if(type==1&&category==0){
+			category=1;
+		}
+		return officerPIDArray[category] ;
+	}
+	public static String[] getProductTypeArray(){
+		return productTypeArray;
+	}
+	public static String[] getProductTypeArray2(){
+		return productTypeArray2;
+	}
+	public static String[] getPCaseArray(){
+		return pCaseArray;
+	}
+	public static String[] getStageArray(){
+		return stageArray;
+	}
+	public static String[] getStageArray2(){
+		return stageArray2;
+	}
+	public static String[] getPTypeArray(){
+		return pTypeArray;
+	}
+	public static String[] getInspectionArray(){
+		return inspectionArray;
+	}
+	public static String[] getVerifyArray(){
+		return verifyArray;
+	}
+	public static String[] getFlowTypeArray(){
+		return flowTypeArray;
+	}
+	public static String[] getStatisticalArray(){
+		return statisticalArray;
+	}
+	public static String[] getFlowNameArray(){
+		return flowNameArray;
+	}
+	public static String[] getFlowArray(int type){
+		switch (type) {
+			case 1:
+				return flowArray;
+			case 2:
+				return flowArray2;
+			case 3:
+				return flowArray3;
+			case 4:
+				return flowArray4;
+			case 5:
+				return flowArray5;
+			case 6:
+				return flowArray6;
+			case 7:
+				return flowArray7;
+			case 8:
+				return flowArray8;
+			case 9:
+				return flowArray9;
+			case 10:
+				return flowArray10;
+			case 11:
+				return flowArray11;
+			case 12:
+				return flowArray12;
+			case 13:
+				return flowArray13;
+			case 14:
+				return flowArray14;
+			case 15:
+				return flowArray15;
+			case 16:
+				return flowArray16;
+			case 17:
+				return flowArray17;
+			case 18:
+				return flowArray18;
+			case 19:
+				return flowArray19;
+			case 20:
+				return flowArray20;
+			case 21:
+				return flowArray21;
+			case 151:
+				return flowArray1;
+			case 22:
+				return flowArray22;
+			case 23:
+				return flowArray23;
+		}
+		return flowArray;
+	}
+	/**
+	 * 获取当前时间 格式：2016-03-02
+	 * @return
+	 */
+	public static String getTadayStr(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(new Date());
+	}
+	/**
+	 * 获取当前时间 格式：2016-3-2
+	 * @return
+	 */
+		public static String getTadayStr2(){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			return sdf.format(new Date());
+		}
+	/**
+	 * 获取当前时间 格式：2016-01-01 默认开始时间为本月初
+	 * @return
+	 */
+	public static String getYearStr(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		return sdf.format(new Date())+"-01";
+	}
+	public static String getTask_Desc(){
+		return task_desc;
+	}
+	public static String[] getQualifyArray(){
+		return qualifyArray;
+	}
+	public static String[] getMaterialArray(){
+		return materialTypeArray;
+	}
+	public static String[] getProductState(){
+		return productState;
+	}
+	public static String getNameByTime(int type,long time){
+		StringBuffer sBuffer=new StringBuffer();
+		sBuffer.append(flowNameArray[type]);
+		sBuffer.append("-");
+		if(type==10||type==16){
+			sBuffer.append(getSdf("yyyy.MM").format(time));
+		}else{
+			sBuffer.append(getSdf("yyyy.MM.dd").format(time));
+		}
+		return sBuffer.toString();
+	}
+	
+	public static String getNameByProductNameAndTime(String productName,int type,long time){
+		StringBuffer sBuffer=new StringBuffer();
+		sBuffer.append(flowNameArray[type]);
+		sBuffer.append("-");
+		if(productName!=null){
+			sBuffer.append(productName);
+			sBuffer.append("-");
+		}
+		if(type==10||type==16){
+			sBuffer.append(getSdf("yyyy.MM").format(time));
+		}else{
+			sBuffer.append(getSdf("yyyy.MM.dd").format(time));
+		}
+		return sBuffer.toString();
+	}
+	
+	//用印流程
+	public static String getNameBySealUserAndTime(String reason,int type,long time){
+		StringBuffer sBuffer=new StringBuffer();
+		sBuffer.append(flowNameArray[type]);
+		sBuffer.append("-");
+		sBuffer.append(reason);
+		sBuffer.append("-");
+		if(type==10||type==16){
+			sBuffer.append(getSdf("yyyy.MM").format(time));
+		}else{
+			sBuffer.append(getSdf("yyyy.MM.dd").format(time));
+		}
+		return sBuffer.toString();
+	}
+	
+	public static String getNameByTravel(String address,long starttime,long endtime){
+		StringBuffer sBuffer=new StringBuffer();
+		String startdate=getSdf("yyyy.MM.dd HH").format(starttime);
+		String enddate=getSdf("yyyy.MM.dd HH").format(endtime);
+		sBuffer.append(address);
+		sBuffer.append("-");
+		sBuffer.append(startdate.substring(0,10));
+		sBuffer.append(startdate.endsWith("00")?"am - ":"pm -");
+		sBuffer.append(enddate.substring(0,10));
+		sBuffer.append(enddate.endsWith("00")?"am":"pm");
+		return sBuffer.toString();
+	}
+	public static String getNameBySecond(int type,long time){
+		StringBuffer sBuffer=new StringBuffer();
+		sBuffer.append(flowNameArray[type]);
+		sBuffer.append("-");
+		sBuffer.append(getSdf("yyyy-MM-dd HH:mm:ss").format(time));
+		return sBuffer.toString();
+	}
+	public static String TransformDID(int id){
+		return getSdf("yyyy.MM.dd").format(id);
+	}
+	public static String getTadayBySecond(){
+		return getSdf("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());
+	}
+	public static String[] getLeaveType(){
+		return leaveType;
+	}
+	public static String[] getdepartment(){
+		return department;
+	}
+	public static int getCurrentYear(){
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.YEAR);
+	}
+	public static int getCurrentMonth(){
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.MONTH)+1;
+	}
+	/***
+	 * 通过供应商来判断  MOXA的定义就是MOXA厂家： 摩莎科技（上海）有限公司
+	 * @param supplier_name
+	 * @return
+	 */
+	public static boolean checkMOXA(String supplier_name){
+		return "摩莎科技（上海）有限公司".equals(supplier_name);
+	}
+	public static String[][] getHoliday(){
+		return holiday;
+	}
+	public static String[][] getStateTrackArray(){
+		return stateTrackArray;
+	}
+	public static void setHoliday(String[][] array){
+		holiday=array;
+	}
+	public static boolean checkHoliday(Calendar calendar){ 
+		String[][] holiday=DataUtil.getHoliday();
+	     int index=calendar.get(Calendar.YEAR)-2016;
+	     if(index<0||index>=holiday.length){//未记录的节假日全部当成工作日
+	    	 return false;
+	    }
+	     //month从0开始
+	    String day=new StringBuilder().append("-").append(calendar.get(Calendar.DAY_OF_MONTH)).append("-").toString();//格式：1号 如：-1-
+	    int monthIndex=calendar.get(Calendar.MONTH);
+		if(holiday[index][monthIndex].indexOf(day)!=-1){
+			return true;
+		}
+	    return false;
+	 }
+	 public static int addDateByWorkDay(Calendar calendar1,Calendar calendar2){
+	      int days=0;
+	      while (calendar2.compareTo(calendar1)>-1) {
+	    	  if(!checkHoliday(calendar1)){
+	    		  days++;
+	          }
+	    	  calendar1.add(Calendar.DAY_OF_MONTH, 1);
+		}
+	    return  days;
+	 }
+	 /***
+	  * 请假的起始时间和结束时间，返回时间-43200000为结束时间
+	  * @param starttime
+	  * @param endtime
+	  * @param type
+	  * @return
+	  */
+	public static float getLeaveDays(long starttime,long endtime,int type){
+		//产假和年假包含节假日
+		if(type==4||type==6){
+			long daySum=endtime-starttime+43200000;
+			return daySum/86400000+(daySum%86400000)/43200000*0.5f;
+		}
+		float days=0.0f;
+		try {
+			Calendar calendar1=Calendar.getInstance();
+			Calendar calendar2=Calendar.getInstance();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date date1=getSdf("yyyy.MM.dd").parse(getSdf("yyyy.MM.dd").format(starttime));
+			Date date2=getSdf("yyyy.MM.dd").parse(getSdf("yyyy.MM.dd").format(endtime));
+			calendar1.setTime(date1);
+			calendar2.setTime(date2);
+			//若starttime==endtime表示只请了半天，需要减去重复的0.5天，
+			if(calendar1.compareTo(calendar2)==0){
+				if(starttime==endtime&&!checkHoliday(calendar1)){
+					days-=0.5f;
+				}
+			}else{
+				//若起始天为工作日且只请了半天，需要减去重复的0.5天
+				 if(!checkHoliday(calendar1)&&starttime>date1.getTime()){
+		    		  days-=0.5f;
+		         }
+				 if(!checkHoliday(calendar2)&&endtime==date2.getTime()){
+		    		  days-=0.5f;
+		         }
+			}
+			days+=addDateByWorkDay(calendar1,calendar2);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return days;
+		}
+		return days;
+	}
+	/***
+	 * 去掉多余的.和0
+	 * @param s
+	 * @return
+	 */
+	public static String subZeroAndDot(String s){
+		if(s.indexOf(".") > 0){  
+            s = s.replaceAll("0+?$", "");//去掉多余的0  
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉  
+        }  
+        return s; 
+	}
+	static ThreadLocal<DecimalFormat> tl_df=new ThreadLocal<DecimalFormat>(){
+		 @Override
+        protected DecimalFormat initialValue() {
+			 DecimalFormat decimalFormat = new DecimalFormat();
+			//取消分组  
+				decimalFormat.setGroupingUsed(false);
+            return decimalFormat;
+        }
+	};
+	/****
+	 * 
+	 * @param f
+	 * @param dec 小数位数
+	 * @return
+	 */
+	public static String fixed(double f,int dec){
+		DecimalFormat decimalFormat=tl_df.get();
+		decimalFormat.setMaximumFractionDigits(dec); // 设置最大小数位 
+		return decimalFormat.format(f);
+	}
+	/***
+	 * 返回印章审批权限，0表示总经理审批
+	 * @param department_index
+	 * @param seal_type
+	 * @return 0:总经理审批
+	 */
+	public static int getSealApprovePermissionID(int department_index,int seal_type){
+		if("1".equals(sealArray[seal_type][1])){
+			return sealApprovePermissionID[department_index];
+		}
+		return 0;
+	}
+	/****
+	 * 返回印章管理权限
+	 * @param seal_type
+	 * @return
+	 */
+	public static int getSealManagerPermission(int seal_type){
+		return sealManagerPermission[seal_type];
+	}
+	public static String[][] getSealArray(){
+		return sealArray;
+	}
+	public static String[] getCost_attributable(){
+		return cost_attributable;
+	}
+	public static int[] getAfterSaleApproveArray(){
+		return afterSaleApproveArray;
+	}
+	public static int[] getAfterSaleAssistantArray(){
+		return afterSaleAssistantArray;
+	}
+	/** 存放不同的日期模板格式的sdf的Map */
+    private static Map<String, ThreadLocal<SimpleDateFormat>> sdfMap = new HashMap<String, ThreadLocal<SimpleDateFormat>>();
+    /**
+	 * 返回线程安全的SimpleDataFormat
+	 */
+	public static SimpleDateFormat getSdf(final String pattern) {
+		ThreadLocal<SimpleDateFormat> tl = sdfMap.get(pattern);
+		if(tl==null){
+			synchronized (DataUtil.class) {
+                tl = sdfMap.get(pattern);
+                if(tl==null){
+                	tl = new ThreadLocal<SimpleDateFormat>() {
+
+                        @Override
+                        protected SimpleDateFormat initialValue() {
+                            return new SimpleDateFormat(pattern);
+                        }
+                    };
+                    sdfMap.put(pattern, tl);
+                }
+			}
+		}
+		return tl.get();
+	}
+	public static String getUserNameByUser(User user) {
+		// TODO Auto-generated method stub
+		if(user!=null){
+			return user.getTruename();
+		}else{
+			return "";
+		}
+	}
+}

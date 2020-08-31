@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="feedback">
+	<typeAlias alias="feedback"
+		type="com.zzqa.pojo.feedback.Feedback" />
+
+	<resultMap id="result_basc" class="feedback">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertFeedback" parameterClass="feedback">
+		insert into feedback(id,title,content,create_id,create_time,update_time)
+		values(#id#,#title#,#content#,#create_id#,#create_time#,#update_time#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateFeedback" parameterClass="feedback">
+        update feedback set 
+        title=#title#,
+        content=#content#,
+        update_time=#update_time#
+        where id = #id#
+    </update>
+
+	<!-- 通过id删除 -->
+    <delete id="delFeedbackByID" parameterClass="int" >
+        delete from feedback where id=#id#
+    </delete>
+	
+	<select id="getFeedbackByID" parameterClass="int" resultClass="feedback">
+		select * from feedback where id=#id#
+	</select>
+	
+	<select id="getNewFeedbackIDByCreateID" parameterClass="int" resultClass="int">
+		select id from feedback where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	
+	<select id="getFeedbackListByCondition" parameterClass="java.util.Map" resultMap="result_basc">
+		select * from feedback
+		<dynamic prepend="where">
+			<isGreaterThan prepend="and" property="create_id" compareValue="0">
+				create_id=#create_id#
+			</isGreaterThan>
+		</dynamic>
+		order by update_time desc
+		<isGreaterEqual property="nowpage" compareValue="0">
+				limit #nowpage#,10
+		</isGreaterEqual>
+	</select>	
+	
+	<select id="getFeedbackCountByCondition" parameterClass="java.util.Map" resultClass="int">
+		select count(id) from feedback
+		<dynamic prepend="where">
+			<isGreaterThan prepend="and" property="create_id" compareValue="0">
+				create_id=#create_id#
+			</isGreaterThan>
+		</dynamic>
+	</select>
+	<!--有未读回复的反馈,（新回复未读，没回复的不显示） -->
+	<select id="getNotReadReplyFeedbackList" parameterClass="java.util.Map" resultMap="result_basc">
+		select * from feedback where 
+		(select max(update_time)from comments where create_id != #create_id# and comments.type=2 and comments.foreign_id=feedback.id and feedback.create_id=#create_id#)
+		>(select max(update_time) from read_user where type=2 and foreign_id=feedback.id and uid=#create_id#)
+		or (select max(reply.update_time) from reply,comments where feedback.id=comments.foreign_id and 
+				comments.type=2 and reply.comment_id=comments.id and reply.create_id!=#create_id# and reply.reply_uid=#create_id#)
+				>(select max(update_time) from read_user where type=2 and foreign_id=feedback.id and uid=#create_id#)
+		order by feedback.update_time desc
+	</select>
+</sqlMap>

@@ -1,0 +1,254 @@
+/**流程管理样式开始**/
+.div_center{
+	margin:0px auto;
+  	width:1092px;
+  	text-align:center;
+  	padding:20px 0px;
+}
+.table_center{
+	width:100%;
+	border:0px;
+	border-collapse: collapse;
+}
+/**流程管理左边表格样式开始**/
+.table_center_td1{
+	width:20%;
+	min-width:210px;
+	vertical-align:top;
+	text-align:left;
+}
+.table_center_td1 ul{
+	border-right:1px solid #DDE0E2;
+	border-top:1px solid #DDE0E2;
+	width:200px;
+}
+.divlang_press{
+	height:55px;
+	width:198px;
+ 	background:#f5f5f5;
+ 	border-left:2px solid #40C552;
+	border-bottom:1px solid #DDE0E2;
+	cursor:pointer;
+	font-weight: bold;
+}
+.divlang_normal{
+	height:55px;
+	width:199px;
+	background:#fff;
+	border-left:1px solid #DDE0E2;
+	border-bottom:1px solid #DDE0E2;
+	cursor:pointer;
+}
+.div_word{
+	float:left;
+	margin-left:20px;
+	font-size: 15px;
+    line-height: 55px;
+    font-family: "microsoft yahei";
+}
+.divlang_press .div_word{
+	font-weight:bold;
+}
+.div_nav{
+	float:left;
+	font:18px/55px 'microsoft yahei';
+	margin-left:40px;
+}
+.divlang_press .div_nav{
+	font-weight:bold;
+}
+li:hover .divlang_normal{
+	color:#41C651;
+}
+.divlang_press img{
+	float:left;
+	width:13px;
+	margin-left:30px;
+}
+.divlang_normal img{
+	float:left;
+	width:13px;
+	margin-left:31px;
+}
+
+/**流程管理左边表格样式结束**/
+.table_center_td2{
+	width:80%;
+	background:#fff;
+	border:1px solid #E5E6E8;
+	border-collapse: collapse;
+	vertical-align:top;/**待办事项和流程列表从上开始排列**/
+	padding:30px 45px;
+}
+.table_center_td2_center{
+	width:80%;
+	background:#fff;
+	border:1px solid #E5E6E8;
+	border-collapse: collapse;
+	padding:30px 45px;
+}
+.table_center_td2_notfull{
+	width:80%;
+	background:#fff;
+	border:1px solid #E5E6E8;
+	border-collapse: collapse;
+	padding:30px 20px;
+}
+.table_center_td2_full{
+	width:80%;
+	background:#fff;
+	border:1px solid #E5E6E8;
+	border-collapse: collapse;
+	vertical-align:top;/**待办事项和流程列表从上开始排列**/
+	padding:30px 0px;
+}
+.td2_div{
+	width:100%;
+	height:100%;
+}
+
+/***下拉菜单样式开始****/
+.div {
+	position:absolute;
+	margin-top:-20px; 
+	padding:0;
+	width:100%;
+	height:40px;
+    z-index: 2;
+}
+.div>a {
+	color:#fff;
+	font:15px/40px 'SimSun';
+	display:block;  	/* Making sure a element covers whole li area */
+	text-decoration:none; /* No underline */
+	text-align:center;
+	width:100%;
+	height:40px;
+}
+.div img{
+	height:5px;
+	margin-left:5px;
+	vertical-align:middle;
+	margin-bottom:5px;
+	border:0;
+}
+.flowcontainer_div{
+	position:absolute; 
+	background:#fff;
+	left:-422px; 
+	display:none; /* Hide it by default */
+	padding:0; 
+	width:778px;
+	border-left:1px solid #E5E5E5;
+	border-top:1px solid #E5E5E5;
+	-moz-box-shadow: 6px 10px 6px #888888;
+    -webkit-box-shadow: 6px 10px 6px #888888;
+    box-shadow: 6px 10px 6px #888888;
+	
+}
+.flowcontainer_div div { 
+	border-right:1px solid #E5E5E5;
+	border-bottom:1px solid #E5E5E5;
+	float:left;
+}
+.flowcontainer_div a {
+    display: block;
+    line-height: 50px;
+    width: 193.5px;
+	text-decoration:none;	
+	border-top:none;
+}
+.selected_a{
+	background-color:#81c783;
+	color:#fff;
+}
+.unselected_a{
+	color: #333;
+	background-color:#fff;
+}
+.unselected_a:hover{
+	background-color: #E5E5E5;
+}
+/*****下拉菜单样式结束******/
+
+/***下拉菜单样式开始****/
+.div_hide {
+	display:inline-block;
+	font:15px/30px 'SimSun';
+	position:absolute;
+	margin-top:-30px;
+	margin-left:80px;
+	padding:0;
+	width:100px;;
+	height:30px;
+}
+.div_hide li a:hover{
+	/* color:#41C651; */
+}
+.div_hide>a {
+	color:#fff;
+	font:15px/40px 'SimSun';
+	display:block;  	/* Making sure a element covers whole li area */
+	text-decoration:none; /* No underline */
+	text-align:left;
+	height:100%;
+	width:100%;
+}
+.div_hide ul {
+	position:absolute; 
+	background:#fff;
+	left:0; 
+	display:none; /* Hide it by default */
+	margin:0 0 0 -1px; 
+	padding:0; 
+	list-style:none;
+	width:100%; 
+	border:1px solid #878787;
+}
+.div_hide img{
+	height:10px;
+	margin-left:5px;
+	text-align:left;
+	vertical-align:middle;
+	margin-bottom:13px;
+	border:0;
+}
+.div_hide  ul li {
+	width:100%; 
+	float:left; 
+	border:none;
+}
+.div_hide  ul a {
+	display:block;    	/* Making sure a element covers whole li area */
+	height:24px;
+	padding:8px 7px 8px 7px; 
+	text-align:left;
+	color:#000;
+	text-decoration:none;	
+	border-top:none;
+	border-bottom:1px dashed #878787;
+}
+.div_hide ul li:last-of-type a{
+	border-bottom:none;
+}	
+.div_hide  ul a:hover {
+	background-color:#dfebfe;
+}
+/*****下拉菜单样式结束******/
+/*****导入导出excel 样式开始***/
+.div_excel {
+	margin:0px auto;
+}
+.div_excel img{
+	cursor:pointer;
+	width:40px;
+	border:0;
+	text-decoration:none;	
+	outline:none;
+	margin-left:30px;
+}
+.div_excel img:first-of-type{
+	margin:0px;
+}
+/*****导入导出excel 样式结束***/
+/**设备管理样式结束**/

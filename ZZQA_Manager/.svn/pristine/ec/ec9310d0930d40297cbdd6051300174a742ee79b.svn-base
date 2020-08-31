@@ -1,0 +1,21 @@
+package com.zzqa.dao.interfaces.departmentPuchase;
+
+import java.util.List;
+
+import com.zzqa.pojo.departmentPuchase.DepartmentPuchase;
+
+public interface IDepartPuchaseDao {
+
+	void insertDepartPuchase(DepartmentPuchase departmentPuchase);
+
+	void updateDepartPuchase(DepartmentPuchase departmentPuchase);
+
+	DepartmentPuchase getDepartPuchaseByID(int departPuchase_id);
+
+	int getCountByTime(String cur_time);
+
+	List<DepartmentPuchase> getRunningDepartPuchase();
+
+	List<DepartmentPuchase> getAllList();
+
+}

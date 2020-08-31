@@ -1,0 +1,364 @@
+/**流程列表样式开始**/
+.td2_div1{
+	width:100%;
+	height:120px;
+}
+.td2_div1_1{
+	margin:0px auto;
+	width:97%;
+	overflow:hidden;
+	zoom:1;
+}
+.td2_div1_1 div{
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+	float:left;
+}
+.td2_div1_1_div{
+	width:28%;
+}
+.td2_div11_pass{
+	width:1%;
+	min-width:30px;
+	color:#42c652;
+}
+.td2_div11_nopass{
+	width:1%;
+	min-width:30px;
+	color:#FF4401;
+}
+.td2_div11_nodid{
+	width:1%;
+	min-width:30px;
+	color:#5C5C5C;
+}
+.td2_div12_pass{
+	width:1%;
+	min-width:30px;
+	color:#42c652;
+}
+.td2_div12_nopass{
+	width:1%;
+	min-width:30px;
+	color:#FF4401;
+}
+.td2_div12_nodid{
+	width:1%;
+	min-width:30px;
+	color:#5C5C5C;
+}
+.td2_div13_pass{
+	width:1%;
+	min-width:30px;
+	color:#42c652;
+}
+.td2_div13_nopass{
+	width:1%;
+	min-width:30px;
+	color:#FF4401;
+}
+.td2_div13_nodid{
+	width:1%;
+	min-width:30px;
+	color:#5C5C5C;
+}
+.td2_div14_pass{
+	width:1%;
+	min-width:30px;
+	color:#42c652;
+}
+.td2_div14_nopass{
+	width:1%;
+	min-width:30px;
+	color:#5C5C5C;
+}
+.td2_div14_nodid{
+	width:1%;
+	min-width:30px;
+	color:#5C5C5C;
+}
+.td2_div1_2{
+	width:97%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2 div{
+	float:left;
+}
+.td2_div2_img{
+ 	width:1%;
+	min-width:30px;
+}
+.td2_div2_img img{
+	min-width:30px;
+}
+.td2_div2_agree{
+	float:left;
+	width:28%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:12px;
+}
+.td2_div2_disagree{
+	float:left;
+	width:29%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:12px;
+}
+.td2_div2_nodid{
+	float:left;
+	width:28%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:12px;
+}
+.td2_div2_agree_c{
+	float:left;
+	width:14%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:12px;
+}
+.td2_div2_disagree_c{
+	float:left;
+	width:14%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:12px;
+}
+.td2_div2_nodid_c{
+	float:left;
+	width:14%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:12px;
+}
+
+.td2_div1_3{
+	width:100%;
+}
+.td2_div1_3 div{
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div31{
+	float:left;
+	margin-left:0px;
+}
+.td2_div32{
+	float:left;
+	margin-left:180px;
+}
+.td2_div33{
+	float:left;
+	margin-left:180px;
+}
+.td2_div34{
+	float:right;
+	margin-left:45px;
+}
+.td2_div3{
+	width:100%;
+	margin:20px auto;
+	padding:5px 0px;
+	border:1px solid #878787;
+}
+.td2_div3_1{
+	text-align:left; 
+	color:#000;
+	font:16px/20px 'SimSun';
+	margin-left:10px;
+	margin-right:10px;
+	font-weight:700;
+	word-break: break-all;
+}
+.td2_div3_2{
+	text-align:left; 
+	font:16px/20px 'SimSun';
+	margin-top:5px;
+	margin-left:10px;
+	font-weight:700;
+}
+.td2_div3_3{
+	text-align:left;
+	margin-left:10px;
+	margin-top:5px;
+	font-weight:600;
+}
+.td2_div3_3 a{
+	text-decoration:none;
+	font:15px/20px 'SimSun';
+}
+.td2_div3_3 a:hover {
+    text-decoration: underline;
+}
+.td2_table0{
+	margin:0px auto;
+	border-collapse: collapse;
+	width:100%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+}
+.td2_table0 td{
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+}
+.table0_tr1_td1{
+	text-align:left;
+	min-width:130px;
+	width:1%;
+	color:#000;
+	font:14px/25px 'SimSun';
+	padding:5px 5px 5px 10px;
+}
+.table0_tr1_td2{
+	text-align:left;
+	width:99%;
+	padding:5px;
+}
+.table0_tr1_td2 input{
+	height:25px;
+	font:14px/25px 'SimSun';
+	width:80%;
+	padding:5px;
+}
+.table0_tr2_td1{
+	text-align:left;
+	color:#000;
+	font:14px/25px 'SimSun';
+	padding:5px 5px 5px 10px;
+}
+.table0_tr2_td2{
+	text-align:center;
+	padding:5px 0px 5px 0px;
+}
+.table0_tr2_td2 input{
+	height:25px;
+	font:14px/25px 'SimSun';
+	padding:5px 5px 5px 5px;
+}
+.td2_div4{
+	margin:20px auto;
+	border:1px solid #878787;
+	padding:0px 30px 0px 30px;
+}
+.td2_div5{
+	text-alig:center;
+	margin:20px auto;
+	color:#000;
+	font:bold 22px/30px 'SimSun';
+}
+.td2_div6{
+	margin:40px auto 10px auto;
+	width:100%;
+	font:14px/25px 'SimSun';
+	font-weight:600;
+	overflow:hidden;
+	zoom:1;
+}
+.td2_div61{
+	float:left;
+}
+.td2_div62{
+	float:right;
+}
+.td2_table1{
+	margin:10px auto;
+	border-collapse: collapse;
+	width:100%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+}
+.td2_table1 td{
+	font:14px/30px 'SimSun';
+	text-align:center;
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+}
+.table1_tr1{
+	height:40px;
+}
+.table1_tr1_td1{
+	min-width:75px;;
+}
+.table1_tr1_td2{
+	min-width:75px;;
+}
+.table1_tr1_td3{
+	width:60px;
+}
+.table1_tr1_td4{
+	width:180px;
+}
+.table1_tr2{
+
+}
+.table1_tr2 td{
+	
+}
+.table1_tr2_td1{
+
+}
+.table1_tr2_td2{
+
+}
+.table1_tr2_td3{
+
+}
+.table1_tr2_td4{
+	
+}
+.table1_tr2_td4 div{
+	
+}
+.tr2_td4_img1{
+	height:20px;
+	vertical-align:middle;
+}
+.tr2_td4_img2{
+	margin-left:5px;
+	height:20px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.div_test{
+	display:block;
+	text-align:left;
+	width:100%;
+	margin:20px auto 30px auto;
+	font:14px/20px 'SimSun';
+	word-break:break-all;
+}
+.div_testarea{
+	display:block;
+	height:60px; 
+	width:100%;
+	margin:20px auto;
+	padding:5px 0px;
+	font:13px/20px 'SimSun';
+	border:1px solid #878787;
+}
+.div_btn{
+	margin-top:20px;
+	text-align:center;
+}
+.fistbutton{
+	border: none; 
+	height:35px;
+	cursor:pointer;
+	margin-right:50px;
+}
+.btn_agree{
+	border: none; 
+	height:35px;
+	cursor:pointer;
+}
+.btn_disagree{
+	border: none; 
+	height:35px;
+	margin-left:50px;
+	cursor:pointer;
+}
+/**新建任务单流程样式结束**/

@@ -1,0 +1,381 @@
+/**流程列表样式开始**/
+.td2_div3{
+	text-align:center;
+	margin:20px auto;
+	color:#000;
+	font:20px/30px 'SimSun';
+	font-weight:700;
+}
+.td2_table1{
+	margin:20px auto;
+	border:0px;
+	border-collapse: collapse;
+	width:100%;
+}
+.td2_table1 tr{
+	height:40px;
+}
+.td2_table1 td{
+	
+}
+.td2_table1 span{
+	margin-left:20px;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	font:14px/30px 'SimSun';
+}
+.table1_tr1_td2{
+	text-align:left;
+	width:99%;
+}
+.table1_tr1_td2 div{
+	margin-left:20px;
+	font:14px/30px 'SimSun';
+}
+.table1_tr2_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr2_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	font:14px/30px 'SimSun';
+}
+.table1_tr2_td2{
+	text-align:left;
+	width:99%;
+}
+.table1_tr3_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr3_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	font:14px/30px 'SimSun';
+}
+.table1_tr3_td2{
+	text-align:left;
+	width:99%;
+}
+.table1_tr4_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr4_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	font:14px/30px 'SimSun';
+}
+.table1_tr4_td2{
+	text-align:left;
+	width:99%;
+}
+.table1_tr5_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	font:14px/30px 'SimSun';
+}
+.table1_tr5_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	font:14px/30px 'SimSun';
+}
+.table1_tr5_td2{
+	text-align:left;
+	width:99%;
+}
+
+
+
+/**表格**/
+.td2_table2{
+	margin:0px auto;
+	width:100%;
+	color:#000;
+	font:14px/30px 'SimSun';
+	border-collapse: collapse;
+	border-left:1px solid #878787;
+	border-top:1px solid #878787;
+}
+.td2_table2 label{
+	font:13px px 'SimSun';
+}
+.td2_table2 tr>td:nth-of-type(1){
+	line-height:20px;
+}
+.td2_table2 td{
+	border-right:1px solid #878787;
+	border-bottom:1px solid #878787;
+}
+.table2_tr1{
+	height:40px;
+}
+.table2_tr1_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+	margin-left:20px;
+}
+.table2_tr1_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+	margin-left:20px;
+}
+.table2_tr1_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr1_td2 input{
+	height:25px;
+	width:200px;
+	padding:2px 5px;
+}
+.table2_tr2{
+	
+}
+.table2_tr2_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr2_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr2_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr2_td2 span{
+	display:inline-block;
+	height:25px;
+	min-width:130px;
+	font:13px/20px 'SimSun';
+}
+.table2_tr3{
+
+}
+.table2_tr3_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr3_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr3_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr3_td2 span{
+	display:inline-block;
+	height:25px;
+	min-width:130px;
+	font:13px/20px 'SimSun';
+}
+.table2_tr4{
+	
+}
+.table2_tr4_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr4_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr4_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr4_td2 span{
+	display:inline-block;
+	height:25px;
+	min-width:130px;
+	font:13px/20px 'SimSun';
+}
+.table2_tr5_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr5_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr5_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr5_td2 input{
+	width:100px;
+	height:25px;
+	color:#000;
+	padding:2px 5px;
+	
+}
+.table2_tr6_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr6_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr6_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr6_td2 span{
+	font:13/15px 'SimSun';
+}
+.table2_tr6_td2 div{
+	font:13px/15px 'SimSun';
+	word-break:break-word;
+}
+.table2_tr6_td2 textarea{
+	display: block;
+	height:100px; 
+	width:98%;
+	margin-top:10px;
+	padding:5px;
+	font:13px/20px 'SimSun';
+}
+.table2_tr7_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr7_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr7_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.table2_tr7_td2, .table2_tr8_td2 div {
+    line-height: 20px;
+}
+.table2_tr7_td2 span{
+	font:13px 'SimSun';
+	line-height:15px
+}
+.table2_tr7_td2 span{
+	color:#000;
+	font: 13px/15px 'SimSun';
+}
+.table2_tr8_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#000;
+}
+.table2_tr8_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	color:#f00;
+}
+.table2_tr8_td2{
+	width:99%;
+	text-align:left;
+	padding:10px;
+}
+.file_title_remark {
+    font-size: 13px;
+    line-height: 20px;
+    margin-top: 20px;
+}
+.table2_tr8_td2 span{
+	color:#000;
+	font: 13px/ 15px 'SimSun';
+}
+.table2_tr9_td1{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	font:14px/15px 'SimSun';
+	padding:10px 0px 10px 0px;
+	color:#000;
+}
+.table2_tr9_td1_red{
+	text-align:center;
+	width:1%;
+	min-width:100px;
+	font:14px/15px 'SimSun';
+	padding:10px 0px 10px 0px;
+	color:#f00;
+}
+.table2_tr9_td2{
+	width:99%;
+	text-align:left;
+	font: 13px/ 15px 'SimSun';
+	padding:5px;
+	word-wrap:break-word;
+	word-break:break-all;
+}
+/**新建任务单流程样式结束**/

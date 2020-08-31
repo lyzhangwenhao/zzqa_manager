@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="linkman">
+    <typeAlias alias="linkman"
+               type="com.zzqa.pojo.linkman.Linkman"/>
+
+    <resultMap id="result_basc" class="linkman">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="foreign_id" column="foreign_id"/>
+        <result property="linkman" column="linkman"/>
+        <result property="phone" column="phone"/>
+        <result property="linkman_case" column="linkman_case"/>
+        <result property="state" column="state"/>
+        <result property="create_time" column="create_time"/>
+    </resultMap>
+
+    
+    <!-- 添加一条联系人记录 -->
+    <insert id="insertLinkman" parameterClass="linkman">
+        insert into linkman(type,foreign_id,linkman,phone,linkman_case,state,create_time) 
+        values(#type#,#foreign_id#,#linkman#,#phone#,#linkman_case#,#state#,#create_time#)
+    	<selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+    </insert>
+    
+    <!-- 更新联系人 -->
+    <update id="updateLinkman" parameterClass="linkman">
+        update linkman set
+        linkman =#linkman#,
+        phone =#phone#,
+        linkman_case =#linkman_case#,
+        state =#state#
+        where id=#id#
+    </update>
+    
+    <!-- 删除联系人 -->
+    <delete id="delLinkmanByID" parameterClass="int" >
+        delete from linkman where id=#id#
+    </delete>
+	 
+	<!-- 根据条件查询联系人 -->
+	<select id="getLinkmanListLimit" resultMap="result_basc"
+		parameterClass="java.util.Map">
+		select * from linkman where type=#type# and foreign_id=#foreign_id#
+		<isGreaterThan prepend="and" property="linkman_case" compareValue="0">
+			linkman_case=#linkman_case#
+		</isGreaterThan>
+		<isGreaterEqual prepend="and" property="state" compareValue="0">
+			state=#state#
+		</isGreaterEqual>
+		order by create_time asc
+	</select>
+	
+	<!-- 根据条件查询联系人个数 -->
+	<select id="getLinkmanCountLimit" resultClass="int"
+		parameterClass="java.util.Map">
+		select count(*) from linkman where type=#type# and foreign_id=#foreign_id#
+		<isGreaterThan prepend="and" property="linkman_case" compareValue="0">
+			linkman_case=#linkman_case#
+		</isGreaterThan>
+		<isGreaterEqual prepend="and" property="state" compareValue="0">
+			state=#state#
+		</isGreaterEqual>
+	</select>
+	
+	<!-- 根据条件删除联系人 -->
+	<delete id="deleteLinkmanLimit"
+		parameterClass="java.util.Map">
+		delete from linkman where type=#type# and foreign_id=#foreign_id#
+		<isGreaterThan prepend="and" property="linkman_case" compareValue="0">
+			linkman_case=#linkman_case#
+		</isGreaterThan>
+		<isGreaterEqual prepend="and" property="state" compareValue="0">
+			state=#state#
+		</isGreaterEqual>
+	</delete>
+     
+     <!-- 根据条件查询联系人 -->
+	<select id="getLinkmanByID" resultClass="linkman"
+		parameterClass="int">
+		select * from linkman where id=#id#
+	</select>
+	
+	<!-- 根据条件查询联系人 -->
+	<select id="getLinkmanByCondition" resultClass="linkman"
+		parameterClass="java.util.Map">
+		select * from linkman where type=#type# and foreign_id=#foreign_id# and create_time between #starttime# and #endtime#
+	</select>
+</sqlMap>

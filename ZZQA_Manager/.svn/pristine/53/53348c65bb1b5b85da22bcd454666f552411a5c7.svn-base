@@ -1,0 +1,323 @@
+.home-content{
+	width: 1092px;
+    margin: 30px auto 0 auto;
+    font-family: "microsoft yahei";
+    overflow: hidden;
+    zoom: 1;
+}
+.content-left{
+	float:left;
+	width:310px;
+	vertical-align: top;
+}
+.content-right{
+	float:right;
+	width:755px;
+	vertical-align: top;
+}
+.content-right1{
+	background: white;
+	margin-bottom:20px;
+}
+.content-right2{
+	background: white;
+	overflow: hidden;
+}
+.window{
+	background: white;
+	margin-bottom:20px;
+}
+.window-top{
+	overflow: hidden;
+    zoom: 1;
+    position:relative;
+    background:#F0F4F7;
+}
+.click-top>div:nth-of-type(1){
+	cursor: pointer
+}
+.window-top>div:nth-of-type(1){
+	float:left;
+	font:16px/25px 'microsoft yahei';
+	background:#5bcdfc;
+	min-width:120px;
+	max-width:200px;
+	height:25px;
+	border-radius:0 25px 0 0;
+	padding:0 20px;
+	color:#fff;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-top>div:nth-of-type(2){
+	float:left;
+	background:#5bcdfc;
+	height:12.5px;
+	width:25px;
+	position:relative;
+	top: 12.5px;
+    right: 9px;
+}
+.window-top>div:nth-of-type(3){
+	float:left;
+	background:#F0F4F7;
+	height:25px;
+	width:25px;
+	border-radius:0 0 0 25px;
+	z-index:2;
+	position:relative;
+	right:32px;
+}
+.window-list{
+	border:1px solid #00b5ff;
+}
+.border-div{
+	background:#cccccc;
+	height:1px;
+}
+.window-item1{
+	font:13px/25px 'microsoft yahei';
+	padding:7px 20px 3px 20px;
+	overflow: hidden;
+    zoom: 1;
+    cursor:pointer;
+}
+.window-item1:hover{
+	background:#D8EDFF;
+}
+.window-item1>div:nth-of-type(1){
+	float:left;
+	width:110px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-item1>div:nth-of-type(2){
+	float:left;
+	margin-left:10px;
+	width:45px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-item1>div:nth-of-type(3){
+	float:left;
+	margin-left:10px;
+	width:90px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-item2{
+	font:13px/25px 'microsoft yahei';
+	padding:7px 20px 3px 20px;
+	overflow: hidden;
+    zoom: 1;
+    cursor:pointer;
+}
+.window-item2:hover{
+	background:#D8EDFF;
+}
+.window-item2>div:nth-of-type(1){
+	float:left;
+	width:130px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-item2>div:nth-of-type(2){
+	float:left;
+	margin-left:10px;
+	width:45px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-item2>div:nth-of-type(3){
+	float:left;
+	margin-left:10px;
+	width:65px;
+	white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.window-btn-group{
+	margin:15px 0px 15px 40px;
+}
+.window-btn{
+	display:inline-block;
+	margin:5px 40px 5px 0px;
+	cursor:pointer;
+}
+.window-btn>div{
+	text-align:center;
+	font-size:13px;
+	line-height:25px;
+}
+.window-btn img{
+	height:46px;
+}
+.home-notify-top{
+	background:#A7E4FF;
+	overflow: hidden;
+	zoom:1;
+}
+.home-notify-top>div:nth-of-type(1){
+	float:left;
+	background:#5bcdfc;
+	padding:0 60px 0 30px;;
+	line-height: 35px;
+	height:35px;
+	font-size: 20px;
+	color:#fff;
+}
+.home-notify-top>div:nth-of-type(2){
+	float: left;
+    border-bottom: 35px solid #5D95AC;
+    border-left: 30px solid #5bcdfc;
+    width: 10px;
+}
+.home-notify-top>div:nth-of-type(3){
+	float: left;
+    position: relative;
+    left: -38px;
+    z-index: 1;
+    border-bottom: 35px solid #A7E4FF;
+    border-left: 30px solid transparent;
+    width: 10px;
+}
+.home-notify-title{
+	margin:40px auto 20 auto;
+	color:#000;
+	font-size:30px;
+	font-weight:bold;
+	line-height: 32px;
+	text-align:center;
+	width:450px;
+}
+.home-notify-dashed {
+	border-bottom: 1px dashed #5bcdfc;
+	margin:15px auto;
+}
+.home-notify-content{
+	width:700px;
+	margin:0px auto;
+	font-size:15px;
+	line-height: 20px;
+}
+.home-notify-bottom{
+	margin: 20px 0;
+    float: right;
+    margin-right: 25px;
+}
+.home-notify-bottom>div:nth-of-type(1){
+	line-height: 25px;
+	font-size: 14px;
+	text-align: center;
+}
+.home-notify-bottom>div:nth-of-type(2){
+	line-height: 25px;
+	font-size: 14px;
+	text-align: center;
+}
+.home-notify-filenum{
+	background: #A7E4FF;
+    padding: 0 0 0 30px;
+    margin-top: 90px;
+    font: 17px/30px 'Microsoft yahei';
+}
+.home-notify-filelist{
+	margin: 10px 30px;
+	padding: 0 0 20px 0;
+}
+.home-notify-filelist a {
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    font: 15px/25px 'Microsoft yahei';
+}
+.home-notify-filelist a:hover {
+	text-decoration: underline;
+}
+.home-notifylist{
+	padding:20px 0 10px 0;
+}
+.home-notifyitem{
+	margin: 0 auto;
+    font: 15px/36px 'Microsoft yahei';
+    border-bottom: 1px solid #e5e5e5;
+    overflow: hidden;
+    zoom: 1;
+    cursor: pointer;
+}
+.home-notifyitem:hover{
+	background:#D8EDFF;
+}
+.home-notifyitem>div:nth-of-type(1) {
+	float: left;
+    width: 450px;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 35px;
+}
+.home-notifyitem>div:nth-of-type(2) {
+	float: left;
+    width: 100px;
+    margin-left: 10px;
+}
+.home-notifyitem>div:nth-of-type(3) {
+	float: left;
+    width: 80px;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 10px;
+}
+.lastnotify{
+	border:none;
+}
+.home-notify-solid{
+	margin:2px auto;
+	border-bottom: 1px solid #5bcdfc;
+}
+.home-morenotify{
+	margin:5px 30px 30px 0px;
+	float:right;
+	margin-right:30px;
+}
+.home-morenotify a {
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    font: 15px/25px 'Microsoft yahei';
+    color: #2ABDFF;
+}
+.home-morenotify a:hover {
+	text-decoration: underline;
+}
+.no-notify{
+	line-height:150px;
+	margin:0px auto;
+	text-align:center;
+	font-size: 15px;
+}

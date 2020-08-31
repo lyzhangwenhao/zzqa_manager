@@ -1,0 +1,62 @@
+package com.zzqa.service.interfaces.file_path;
+
+import java.util.List;
+import java.util.Map;
+
+import com.zzqa.pojo.file_path.File_path;
+/****
+ * 文件存储
+ * @author louph
+ *
+ */
+public interface File_pathManager {
+	//检查文件是否被删除
+	public boolean checkNowFileExists(String path_name,int state);
+	//通过id查询文件
+	public File_path getFileByID(int id);
+	//删除文件
+	public void delAllFileByCondition(int type,int foreign_id,int file_type,int state);
+	public void delAllFileByCondition2(int type,int foreign_id,int file_type,int state);
+	/****
+	 * 根据条件筛选文件
+	 * @param type 
+	 * @param foreign_id
+	 * @param file_type 为0时不区分
+	 * @param state 小于0时不区分
+	 * @return
+	 */
+	public List<File_path> getAllFileByCondition(int type,int foreign_id,int file_type,int state);
+	/***
+	 * 按state分类
+	 * @param type
+	 * @param foreign_id
+	 * @param file_type
+	 * @return
+	 */
+	public List<File_path> getAllFileGroupByState(int type,int foreign_id,int file_type);
+	//通过id删除文件
+	public void delFileByID(int id);
+	//添加新文件
+	public void insertFile(File_path file_path);
+	//修改state
+	public void updateState(File_path file_path);
+	//获取临时上传文件的路径
+	public String getTempPath(String sessionID,int file_type,String file_name);
+	/****
+	 * 保存图片
+	 * @param uid
+	 * @param sessionID
+	 * @param type 7、表示其他部门采购流程
+	 * @param foreign_id
+	 * @param file_type 区分上传文件的类型
+	 * @param state
+	 * @param save_time
+	 */
+	public void saveFile(int uid, String sessionID, int type, int foreign_id,
+			int file_type, int state, long save_time);
+	public Map<String, Map<String, File_path>> getFileMap();
+	public Map<String, File_path> getFileMapByKey(String file_type);
+	//添加文件缓存
+	public void addFileMap(String file_type,Map<String, File_path> map);
+	public int getMaxStateByCondition(int type, int foreign_id, int file_type);
+}

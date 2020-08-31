@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="departPuchase">
+	<typeAlias alias="departmentPuchase"
+		type="com.zzqa.pojo.departmentPuchase.DepartmentPuchase" />
+	<insert id="insertDepartPuchase" parameterClass="departmentPuchase">
+		insert into depart_purchase(purchaseTime,purchaseNum,create_id,create_time)
+		values(#purchaseTime#,#purchaseNum#,#create_id#,#create_time#)
+		<selectKey resultClass="int" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<!-- 修改 -->
+    <!-- <update id="updateDepartPuchase" parameterClass="departmentPuchase">
+        update depart_purchase set 
+        project_name=#project_name#,
+        project_id=#project_id#,
+        material_type=#material_type#,
+        department_index=#department_index#
+        where id = #id#
+    </update> -->
+    <select id="getDepartPuchaseByID" resultClass="departmentPuchase">
+		select depart_purchase.*,t.operation ,u.truename as purchaseName from depart_purchase left join 
+		( select * from (select operation,foreign_id from flow  where type=22 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=depart_purchase.id 
+		left join user u on u.id=depart_purchase.create_id
+		where depart_purchase.id=#id#
+	</select>
+	
+	<select id="getCountByTime" resultClass="int">
+		select count(id) from depart_purchase where purchaseTime=#cur_time#
+	</select>
+	
+	<select id="getRunningDepartPuchase" resultClass="departmentPuchase">
+		select depart_purchase.*,t.operation,user.truename as purchaseName,t.create_time as update_time
+		 from depart_purchase left join 
+		( select * from (select operation,foreign_id,create_time from flow  where type=22 order by id desc limit 10000000 ) as f group by foreign_id ) t
+		on t.foreign_id=depart_purchase.id 
+		left join user on depart_purchase.create_id=user.id
+		where t.operation!=7 and t.operation!=6 and user.position_id !=56
+	</select>
+	
+	<select id="getAllList" resultClass="departmentPuchase">
+		select depart_purchase.*,user.truename as purchaseName from depart_purchase 
+		left join user on depart_purchase.create_id=user.id
+	</select>
+</sqlMap>

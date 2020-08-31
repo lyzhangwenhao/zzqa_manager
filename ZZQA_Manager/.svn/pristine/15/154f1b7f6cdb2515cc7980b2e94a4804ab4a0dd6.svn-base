@@ -1,0 +1,681 @@
+/**流程列表样式开始**/
+.td2_div1{
+	width:100%;
+	height:120px;
+}
+.td2_div1_1{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_1 div{
+	margin-top:10px;
+	font: bolder 14px/25px 'SimSun';
+}
+.td2_div11_pass{
+	margin-left:15px;
+	color:#42c652;
+	float:left;
+}
+.td2_div11_nopass{
+	margin-left:22px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div11_nodid{
+	margin-left:22px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div12_pass{
+	margin-left:75px;
+	color:#42c652;
+	float:left;
+}
+.td2_div12_nopass{
+	margin-left:75px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div12_nodid{
+	margin-left:75px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div13_pass{
+	margin-left:100px;
+	color:#42c652;
+	float:left;
+}
+.td2_div13_nopass{
+	margin-left:100px;
+	color:#FF4401;
+	float:left;
+}
+.td2_div13_nodid{
+	margin-left:100px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div14_pass{
+	margin-left:112px;
+	color:#42c652;
+	float:left;
+}
+.td2_div14_nopass{
+	margin-left:112px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div14_nodid{
+	margin-left:112px;
+	color:#5C5C5C;
+	float:left;
+}
+.td2_div15_pass{
+	margin-right:39px;
+	color:#42c652;
+	float:right;
+}
+.td2_div15_nopass{
+	margin-right:39px;
+	color:#FF4401;
+	float:right;
+}
+.td2_div15_nodid{
+	margin-right:39px;
+	color:#5C5C5C;
+	float:right;
+}
+.td2_div16_nopass{
+	margin-left:245px;
+	color:#FF4401;
+	float:left;
+}
+
+
+
+.td2_div1_2{
+	width:90%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_2 div{
+	float:left;
+}
+.td2_div2_img{
+ 	width:1%;
+	min-width:28px;
+}
+.td2_div2_img img{
+	width:28px;
+}
+.td2_div2_agree{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid{
+	float:left;
+	width:20%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+}
+.td2_div2_agree_half{
+	float:left;
+	width:10%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree_half{
+	float:left;
+	width:10%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid_half{
+	float:left;
+	width:10%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+}
+.td2_div2_agree_no{
+	width:45%;
+	height:5px;
+	background-color:#42C752;
+	margin-top:10px;
+}
+.td2_div2_disagree_no{
+	width:44%;
+	height:5px;
+	background-color:#FF4401;
+	margin-top:10px;
+}
+.td2_div2_nodid_no{
+	width:44%;
+	height:5px;
+	background-color:#E1EAEF;
+	margin-top:10px;
+}
+/**未审批过，撤销后的样式开始*/
+.del_1_1{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.del_1_1>div:nth-of-type(1){
+	margin-left:4px;
+	color:#42c652;
+	float:left;
+}
+.del_1_1>div:nth-of-type(2){
+	display:none;
+}
+.del_1_1>div:nth-of-type(3){
+	display:none;
+}
+.del_1_1>div:nth-of-type(4){
+	margin-right: 28px;
+    color: #FF4401;
+    float: right;
+}
+.del_2_1{
+	width: 92%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_2_1>div:nth-of-type(1){
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_1>div:nth-of-type(2){
+	float: left;
+    width: 92%;
+    height: 5px;
+    background-color: #FF4401;
+    margin-top: 10px;
+}
+.del_2_1>div:nth-of-type(3){
+	display:none;
+}
+.del_2_1>div:nth-of-type(4){
+	display:none;
+}
+.del_2_1>div:nth-of-type(5){
+	display:none;
+}
+.del_2_1>div:nth-of-type(6){
+	display:none;
+}
+.del_2_1>div:nth-of-type(7){
+	float:left;
+	width:1%;
+	min-width:28px;
+}
+.del_3_1{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_3_1>div:nth-of-type(1){
+	float: left;
+    margin-left: 15px;
+}
+.del_3_1>div:nth-of-type(2){
+	display:none;
+}
+.del_3_1>div:nth-of-type(3){
+	display:none;
+}
+.del_3_1>div:nth-of-type(4){
+	float: right;
+    margin-right: 12px;
+}
+/**未审批过，撤销后的样式结束*/
+
+/**审批过，撤销后的样式开始*/
+.del_1_2{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.del_1_2>div:nth-of-type(1){
+	margin-left:4px;
+	color:#42c652;
+	float:left;
+}
+.del_1_2>div:nth-of-type(2){
+	margin-left: 255px;
+    color: #42c652;
+    float: left;
+}
+.del_1_2>div:nth-of-type(3){
+	display:none;
+}
+.del_1_2>div:nth-of-type(4){
+	margin-right: 30px;
+    color: #FF4401;
+    float: right;
+}
+.del_2_2{
+	width: 92%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_2_2>div:nth-of-type(1){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_2>div:nth-of-type(2){
+	float: left;
+    width: 44%;
+    height: 5px;
+    background-color: #42C752;
+    margin-top: 10px;
+}
+.del_2_2>div:nth-of-type(3){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_2>div:nth-of-type(4){
+	float: left;
+    width: 44%;
+    height: 5px;
+    background-color: #FF4401;
+    margin-top: 10px;
+}
+.del_2_2>div:nth-of-type(5){
+	display:none;
+}
+.del_2_2>div:nth-of-type(6){
+	display:none;
+}
+.del_2_2>div:nth-of-type(7){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_3_2{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_3_2>div:nth-of-type(1){
+	float: left;
+    margin-left: 10px;
+}
+.del_3_2>div:nth-of-type(2){
+	    float: left;
+    margin-left: 278px;
+}
+.del_3_2>div:nth-of-type(3){
+	display:none;
+}
+.del_3_2>div:nth-of-type(4){
+	float: right;
+    margin-right: 20px;
+}
+/**审批过，撤销后的样式结束*/
+
+/**考勤备案过，撤销后的样式开始*/
+.del_1_4{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+	font: bolder 14px/25px 'SimSun';
+}
+.del_1_4>div:nth-of-type(1){
+	margin-left:5px;
+	color:#42c652;
+	float:left;
+}
+.del_1_4>div:nth-of-type(2){
+	margin-left: 140px;
+    color: #42c652;
+    float: left;
+}
+.del_1_4>div:nth-of-type(3){
+	margin-left: 155px;
+    color: #42c652;
+    float: left;
+}
+.del_1_4>div:nth-of-type(4){
+	margin-right: 30px;
+    color: #FF4401;
+    float: right;
+}
+.del_2_4{
+	width: 92%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_2_4>div:nth-of-type(1){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_4>div:nth-of-type(2){
+	float: left;
+    width: 28%;
+    height: 5px;
+    background-color: #42C752;
+    margin-top: 10px;
+}
+.del_2_4>div:nth-of-type(3){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_4>div:nth-of-type(4){
+	float: left;
+    width: 28%;
+    height: 5px;
+    background-color: #42C752;
+    margin-top: 10px;
+}
+.del_2_4>div:nth-of-type(5){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_2_4>div:nth-of-type(6){
+	float: left;
+    width: 28%;
+    height: 5px;
+    background-color: #FF4401;
+    margin-top: 10px;
+}
+.del_2_4>div:nth-of-type(7){
+	float: left;
+	width:1%;
+	min-width:28px;
+}
+.del_3_4{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.del_3_4>div:nth-of-type(1){
+	float: left;
+    margin-left: 15px;
+}
+.del_3_4>div:nth-of-type(2){
+	float: left;
+    margin-left: 168px;
+}
+.del_3_4>div:nth-of-type(3){
+	float: left;
+    margin-left: 169px;
+}
+.del_3_4>div:nth-of-type(4){
+	float: right;
+    margin-right: 20px;
+}
+/**考勤备案过，撤销后的样式结束*/
+
+.td2_div1_3{
+	width:100%;
+	overflow:hidden;
+	zoom:1;
+	margin:0 auto;
+}
+.td2_div1_3 div{
+	color:#000;
+	font:12px/15px 'SimSun';
+}
+.td2_div31{
+	float:left;
+	margin-left:22px;
+}
+.td2_div32{
+	float:left;
+	margin-left:110px;
+}
+.td2_div33{
+	float:left;
+	margin-left:110px;
+}
+.td2_div34{
+	float:left;
+	margin-left:110px;
+}
+.td2_div35{
+	float:right;
+	margin-right:22px;
+}
+.td2_div31_no{
+	float:left;
+	margin-left:22px;
+}
+.td2_div32_no{
+	float:left;
+	margin-left:280px;
+}
+.hide_css{
+	display:none;
+}
+
+.td2_div2{
+	text-align:center; 
+	margin-top:20px;
+	padding:20px 0px;
+	width:100%;
+	border:1px solid #878787;
+}
+.td2_div3{
+	text-align:center;
+	margin:20px auto 30px auto;
+	color:#000;
+	font:20px/30px 'SimSun';
+	font-weight:700;
+}
+.td2_div4{
+	text-align:left;
+	margin:0px auto;
+	width:90%;
+	color:#000;
+	font:14px/30px 'SimSun';
+	overflow:hidden;
+}
+.td2_div4 div{
+	float:left;
+	width:33%;
+	text-align:left;
+}
+.td2_div6{
+	text-align: left;
+    margin: 0px auto;
+    width: 90%;
+    color: #000;
+    font: 12px/25px 'SimSun';
+    overflow: hidden;
+    color:red;
+}
+.td2_div5{
+	text-align:center;
+	margin:30px auto 20px auto;
+	color:#000;
+	font:20px/30px 'SimSun';
+	font-weight:700;
+}
+.td2_table{
+	border:0px;
+	border-collapse: collapse;
+	margin:0px auto;
+	width:93%;
+	border-top:1px solid #878787;
+	border-left:1px solid #878787;
+	font:14px/30px 'microsoft	yahei';
+}
+.td2_table td{
+	border-bottom:1px solid #878787;
+	border-right:1px solid #878787;
+}
+.table_tr1{
+}
+.table_tr1_td1{
+	width:1%;
+	min-width:100px;
+}
+.table_tr1_td2{
+	width:8%;
+	min-width:200px;
+	text-align:left;
+	padding:0px 5px;
+}
+.table_tr1_td3{
+	width:1%;
+	min-width:60px
+}
+.table_tr1_td4{
+	width:90%;
+	text-align:left;
+	padding:0px 5px;
+	word-break: break-all;
+}
+.table_tr2{
+}
+.table_tr2_td1{
+	width:1%;
+	min-width:100px;
+	text-align:center;
+}
+.table_tr2_td2{
+	width:99%;
+	text-align:left;
+	padding:0px;
+}
+.table_tr2_td2 div{
+	float:left;
+	margin-left:15px;
+}
+.input-hide-time{
+	float: left;
+    width: 0px;
+    display: inline-block;
+    padding: 0px;
+    height: 0px;
+    border: 0px;
+    position: relative;
+    top: 25px;
+    left: 10px;
+    z-index: -100;
+}
+.table_tr2_td2 img {
+    float: left;
+    margin-left: 10px;
+    height: 24px;
+    position: relative;
+    top: 2px;
+    cursor: pointer;
+}
+.table_tr2_td2 select{
+	float: left;
+    margin-left: 10px;
+    border: 1px solid #878787;
+    vertical-align: middle;
+    position: relative;
+    top: 5px;
+}
+.table_tr2_td2 div:nth-of-type(1){
+	float:left;
+	margin-left:5px;
+}
+.table_tr3{
+}
+.table_tr3_td1{
+	width:1%;
+	min-width:100px;
+	text-align:center;
+	font:14px/35px 'microsoft	yahei';
+}
+.table_tr3_td2{
+	width:99%;
+	text-align:left;
+	padding:2px 5px;
+	word-break: break-all;
+}
+
+.td2_table3{
+	width:93%;
+	margin:20px auto;
+	border-collapse: collapse;
+	border:1px solid #787878;
+}
+.td2_table3_left{
+	width:90%;
+	text-align:left;
+	font:14px/20px 'SimSun';
+	padding:5px 5px 40px 5px;
+	word-break:break-all;
+}
+.td2_table3_right{
+	width:10%;
+	text-align:center;
+	vertical-align:bottom;
+	min-width:127px;
+	padding:20px 0px 10px 0px;
+}
+.td2_div5_bottom_right1{
+	margin-left:20px;
+	font:14px/30px 'SimSun';
+}
+.td2_div5_bottom_right2{
+	margin-left:20px;
+	font:13px/25px 'SimSun';
+}
+.td2_div5_bottom_agree{
+	vertical-align:middle;
+	width:127px;
+	height:69px;
+	background-image:url(../images/agree_bg.png);
+	filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+	-moz-background-size:100% 100%;  
+    background-size:100% 100%;  
+}
+.td2_div5_bottom_disagree{
+	height:69px;
+	width:127px;
+	background-image:url(../images/disagree_bg.png);
+	filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+	-moz-background-size:100% 100%;  
+    background-size:100% 100%;  
+}
+.div_testarea{
+	display:block;
+	height:60px; 
+	width:100%;
+	margin:20px auto;
+	font:13px/20px 'SimSun';
+	border:1px solid #878787;
+}
+/**新建任务单流程样式结束**/

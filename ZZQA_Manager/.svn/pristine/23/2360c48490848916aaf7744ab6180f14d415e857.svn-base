@@ -1,0 +1,126 @@
+/****操了日志样式开始***/
+.td1_log{
+	margin:20px auto;
+  	width:1092px;
+  	text-align:center;
+  	border:1px solid #E2E6E7;
+  	background:#fff;
+  	padding:30px 0px;
+}
+.td2_div1{
+	text-align:right;
+	width:95%;
+	overflow:hidden;
+	zoom:1;
+	margin:0px auto 10px auto;
+}
+.td2_div1 input{
+	float:right;
+	height:26px;
+	width:200px;
+	background:#fff;
+	border:1px solid #c9c9c9;
+	padding:0px 10px;
+}
+.serach_img2{
+	float:right;
+	height:26px;
+	border-right:1px solid #c9c9c9;
+	border-top:1px solid #c9c9c9;
+	border-bottom:1px solid #c9c9c9;
+	cursor:pointer;
+}
+.serach_img1{
+	float:right;
+	height:26px;
+	border-right:1px solid #c9c9c9;
+	border-top:1px solid #c9c9c9;
+	border-bottom:1px solid #c9c9c9;
+	cursor:pointer;
+}
+.td2_div2{
+	width:95%;
+	margin:0px auto 20px auto;
+	border:1px solid #c9c9c9;
+	text-align:left;
+	padding:10px 0px;
+	overflow:hidden;
+	zoom:1;
+	font:13px 'SimSun';
+	display:none;/*****高级筛选匡默认为隐藏*****/
+}
+
+label{
+	font:12px 'SimSun';
+	cursor:pointer;
+}
+.td2_div2_a{
+	margin-left:10px;
+}
+.td2_div2_a input[type="text"]{
+	margin-left:3px;
+	padding:0px 10px;
+	width:150px;
+	height:26px;
+	border: 1px solid #c9c9c9;
+}
+input[type="radio"]{
+	position: relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+}
+input[type="checkbox"]{
+	position:relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+}
+.td2_div2_b{
+	margin-left:10px;
+	margin-top:10px;
+}
+.td2_div2_b_div{
+	margin-left:72px;
+	margin-top:10px;
+}
+.td2_div2_b_div label{
+	display:inline-block;
+	width:80px;
+}
+.td2_div2_c{
+	margin-left:10px;
+	margin-top:10px;
+}
+.td2_div2_c input[type="text"]{
+	height:20px;
+	width:80px;
+	padding:0px 10px;
+}
+.td2_div2_c_div{
+	margin-left:70px;
+	margin-top:10px;
+}
+.td2_div2_d{
+	margin-left:10px;
+	margin-top:20px;
+	font:12px 'SimSun';
+}
+.search_left{
+	margin-left:80px;
+}
+.reset_right{
+	margin-left:60px;
+}
+.td2_div5{
+	width:95%;
+	margin-top:10px;
+	text-align:right;
+}
+.td2_div5 span{
+	text-align:center;
+}
+/****操了日志样式结束***/
+
+
+

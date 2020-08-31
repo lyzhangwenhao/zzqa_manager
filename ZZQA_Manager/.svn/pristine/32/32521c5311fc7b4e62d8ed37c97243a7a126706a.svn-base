@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="user">
+    <typeAlias alias="user"
+               type="com.zzqa.pojo.user.User"/>
+
+    <resultMap id="result_basc" class="user">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="truename" column="truename"/>
+        <result property="email" column="email"/>
+        <result property="level" column="level"/>
+        <result property="sendEmail" column="sendEmail"/>
+         <result property="position_id" column="position_id"/>
+        <result property="create_time" column="create_time"/>
+        <result property="update_time" column="update_time"/>
+    </resultMap>
+    
+    <resultMap id="result_basc1" class="user">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="truename" column="truename"/>
+        <result property="email" column="email"/>
+        <result property="level" column="level"/>
+         <result property="position_id" column="position_id"/>
+         <result property="position_name" column="position_name"/>
+        <result property="create_time" column="create_time"/>
+        <result property="update_time" column="update_time"/>
+    </resultMap>
+
+    <!-- 用户登录 -->
+    <select id="log" resultClass="user" parameterClass="user">
+        select * from user where name=#name# and password=#password#
+    </select>
+    
+     <!-- 查询用户是否存在 -->
+    <select id="checkName" resultClass="user" parameterClass="java.lang.String">
+        select * from user where name=#name#
+    </select>
+    
+    <!-- 查询所有用户 -->
+    <select id="getAllUserOrderByLevel" resultMap="result_basc">
+        select * from user order by id
+    </select>
+    
+    <!-- 按条件搜索用户,admin除外 -->
+    <select id="getUserListByKeywords" resultMap="result_basc1" parameterClass="java.lang.String">
+        select u.*,p.position_name from user as u left join position_user as p on u.position_id=p.id 
+        where u.name like '%$keywords$%' or u.truename like '%$keywords$%' or p.position_name like '%$keywords$%'order by u.id limit 0,1000
+    </select>
+    
+    <!-- 通过id查找用户 -->
+    <select id="getUserByID" resultClass="user" parameterClass="int">
+        select * from user where id=#id#
+    </select>
+    
+    <!-- 通过name查找用户 -->
+    <select id="getUserByName" resultClass="user" parameterClass="java.lang.String">
+        select * from user where name=#name#
+    </select>
+    
+    <!-- 返回不同职位的用户 -->
+	<select id="getUserListByPositionID"  resultMap="result_basc" parameterClass="int">
+		select * from user where position_id=#position_id#
+	</select>
+	
+	<!-- 返回不同权限的用户 -->
+	<select id="getUserListByLevel"  resultMap="result_basc" parameterClass="int">
+		select * from user where level=#level#
+	</select>
+	
+	<!-- 返回有指定权限的用户 -->
+	<select id="getUserListByPermissionsID"  resultMap="result_basc" parameterClass="int">
+		<!-- select * from user where position_id in(select position_id from permissions where permissions_id=#permissions_id# and position_id>0) -->
+		select user.* from user left join permissions on permissions.position_id= user.position_id
+		where permissions_id=#permissions_id# order by user.id
+	</select>
+	
+	<!-- 返回父级组织的用户 -->
+	<select id="getParentListByChildUid"  resultMap="result_basc" parameterClass="int">
+		select * from user where position_id>0 and position_id =(select parent from position_user where id=(select position_id from user where id=#uid#))
+	</select>
+	<!-- 返回父级组织的用户 -->
+	<select id="getParentUserByChildPosition"  resultMap="result_basc" parameterClass="int">
+		select user.* from user left join position_user on user.position_id=position_user.parent where position_user.id=#position_id#
+	</select>
+	<!-- 返回下级组织的用户 -->
+	<select id="getSonListByParentPosition"  resultClass="int" parameterClass="int">
+		select user.id from user left join position_user on position_user.id =user.position_id where position_user.parent=#position#
+	</select>
+	<!-- 返回下级组织的用户 -->
+	<select id="getSonListByParentUid"  resultClass="user" parameterClass="int">
+		select * from user where position_id!=#uid# and position_id in (
+		select id from position_user where id=#uid# or parent in (
+		select id from position_user where id=#uid# or parent in (
+		select id from position_user where id=#uid# or parent in (
+		select id from position_user where id=#uid# or parent in (
+		select id from position_user where id=#uid#
+		)))))
+	</select>
+	
+	<!-- 返回父组织为0的用户-->
+	<select id="getTopUser"  resultClass="user">
+		select user.* from user left join position_user on position_user.id =user.position_id where position_user.parent=0 limit 1
+	</select>
+	
+	<!-- 通过邮箱查询用户-->
+	<select id="getUserByEmail"  resultClass="user" parameterClass="String">
+		select * from user where email=#email#
+	</select>
+    
+    <!-- 删除用户 -->
+    <delete id="delUserByID" parameterClass="int">
+        delete from user where id = #id#
+    </delete>
+    
+    <!-- 添加用户 -->
+    <insert id="insertUser" parameterClass="user">
+        insert into user(name,password,truename,email,level,sendEmail,position_id,create_time,update_time) 
+        values(#name#,#password#,#truename#,#email#,#level#,#sendEmail#,#position_id#,#create_time#,#update_time#)
+    </insert>
+    
+   	<!-- 修改用户 -->
+    <update id="updateUser" parameterClass="user">
+        update user set
+        name=#name#,
+        password=#password#,
+        truename=#truename#,
+        email=#email#,
+        level=#level#,
+        sendEmail=#sendEmail#,
+        position_id=#position_id#,
+        update_time=#update_time#
+        where id=#id#
+    </update>
+     
+     
+</sqlMap>

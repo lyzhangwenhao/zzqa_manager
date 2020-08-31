@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="file_path">
+    <typeAlias alias="file_path"
+               type="com.zzqa.pojo.file_path.File_path"/>
+
+    <resultMap id="result_basc" class="file_path">
+        <result property="id" column="id"/>
+        <result property="foreign_id" column="foreign_id"/>
+        <result property="type" column="type"/>
+        <result property="file_name" column="file_name"/>
+        <result property="path_name" column="path_name"/>
+        <result property="file_type" column="file_type"/>
+        <result property="size" column="size"/>
+        <result property="format" column="format"/>
+        <result property="state" column="state"/>
+        <result property="create_time" column="create_time"/>
+    </resultMap>
+    
+    <!-- 检查文件是否被删除 -->
+    <select id="checkNowFileExists" resultClass="file_path" parameterClass="file_path">
+        select id from file_path where path_name=#path_name# and state=#state#
+    </select>
+    
+    <!-- 根据条件查询文件 -->
+    <select id="getAllFileByCondition" resultMap="result_basc" parameterClass="java.util.Map">
+        select * from file_path where type=#type# and foreign_id=#foreign_id#
+        <isGreaterThan prepend="and" property="file_type" compareValue="0">
+			file_type=#file_type#
+		</isGreaterThan>
+		<isGreaterEqual prepend="and" property="state" compareValue="0">
+			state=#state#
+		</isGreaterEqual>
+    </select>
+    <!-- 根据条件查询文件 -->
+    <select id="getAllFileGroupByState" resultMap="result_basc" parameterClass="java.util.Map">
+        select * from file_path where type=#type# and foreign_id=#foreign_id#
+        <isGreaterThan prepend="and" property="file_type" compareValue="0">
+			file_type=#file_type#
+		</isGreaterThan>
+		order by state
+    </select>
+    <!-- 根据条件查询文件 -->
+    <select id="getMaxStateByCondition" resultClass="Integer" parameterClass="java.util.Map">
+        select max(state) from file_path where type=#type# and foreign_id=#foreign_id# and file_type=#file_type#
+    </select>
+    
+    <!-- 根据条件删除文件 -->
+    <delete id="delAllFileByCondition" parameterClass="java.util.Map">
+        delete from file_path where type=#type# and foreign_id = #foreign_id#
+        <isGreaterThan property="file_type" compareValue="0">
+			and file_type=#file_type#
+		</isGreaterThan>
+		<isGreaterEqual property="state" compareValue="0">
+			and state=#state#
+		</isGreaterEqual>
+    </delete>
+    
+    <!-- 通过id查找 -->
+    <select id="getFileByID" resultClass="file_path" parameterClass="int">
+        select * from file_path where id=#id#
+    </select>
+    
+    <!-- 查找最新设备报告 -->
+    <select id="getNewFileByFID" resultClass="file_path" parameterClass="int">
+        select * from file_path where type=5 and foreign_id = #foreign_id# order by id desc limit 0,1
+    </select>
+    
+    <!-- 通过id删除文件 -->
+    <delete id="delFileByID" parameterClass="int">
+        delete from file_path where id = #id#
+    </delete>
+	
+	<!-- 添加用户 -->
+    <insert id="insertFile" parameterClass="file_path">
+        insert into file_path
+        (type,foreign_id,file_name,path_name,file_type,size,format,state,create_time)
+        values(#type#,
+        #foreign_id#,
+        #file_name#,
+        #path_name#,
+        #file_type#,
+        #size#,
+        #format#,
+        #state#,
+        #create_time#)
+    </insert>    
+   <!-- 修改转态 -->
+    <update id="updateState" parameterClass="file_path">
+        update file_path set state=#state# where id = #id#
+    </update>
+</sqlMap>

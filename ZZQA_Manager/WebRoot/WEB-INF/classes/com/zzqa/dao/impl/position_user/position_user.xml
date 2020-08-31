@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="position_user">
+    <typeAlias alias="position_user"
+               type="com.zzqa.pojo.position_user.Position_user"/>
+
+    <resultMap id="result_basc" class="position_user">
+        <result property="id" column="id"/>
+         <result property="position_name" column="position_name"/>
+          <result property="parent" column="parent"/>
+    </resultMap>
+
+    <!-- 通过position_id查询权限 -->
+    <select id="getPositionByPositionName" parameterClass="String" resultClass="position_user">
+        select id,position_name,parent from position_user where position_name=#position_name# limit 1
+    </select>
+    
+    <!-- 通过查询所有职位 -->
+    <select id="getPositionOrderByparent" resultMap="result_basc">
+        select * from position_user order by parent asc<!-- 老版本去掉uid -->
+     </select>
+     
+     <!-- 通过查询所有职位 -->
+    <select id="getPositionByID" parameterClass="int" resultClass="position_user">
+        select id,position_name,parent from position_user where id=#id#<!-- 老版本去掉uid -->
+     </select>
+     
+     <!-- 查询用户职位 -->
+    <select id="getPositionByUID" parameterClass="int" resultClass="position_user">
+        select position_user.* from position_user left join user on user.position_id=position_user.id where user.id=#uid#<!-- 老版本去掉uid -->
+     </select>
+     
+     
+    <select id="getSonPosition" parameterClass="int" resultClass="int">
+        select id from position_user where parent=#position_id#
+     </select>
+     
+    <!-- 添加一条用户职位关系 老版本 -->
+    <insert id="insertPosition" parameterClass="position_user">
+        insert into position_user(position_name,parent) values(#position_name#,#parent#)
+    </insert>
+    
+    <!-- 修改职位 -->
+    <update id="updatePosition" parameterClass="position_user">
+    	update position_user set
+    		position_name=#position_name#,
+    		parent=#parent#
+    		where id=#id# 
+    </update>
+    
+    <!-- 删除某一条职位 -->
+    <delete id="delPositionByID" parameterClass="int">
+        delete from position_user where id=#id#
+    </delete>
+    
+    <!-- 查询最新添加的职位 -->
+     <select id="getNewPosition_id" resultClass="int">
+     	select id from position_user order by id desc limit 1
+     </select>
+     
+     <!-- 查询子节点个数 -->
+     <select id="getChildrenNumByParent" resultClass="int" parameterClass="int">
+     	select count(id) from position_user where parent =#parent# and position_name!=''
+     </select>
+     <!-- 查询总经理父节点 -->
+     <select id="getParentByPositionId" resultClass="int" parameterClass="int">
+     	select parent from position_user where id =#position_id#
+     </select>
+     <!-- 查询子节点个数 -->
+     <select id="checkParentId" resultClass="int" parameterClass="int">
+     	select count(id) from position_user where parent =#position_id#
+     </select>
+     <!-- 查询父节点为0的id -->
+     <select id="getBossParentID" resultClass="int">
+     	select id from position_user where parent =0 order by id desc limit 1
+     </select>
+</sqlMap>

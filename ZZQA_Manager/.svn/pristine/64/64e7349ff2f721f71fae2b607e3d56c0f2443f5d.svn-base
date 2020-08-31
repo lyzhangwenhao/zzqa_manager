@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ZZQA_Manager"
+  id="myeclipse.1456192094087"
+  context-root="/ZZQA_Manager"
+  j2ee-spec="5.0"
+  archive="ZZQA_Manager.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

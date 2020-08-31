@@ -1,0 +1,396 @@
+/****操了日志样式开始***/
+button, input, optgroup, select, textarea {
+    font: normal;/*****防止受bootstrap影响****/
+    font-family: normal; */
+    font-size: normal;
+}
+.device_top_btns{
+	position: absolute;
+	margin:0 0 10px 28px;
+}
+.td1_device{
+	margin:20px auto;
+  	width:1092px;
+  	text-align:center;
+  	border:1px solid #E2E6E7;
+  	background:#fff;
+  	padding:30px 0px;
+}
+.td1_div0{
+    margin: 30px auto 20px auto;
+    text-align: center;
+    font: bold 36px/40px 'KaiTi';
+}
+.td2_div1{
+	text-align:right;
+	width:95%;
+	overflow:hidden;
+	zoom:1;
+	margin:0px auto 10px auto;
+}
+.td2_div1 input{
+	float:right;
+	height:26px;
+	width:200px;
+	background:#fff;
+	border:1px solid #c9c9c9;
+	padding:0px 10px;
+	margin-right:-3px;
+}
+.serach_img2{
+	float:right;
+	height:26px;
+	border-right:1px solid #c9c9c9;
+	border-top:1px solid #c9c9c9;
+	border-bottom:1px solid #c9c9c9;
+	cursor:pointer;
+}
+.serach_img1{
+	float:right;
+	height:26px;
+	border-right:1px solid #c9c9c9;
+	border-top:1px solid #c9c9c9;
+	border-bottom:1px solid #c9c9c9;
+	cursor:pointer;
+}
+.td2_div2{
+	width:95%;
+	margin:0px auto 20px auto;
+	border:1px solid #c9c9c9;
+	text-align:left;
+	padding:10px 0px;
+	overflow:hidden;
+	zoom:1;
+	font:13px 'SimSun';
+	display:none;/*****高级筛选匡默认为隐藏*****/
+}
+label{
+	font:12px 'SimSun';
+	cursor:pointer;
+	margin-right:10px;
+}
+.td2_div2_a{
+	margin-left:10px;
+}
+.td2_div2_a input[type="text"]{
+	margin-left: 6px;
+	padding: 0px 10px;
+	width: 150px;
+	height: 26px;
+	border: 1px solid #c9c9c9;
+}
+input[type="radio"]{
+	position: relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+}
+input[type="checkbox"]{
+	position:relative; 
+	top:2px;
+	padding:0px;
+	margin:0px;
+	margin-right:5px;
+}
+.td2_div2_b{
+	margin-left:10px;
+	margin-top:10px;
+}
+.td2_div2_c{
+	margin-left:10px;
+	margin-top:10px;
+}
+.td2_div2_c_div{
+	margin-left:70px;
+	margin-top:10px;
+}
+.td2_div2_c_div  input[type="text"]{
+	height:20px;
+	width:80px;
+	padding:0px 10px;
+}
+.td2_div2_c_div0{
+	margin-left:72px;
+	overflow:hidden;
+	zoom:1;
+}
+.td2_div2_c_div1{
+	margin-top:5px;
+}
+.td2_div2_c_div1 div{
+	width: 110px;
+    float: left;
+    line-height: 25px;
+}
+.td2_div2_c_div0  input[type="text"]{
+	height:20px;
+	width:120px;
+	margin-left:5px;
+	padding:0px 10px;
+}
+.td2_div2_d{
+	margin-left:10px;
+	margin-top:20px;
+	font:12px 'SimSun';
+}
+.search_left{
+	margin-left:80px;
+}
+.reset_right{
+	margin-left:60px;
+}
+.device_allnum{
+	height: 0px;
+    position: relative;
+    top: 10px;
+    font: 14px/30px 'SimSun';
+}
+.td2_div5{
+	margin:10px auto 0px auto;
+	width:90%;
+	text-align:right;
+}
+
+.td2_div5 span{
+	text-align:center;
+}
+.device_detail{
+	color:#0000EE;
+	cursor:pointer;
+}
+/****操了日志样式结束***/
+.temp_dialog,.device_dialog{
+	display: none;
+	background: #fff;
+    border: 1px solid #787878;
+    position: absolute;
+    left: 50%;
+    margin-left: -255px;
+    width: 510px;
+    z-index: 2;
+    top: 150;
+    padding: 20px 30px 40px 30px;
+    font: 15px/25px 'microsoft yahei';
+}
+.alias_div{
+	margin:10px 0px;
+	zoom:1;
+	overflow:hidden;
+}
+.alias_div>span>span{
+	display:inline-block;
+}
+.alias_div>span:last-of-type{
+	display:inline-block;
+	float:left;
+	text-align:right;
+	width:60px;
+	color:#70CFF9;
+}
+.alias_div .id_div{
+	float: left;
+    text-align: right;
+    padding-left: 10px;
+}
+.alias_div>input{
+	display:inline-block;
+	margin-left:5px;
+	width:430px;
+	float:left;
+	padding:0 5px;
+	text-align:left;
+	line-height: 25px;
+}
+.alias_div>select{
+	display: inline-block;
+    margin-left: 5px;
+    width: 444px;
+    float: left;
+    padding: 0 5px;
+    text-align: left;
+    line-height: 25px;
+    height: 27px;
+}
+.device_dialog_bg{
+	width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    opacity: 0.3;
+    filter: alpha(opacity=0.3);
+    background-color: #000000;
+    z-index: 1;
+    border: 1px solid #e5e5e5;
+    display: none;
+}
+.temp_dialog_btns{
+	margin: 40px 0 0 0;
+    overflow: hidden;
+    zoom: 1;
+}
+.temp_dialog_btns img{
+    float: right;
+    height: 34px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.device_dialog_btns{
+	margin: 40px 0 0 0;
+    overflow: hidden;
+    zoom: 1;
+}
+.device_dialog_btns img{
+    float: right;
+    height: 34px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.temp_dialog_add{
+	margin:20px 0 0 0;
+    color: #7f7f7f;
+    font: 14px/30px 'SimSun';
+    zoom:1;
+    overflow: hidden;
+}
+.temp_dialog_add>span:nth-of-type(1){
+	float: left;
+    color: #7f7f7f;
+    font: 14px/24px 'SimSun';
+}
+.addtemp_btn{
+	float: left;
+	margin-left: 30px;
+    border: 1px solid #787878;
+    border-radius: 3px;
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    font: 13px/22px 'SimSun';
+    background:#fff;
+    color:#787878;
+}
+.addtemp_btn>span{
+	margin-left:3px;
+	position:relative;
+	top:2px;
+}
+.addtemp_btn:hover{
+	background:#787878;
+	color:#fff;
+}
+.temp_dialog_content{
+	margin:0px auto 10px auto;
+	overflow-y:auto;
+	max-height:350px;
+}
+.temp_dialog_content>div{
+	margin:10px auto;
+}
+.temp_dialog_name1{
+	display:inline-block;
+	width:45px;
+	text-align:right;
+	font: 13px/25px 'SimSun';
+}
+.temp_dialog_name2{
+	display:inline-block;
+	width:55px;
+	text-align:right;
+	font: 13px/22px 'SimSun';
+}
+.temp_dialog_value1{
+	display:inline-block;
+	width:150px;
+	font: 13px/23px 'SimSun';
+	padding:0 5px;
+	margin-right:10px;
+}
+.temp_dialog_value2{
+	display:inline-block;
+	width:180px;
+	font: 13px/23px 'SimSun';
+	padding:0 5px;
+}
+.temp_dialog_delbtn{
+	position: relative;
+    left: 5px;
+    top: 2px;
+    color: #787878;
+    cursor: pointer;
+}
+.device_dialog_content{
+	margin:0px auto 10px auto;
+	overflow-y:auto;
+	max-height:350px;
+}
+.device_dialog_content>div{
+	margin:10px auto;
+}
+.device_dialog_name1{
+	display:inline-block;
+	width:45px;
+	text-align:right;
+	font: 13px/25px 'SimSun';
+}
+.device_dialog_name2{
+	display:inline-block;
+	width:55px;
+	text-align:right;
+	font: 13px/25px 'SimSun';
+}
+.device_dialog_value1{
+	display:inline-block;
+	width: 170px;
+	font: 13px/18px 'SimSun';
+    padding: 0 5px;
+    margin-right: 10px;
+    vertical-align: top;
+    min-height: 25px;
+    margin-top: 5px;
+}
+.device_dialog_value2{
+	display:inline-block;
+	width:180px;
+	font: 13px/23px 'SimSun';
+	padding:0 5px;
+}
+.device_dialog_addfile{
+	float: right;
+    margin-left: 20px;
+    cursor: pointer;
+    width: 86px;
+    text-align: center;
+    font: 15px/34px 'microsoft yahei';
+    background: #41c651;
+    color: #fff;
+    border-radius: 5px;
+}
+.temp_dialog_title{
+	margin:5px 0 0 0;
+    color: #7f7f7f;
+    font: 14px/30px 'SimSun';
+    zoom:1;
+    overflow: hidden;
+}
+.temp_dialog_title>span{
+	float: left;
+    color: #7f7f7f;
+    font: 14px/24px 'SimSun';
+}
+.device_dialog_filelist{
+	
+}
+.device_dialog_filelist>div{
+	megin-right:10px;
+	font: 15px/25px 'microsoft yahei';
+	cursor:pointer;
+}
+.device_dialog_filelist span{
+	margin:10px;
+	font: 15px/25px 'microsoft yahei';
+	max-width:200px;
+}
+.device_dialog_filelist>a{
+	vertical-align: top;
+	margin-right:10px;
+}

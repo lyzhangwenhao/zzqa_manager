@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="comments">
+	<typeAlias alias="comments"
+		type="com.zzqa.pojo.comments.Comments" />
+
+	<resultMap id="result_basc" class="comments">
+		<result property="id" column="id" />
+		<result property="type" column="type" />
+		<result property="foreign_id" column="foreign_id" />
+		<result property="content" column="content" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+
+	<!-- 添加 -->
+	<insert id="insertComments" parameterClass="comments">
+		insert into comments(id,type,foreign_id,content,create_id,create_time,update_time)
+		values(#id#,#type#,#foreign_id#,#content#,#create_id#,#create_time#,#update_time#)
+	</insert>
+	
+	<!-- 修改 -->
+    <update id="updateComments" parameterClass="comments">
+        update comments set 
+        type=#type#,
+        foreign_id=#foreign_id#,
+        content=#content#,
+        update_time=#update_time#
+        where id = #id#
+    </update>
+
+	<!-- 通过id删除 -->
+    <delete id="delCommentsByID" parameterClass="int" >
+        delete from comments where id=#id#
+    </delete>
+	
+	<select id="getCommentsByID" parameterClass="int" resultClass="comments">
+		select * from comments where id=#id#
+	</select>
+	
+	<select id="getNewCommentsIDByCreateID" parameterClass="int" resultClass="int">
+		select id from comments where create_id=#create_id# order by id desc limit 0,1 
+	</select>
+	
+	<select id="getCommentsListByCondition" parameterClass="comments" resultMap="result_basc">
+		select * from comments where type=#type# and foreign_id=#foreign_id# order by id
+	</select>
+	
+	<select id="getCommentsCountByCondition" parameterClass="comments" resultClass="int">
+		select count(id) from comments where type=#type# and foreign_id=#foreign_id# and create_id!=#create_id# and update_time>#update_time#
+	</select>	
+</sqlMap>

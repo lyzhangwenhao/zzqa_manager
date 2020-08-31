@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap SYSTEM "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!--  @author:楼鹏晖  -->
+<sqlMap namespace="manufacture">
+	<typeAlias alias="manufacture"
+		type="com.zzqa.pojo.manufacture.Manufacture" />
+
+	<resultMap id="result_basc" class="manufacture">
+		<result property="id" column="id" />
+		<result property="num" column="num" />
+		<result property="task_id" column="task_id" />
+		<result property="predict_time" column="predict_time" />
+		<result property="reason" column="reason" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+	</resultMap>
+
+	<resultMap id="result_basc2" class="manufacture">
+		<result property="id" column="id" />
+		<result property="task_id" column="task_id" />
+		<result property="create_id" column="create_id" />
+		<result property="create_time" column="create_time" />
+	</resultMap>
+
+	<!-- 添加 -->
+	<insert id="insertManufacture" parameterClass="manufacture">
+		insert into manufacture(num,task_id,predict_time,reason,create_id,create_time)
+		values(#num#,#task_id#,#predict_time#,#reason#,#create_id#,#create_time#)
+	</insert>
+	
+	<!-- 查询用户最新添加的生产流程 -->
+	<select id="getNewManufactureByUID" resultClass="int"
+		parameterClass="int">
+		select id from manufacture where create_id=#create_id# order by id desc limit 0,1
+	</select>
+	
+	<!-- 修改 -->
+    <update id="updateManufacture" parameterClass="manufacture">
+        update manufacture set
+        num=#num#,
+        task_id=#task_id#,
+        predict_time=#predict_time#, 
+        reason=#reason#
+        where id = #id#
+    </update>
+
+	<!-- 通过id删除 -->
+    <delete id="delManufactureByID" parameterClass="int" >
+        delete from manufacture where id=#id#
+    </delete>
+    
+	<!-- 通过id查询 -->
+	<select id="getManufactureByID" resultClass="manufacture"
+		parameterClass="int">
+		select * from manufacture where id=#id#
+	</select>
+	
+	<!-- 查询未完成的流程 -->
+	<select id="getRunningManufacture" resultMap="result_basc2">
+		<!-- select id,create_time,create_id from manufacture where (select operation from flow where type=5 and foreign_id=manufacture.id order by id desc limit 0,1 ) !=4 -->
+		select id,task_id,create_time,create_id from manufacture left join 
+		(select operation,foreign_id from 
+			(select operation,foreign_id,id,type from flow  where type=5 order by id desc limit 10000000)as t
+		GROUP BY foreign_id order by id desc) as f 
+		on manufacture.id=f.foreign_id where f.operation!=4
+	</select>
+	
+	<!-- 查询用户生产流程 -->
+	<select id="getManufactureList" resultMap="result_basc2"
+		parameterClass="java.util.Map">
+		select id,task_id,create_time,create_id from manufacture order by create_time desc
+		<isGreaterEqual property="beginrow" compareValue="0">
+			limit #beginrow#,
+		</isGreaterEqual>
+		<isGreaterEqual property="rows" compareValue="0">
+			#rows#
+		</isGreaterEqual>
+	</select>
+	
+	<select id="getAllList" resultClass="manufacture">
+		select manufacture.*,user.truename as create_name from manufacture
+		left join user on manufacture.create_id=user.id
+	</select>
+</sqlMap>
